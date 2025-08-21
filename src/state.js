@@ -1,6 +1,6 @@
 export const state = {
   screen: 'home',
-  currentBook: 'mrk',      // старт: Евангелие от Марка
+  currentBook: 'mrk',
   currentChapter: 1,
   currentTranslation: 'ru_synodal',
   currentLanguage: 'ru',
