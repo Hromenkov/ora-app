@@ -1,22 +1,52 @@
-/* src/styles/base.css */
-
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: #f4f4f4;
-  color: #333;
+:root{
+  --bg:#19161f;
+  --panel:#141319;
+  --ink:#ffffff;
+  --muted:#9DA3AE;
+  --accent:#E5FF53;
+  --blue:#CFE2F5;
 }
 
-#app {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg); color:var(--ink);
 }
 
-h1 {
-  margin-top: 0;
-  color: #0057ff;
+#app{
+  max-width:390px;
+  margin:0 auto;
+  min-height:100vh;
+  padding:20px 20px 96px;
 }
+
+/* заголовок */
+.app-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.app-header h1{font-size:28px;font-weight:800}
+.app-header p{color:var(--muted);margin-top:6px}
+
+/* карточки домашнего экрана */
+.stack{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+.card{
+  border-radius:18px;
+  padding:24px;
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:0 2px 0 rgba(0,0,0,.12);
+  cursor:pointer;
+}
+.card h2{font-size:40px;line-height:1;font-weight:800;margin:8px 0 6px}
+.card span{opacity:.85}
+.card--accent{background:var(--accent); color:#000}
+.card--blue{background:var(--blue); color:#000}
+.card--dark{background:#35384a}
+
+/* нижняя панель (болванка) */
+.tabbar{
+  position:fixed; left:50%; transform:translateX(-50%); bottom:16px;
+  width:372px; height:84px; background:var(--panel); border-radius:22px;
+  display:flex; justify-content:space-around; align-items:center;
+  border:1px solid rgba(255,255,255,.06)
+}
+.tab{display:flex;flex-direction:column;align-items:center;font-size:12px;color:#c9ccd6;gap:6px}
+.tab .icon{width:40px;height:40px;display:grid;place-items:center;border-radius:14px;background:#1b1a22}
