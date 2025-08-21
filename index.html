@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORA - Друг и наставник</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #2a2a2a;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .card {
+            background: #E5FF53;
+            color: #000;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px auto;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🕊️ ORA</h1>
+    <p>Приложение для духовного роста</p>
+    
+    <div class="card">
+        <div style="font-size: 32px;">📖</div>
+        <h3>БИБЛИЯ</h3>
+        <p>Читать и изучать</p>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+    </script>
+</body>
+</html>
