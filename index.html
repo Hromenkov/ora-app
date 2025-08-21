@@ -249,24 +249,6 @@
             padding: 20px;
         }
 
-        .reader-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .action-btn {
-            background: #E5FF53;
-            color: #000;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 16px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
         .verses-container {
             background: #3a3a3a;
             border-radius: 12px;
@@ -540,28 +522,26 @@
 
     <div id="bible-reader" class="screen">
         <div class="header">
-            <button class="back-btn" onclick="goToBibleSetup()">
+            <button class="back-btn" onclick="goHome()">
                 ← Назад
             </button>
             <div class="header-title">
-                <h1 id="reader-book-title">Новый Завет</h1>
+                <h1 id="reader-book-title">Ев. от Марка</h1>
                 <p>мини-приложение</p>
             </div>
-            <button class="menu-btn">
-                <svg viewBox="0 0 24 24">
-                    <circle cx="5" cy="12" r="2"/>
-                    <circle cx="12" cy="12" r="2"/>
-                    <circle cx="19" cy="12" r="2"/>
-                </svg>
-            </button>
+            <div style="display: flex; gap: 8px;">
+                <button class="action-btn" onclick="toggleLanguage()" id="lang-btn" style="padding: 8px 12px; font-size: 12px;">RU</button>
+                <button class="menu-btn">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="5" cy="12" r="2"/>
+                        <circle cx="12" cy="12" r="2"/>
+                        <circle cx="19" cy="12" r="2"/>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <div class="reader-content">
-            <div class="reader-actions">
-                <button class="action-btn" onclick="toggleLanguage()" id="lang-btn">RU</button>
-                <button class="action-btn">+</button>
-            </div>
-
             <div class="verses-container" id="verses-container">
                 <div class="loading">
                     <div class="loading-spinner"></div>
