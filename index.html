@@ -1088,78 +1088,84 @@
                     </div>
                 `;
 
-                // Пробуем загрузить через API
-                const apiData = await loadFromAPI(book, chapter);
-                if (apiData && apiData.verses && apiData.verses.length > 0) {
-                    displayVerses(apiData.verses, book, chapter);
-                    return;
-                }
-
-                // Fallback на локальные данные
+                // Сначала пробуем локальные данные
                 const localData = getSampleText(book, chapter);
                 if (localData && localData.length > 0) {
                     setTimeout(() => {
                         displayVerses(localData, book, chapter);
-                    }, 500);
-                } else {
-                    throw new Error('Текст не найден');
+                    }, 300);
+                    return;
                 }
+
+                // Если локальных данных нет, пробуем API
+                try {
+                    const apiData = await loadFromAPI(book, chapter);
+                    if (apiData && apiData.verses && apiData.verses.length > 0) {
+                        displayVerses(apiData.verses, book, chapter);
+                        return;
+                    }
+                } catch (apiError) {
+                    console.log('API failed, using fallback');
+                }
+
+                // Fallback - генерируем демо-стихи
+                const fallbackVerses = generateFallbackVerses(book, chapter);
+                displayVerses(fallbackVerses, book, chapter);
 
             } catch (error) {
                 console.error('Ошибка загрузки:', error);
-                document.getElementById('verses-container').innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #888;">
-                        <p>Не удалось загрузить ${bibleBooks[book].name} ${chapter}</p>
-                        <button onclick="loadBibleTextLocal('${book}', ${chapter})" style="margin-top: 16px; background: #E5FF53; color: #000; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
-                            Попробовать снова
-                        </button>
-                    </div>
-                `;
+                
+                // Последний fallback
+                const fallbackVerses = generateFallbackVerses(book, chapter);
+                displayVerses(fallbackVerses, book, chapter);
+            }
+        }
+
+        function generateFallbackVerses(book, chapter) {
+            const bookData = bibleBooks[book];
+            const isRussian = currentLanguage === 'ru';
+            
+            if (isRussian) {
+                return [
+                    { verse: 1, text: `Начало ${chapter} главы книги ${bookData.name}. Текст будет доступен при подключении к интернету.` },
+                    { verse: 2, text: `Это демонстрационный текст для главы ${chapter}. В полной версии здесь будут настоящие стихи из Библии.` },
+                    { verse: 3, text: `Приложение ORA разрабатывается для изучения Священного Писания и духовного роста.` },
+                    { verse: 4, text: `Скоро здесь будет полный текст ${bookData.name} на русском и английском языках.` }
+                ];
+            } else {
+                return [
+                    { verse: 1, text: `Beginning of chapter ${chapter} of the book ${bookData.name}. Text will be available when connected to the internet.` },
+                    { verse: 2, text: `This is demonstration text for chapter ${chapter}. In the full version there will be real Bible verses here.` },
+                    { verse: 3, text: `The ORA app is being developed for studying Scripture and spiritual growth.` },
+                    { verse: 4, text: `Soon there will be full text of ${bookData.name} in Russian and English languages.` }
+                ];
             }
         }
 
         async function loadFromAPI(book, chapter) {
+            // Отключаем API временно, так как они не работают в Telegram
+            return null;
+            
+            /* 
+            // Код API для будущего использования
             try {
                 const bookKey = bibleBooks[book].key;
+                const response = await fetch(`https://bible-api.com/${bookKey}+${chapter}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
                 
-                // Используем multiple API sources
-                const apis = [
-                    `https://bible-api.com/${bookKey}+${chapter}`,
-                    `https://bolls.life/get-text/${bookKey}/${chapter}/`,
-                    `https://api.esv.org/v3/passage/text/?q=${book}+${chapter}&format=json`
-                ];
-
-                for (const apiUrl of apis) {
-                    try {
-                        const response = await fetch(apiUrl, {
-                            headers: {
-                                'Accept': 'application/json',
-                                'User-Agent': 'ORA-Bible-App'
-                            }
-                        });
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            
-                            // Обрабатываем разные форматы ответов
-                            if (data.verses && Array.isArray(data.verses)) {
-                                return { verses: data.verses };
-                            } else if (data.text) {
-                                // Парсим текст в стихи
-                                return parseTextToVerses(data.text);
-                            }
-                        }
-                    } catch (apiError) {
-                        console.log(`API ${apiUrl} failed:`, apiError);
-                        continue;
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.verses && Array.isArray(data.verses)) {
+                        return { verses: data.verses };
                     }
                 }
-
-                return null;
             } catch (error) {
-                console.error('All APIs failed:', error);
-                return null;
+                console.log('API temporarily disabled');
             }
+            */
+            
+            return null;
         }
 
         function parseTextToVerses(text) {
@@ -1185,18 +1191,20 @@
         }
 
         function getSampleText(book, chapter) {
+            // Расширяем локальные данные
             if (sampleTexts[book] && sampleTexts[book][currentLanguage] && sampleTexts[book][currentLanguage][chapter]) {
                 return sampleTexts[book][currentLanguage][chapter];
             }
             
-            // Возвращаем демо-текст если нет конкретной главы
+            // Если нет конкретной главы, но есть книга - возвращаем первую главу с пометкой
             if (sampleTexts[book] && sampleTexts[book][currentLanguage] && sampleTexts[book][currentLanguage][1]) {
                 return sampleTexts[book][currentLanguage][1].map(verse => ({
                     ...verse,
-                    text: `(Глава ${chapter}) ${verse.text}`
+                    text: `(Демо глава ${chapter}) ${verse.text}`
                 }));
             }
 
+            // Если совсем нет данных, возвращаем null - сработает fallback
             return null;
         }
 
