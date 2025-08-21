@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ORA - Друг и наставник</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,317 +14,293 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: #0A0A0A;
+            color: #FFFFFF;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 375px;
+            max-width: 390px;
             margin: 0 auto;
-            background: #1a1a2e;
             min-height: 100vh;
             position: relative;
-            overflow: hidden;
         }
 
-        .main-screen {
-            padding: 20px;
-            padding-bottom: 90px;
-        }
-
+        /* Header */
         .header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            margin-bottom: 30px;
-            padding: 10px 0;
-        }
-
-        .logo {
-            display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: #E5FF53;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            padding: 10px 0;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            top: 80px;
-            left: 20px;
-            right: 20px;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .header h2 {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 400;
-            margin-top: 5px;
-        }
-
-        .settings-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: #2d2d44;
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            padding: 16px 20px;
+            background: #0A0A0A;
             position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-ora {
-            background: linear-gradient(135deg, #E5FF53, #B8D946);
-            color: #000;
-        }
-
-        .card-bible {
-            background: linear-gradient(135deg, #C7DCEF, #A8C5E8);
-            color: #000;
-        }
-
-        .card-heroes {
-            background: linear-gradient(135deg, #3B3D53, #2A2C3E);
-            color: #fff;
-        }
-
-        .card-mentor {
-            background: linear-gradient(135deg, #4E098E, #6B1B9A);
-            color: #fff;
-        }
-
-        .card-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .card-subtitle {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        .tab-bar {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 372px;
-            height: 70px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px 20px 0 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .tab-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .tab-item.active {
-            color: #E5FF53;
-        }
-
-        .tab-icon {
-            font-size: 20px;
-        }
-
-        /* ЭКРАН БИБЛИИ - ВАШ ТОЧНЫЙ ДИЗАЙН */
-        .bible-screen {
-            display: none;
-            height: 100vh;
-            background: #1a1a2e;
-        }
-
-        .bible-header {
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
         }
 
         .back-btn {
             background: none;
             border: none;
-            color: #fff;
+            color: #E5FF53;
             font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
         }
 
-        .bible-title {
+        .header-title {
             text-align: center;
             flex: 1;
         }
 
-        .bible-title h1 {
-            font-size: 18px;
+        .header-title h1 {
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 2px;
-            color: #fff;
+            margin: 0;
         }
 
-        .bible-title span {
+        .header-title p {
             font-size: 12px;
-            opacity: 0.7;
-            color: #fff;
+            color: #666;
+            margin: 0;
         }
 
-        .header-right {
+        .header-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            background: none;
+            border: none;
+            color: #E5FF53;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .header-btn:hover {
+            background: rgba(229, 255, 83, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            margin-bottom: 90px;
+        }
+
+        /* Home Cards */
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #1A1A1A;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            height: 80px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
         }
 
-        .lang-btn, .menu-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            padding: 8px 12px;
+        .card:hover {
+            transform: translateY(-2px);
+            background: #2A2A2A;
+        }
+
+        .card-ora { background: #E5FF53; color: #000; }
+        .card-bible { background: #C7DCEF; color: #000; }
+        .card-heroes { background: #3B3D53; color: #FFF; }
+        .card-mentor { background: #4E098E; color: #FFF; }
+
+        .card-icon {
+            font-size: 32px;
+            min-width: 40px;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-subtitle {
             font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Bible Selection Screens */
+        .selection-container {
+            background: #1A1A1A;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .selection-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .selection-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .selection-item {
+            background: #2A2A2A;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .selection-item:hover {
+            border-color: #E5FF53;
+            background: #333;
+        }
+
+        .selection-item-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .selection-item-subtitle {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .book-item {
+            background: #2A2A2A;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-item:hover {
+            background: #333;
+        }
+
+        .book-name {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .book-chapters {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* Bible Reader */
+        .bible-reader {
+            background: #1A1A1A;
+            border-radius: 12px;
+            padding: 0;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .book-header {
+            background: #2A2A2A;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-title {
+            font-size: 16px;
+            font-weight: 600;
         }
 
         .chapter-nav {
-            padding: 15px 20px;
+            background: #2A2A2A;
+            padding: 12px 20px;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             gap: 20px;
-            background: rgba(45, 45, 68, 0.5);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid #333;
         }
 
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.1);
+        .chapter-btn {
+            background: none;
             border: none;
-            border-radius: 8px;
-            color: #fff;
-            padding: 10px 15px;
-            font-size: 16px;
+            color: #E5FF53;
+            font-size: 18px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
         }
 
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .chapter-btn:hover {
+            background: rgba(229, 255, 83, 0.1);
         }
 
-        .nav-btn:disabled {
-            opacity: 0.5;
+        .chapter-btn:disabled {
+            color: #666;
             cursor: not-allowed;
         }
 
-        .chapter-display {
+        .chapter-info {
             font-size: 16px;
             font-weight: 600;
-            min-width: 100px;
-            text-align: center;
-            color: #fff;
         }
 
-        .bible-content {
-            flex: 1;
+        .verses-container {
             padding: 20px;
+            line-height: 1.6;
+            max-height: 400px;
             overflow-y: auto;
-            background: #1a1a2e;
-            height: calc(100vh - 200px);
         }
 
         .verse {
-            margin-bottom: 16px;
-            line-height: 1.6;
-            font-size: 16px;
+            margin-bottom: 12px;
             cursor: pointer;
             padding: 8px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 6px;
+            transition: background 0.2s;
         }
 
         .verse:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(229, 255, 83, 0.05);
         }
 
         .verse.bookmarked {
             background: rgba(229, 255, 83, 0.1);
-            border-left: 4px solid #E5FF53;
+            border-left: 3px solid #E5FF53;
+            padding-left: 12px;
         }
 
         .verse-number {
@@ -335,336 +311,928 @@
         }
 
         .verse-text {
-            color: #fff;
+            font-size: 16px;
         }
 
-        .loading {
+        /* Loading & Error States */
+        .loading-state {
             text-align: center;
-            padding: 40px;
-            color: rgba(255, 255, 255, 0.7);
+            padding: 40px 20px;
+            color: #888;
         }
 
-        .error {
+        .loading-spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #333;
+            border-top: 2px solid #E5FF53;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-state {
             text-align: center;
-            padding: 40px;
-            color: #ff6b6b;
+            padding: 40px 20px;
+            color: #F44336;
         }
 
-        @media (max-width: 375px) {
+        .retry-btn {
+            background: #E5FF53;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 372px;
+            height: 70px;
+            background: #1A1A1A;
+            border-radius: 35px 35px 0 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .tab-item:hover {
+            opacity: 0.8;
+        }
+
+        .tab-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .tab-label {
+            font-size: 10px;
+            color: #888;
+        }
+
+        /* Screen Management */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 390px) {
             .container {
                 max-width: 100%;
             }
             
             .tab-bar {
                 width: 100%;
-                border-radius: 0;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- ГЛАВНАЯ СТРАНИЦА - ТОЧНО ВАШ ДИЗАЙН -->
-        <div class="main-screen" id="mainScreen">
-            <div class="header">
-                <div class="logo">
-                    <div class="logo-icon">🕊️</div>
-                    <div class="logo-text">ORA</div>
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" id="back-btn" onclick="goBack()" style="display: none;">← Назад</button>
+            <div class="header-title">
+                <h1 id="header-title">ORA</h1>
+                <p id="header-subtitle">мини-приложение</p>
+            </div>
+            <div class="header-controls">
+                <button class="header-btn" id="lang-btn" onclick="toggleLanguage()">RU</button>
+                <button class="header-btn" onclick="showMenu()">...</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Home Screen -->
+            <div class="screen active" id="home-screen">
+                <div class="cards-grid">
+                    <div class="card card-ora" onclick="openORA()">
+                        <div class="card-icon">🕊️</div>
+                        <div class="card-content">
+                            <div class="card-title">ORA</div>
+                            <div class="card-subtitle">Молитвы и общение</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-bible" onclick="openBible()">
+                        <div class="card-icon">📖</div>
+                        <div class="card-content">
+                            <div class="card-title">БИБЛИЯ</div>
+                            <div class="card-subtitle">Читать и изучать</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-heroes" onclick="showComingSoon('Герои')">
+                        <div class="card-icon">⭐</div>
+                        <div class="card-content">
+                            <div class="card-title">ГЕРОИ</div>
+                            <div class="card-subtitle">Примеры для подражания</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-mentor" onclick="showComingSoon('Наставник')">
+                        <div class="card-icon">💜</div>
+                        <div class="card-content">
+                            <div class="card-title">НАСТАВНИК</div>
+                            <div class="card-subtitle">Конспекты. Заметки. Исследования</div>
+                        </div>
+                    </div>
                 </div>
-                <button class="settings-btn" onclick="showSettings()">⚙️</button>
             </div>
 
-            <div class="cards-grid">
-                <div class="card card-ora" onclick="showComingSoon('ORA')">
-                    <div class="card-icon">🕊️</div>
-                    <div class="card-title">ORA</div>
-                    <div class="card-subtitle">Друг и наставник</div>
+            <!-- Testament Selection Screen -->
+            <div class="screen" id="testament-screen">
+                <div class="selection-container">
+                    <h3 class="selection-title">📜 Выберите завет</h3>
+                    <div class="selection-grid">
+                        <div class="selection-item" onclick="selectTestament('old')">
+                            <div class="selection-item-title">Ветхий Завет</div>
+                            <div class="selection-item-subtitle">39 книг</div>
+                        </div>
+                        <div class="selection-item" onclick="selectTestament('new')">
+                            <div class="selection-item-title">Новый Завет</div>
+                            <div class="selection-item-subtitle">27 книг</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book Selection Screen -->
+            <div class="screen" id="book-screen">
+                <div class="selection-container">
+                    <h3 class="selection-title" id="book-screen-title">📚 Выберите книгу</h3>
+                    <div class="books-grid" id="books-grid">
+                        <!-- Будет заполнено динамически -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapter Selection Screen -->
+            <div class="screen" id="chapter-screen">
+                <div class="selection-container">
+                    <h3 class="selection-title" id="chapter-screen-title">📄 Выберите главу</h3>
+                    <div class="selection-grid" id="chapters-grid">
+                        <!-- Будет заполнено динамически -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Translation Selection Screen -->
+            <div class="screen" id="translation-screen">
+                <div class="selection-container">
+                    <h3 class="selection-title">🌍 Выберите перевод</h3>
+                    <div class="selection-grid" id="translation-grid">
+                        <!-- Будет заполнено динамически -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bible Reader Screen -->
+            <div class="screen" id="bible-screen">
+                <!-- Translation Selector -->
+                <div class="translation-selector">
+                    <h3>📚 Выберите перевод</h3>
+                    <div class="translation-grid" id="translation-grid">
+                        <!-- Будет заполнено динамически -->
+                    </div>
                 </div>
 
-                <div class="card card-bible" onclick="openBible()">
-                    <div class="card-icon">ℹ️</div>
-                    <div class="card-title">БИБЛИЯ</div>
-                    <div class="card-subtitle">Читать и изучать</div>
+                <!-- Bible Reader -->
+                <div class="bible-reader" id="bible-reader" style="display: none;">
+                    <div class="book-header">
+                        <div class="book-title" id="book-title">Евангелие от Марка</div>
+                    </div>
+                    
+                    <div class="chapter-nav">
+                        <button class="chapter-btn" onclick="previousChapter()">‹</button>
+                        <div class="chapter-info" id="chapter-info">Глава 1</div>
+                        <button class="chapter-btn" onclick="nextChapter()">›</button>
+                    </div>
+
+                    <div class="verses-container" id="verses-container">
+                        <!-- Стихи будут загружены динамически -->
+                    </div>
                 </div>
 
-                <div class="card card-heroes" onclick="showComingSoon('Герои')">
-                    <div class="card-icon">👑</div>
-                    <div class="card-title">ГЕРОИ</div>
-                    <div class="card-subtitle">Библейские герои</div>
+                <!-- Loading State -->
+                <div class="loading-state" id="loading-state" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Загружаем Библию...</p>
                 </div>
 
-                <div class="card card-mentor" onclick="showComingSoon('Наставник')">
-                    <div class="card-icon">💜</div>
-                    <div class="card-title">НАСТАВНИК</div>
-                    <div class="card-subtitle">Конспекты. Заметки. Исследования</div>
+                <!-- Error State -->
+                <div class="error-state" id="error-state" style="display: none;">
+                    <p>Не удалось загрузить текст</p>
+                    <button class="retry-btn" onclick="retryLoad()">Попробовать снова</button>
                 </div>
             </div>
         </div>
 
-        <!-- ЭКРАН БИБЛИИ - ТОЧНО ВАШ ДИЗАЙН -->
-        <div class="bible-screen" id="bibleScreen">
-            <div class="bible-header">
-                <div class="header-left">
-                    <button class="back-btn" onclick="goBack()">← Назад</button>
-                </div>
-                
-                <div class="bible-title">
-                    <h1>Ев. от Марка</h1>
-                    <span>мини-приложение</span>
-                </div>
-
-                <div class="header-right">
-                    <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">RU</button>
-                    <button class="menu-btn" onclick="showBibleMenu()">...</button>
-                </div>
-            </div>
-
-            <div class="chapter-nav">
-                <button class="nav-btn" id="prevChapterBtn" onclick="previousChapter()">‹</button>
-                <div class="chapter-display">
-                    <span id="currentChapter">1</span> Глава
-                </div>
-                <button class="nav-btn" id="nextChapterBtn" onclick="nextChapter()">›</button>
-            </div>
-
-            <div class="bible-content" id="bibleContent">
-                <div class="loading">Загрузка...</div>
-            </div>
-        </div>
-
-        <!-- TAB BAR - ТОЧНО ВАШ ДИЗАЙН -->
+        <!-- Tab Bar -->
         <div class="tab-bar">
-            <div class="tab-item active" onclick="switchTab('home')">
+            <div class="tab-item" onclick="showScreen('home')">
                 <div class="tab-icon">🏠</div>
-                <div>Домой</div>
+                <div class="tab-label">Домой</div>
             </div>
-            <div class="tab-item" onclick="switchTab('bible')">
+            <div class="tab-item" onclick="openBible()">
                 <div class="tab-icon">📖</div>
-                <div>Библия</div>
+                <div class="tab-label">Библия</div>
             </div>
-            <div class="tab-item" onclick="switchTab('ora')">
+            <div class="tab-item" onclick="openORA()">
                 <div class="tab-icon">🕊️</div>
-                <div>ORA</div>
+                <div class="tab-label">ORA</div>
             </div>
-            <div class="tab-item" onclick="switchTab('mentor')">
-                <div class="tab-icon">📋</div>
-                <div>Наставник</div>
+            <div class="tab-item" onclick="showComingSoon('Наставник')">
+                <div class="tab-icon">📄</div>
+                <div class="tab-label">Наставник</div>
             </div>
-            <div class="tab-item" onclick="switchTab('heroes')">
+            <div class="tab-item" onclick="showComingSoon('Герои')">
                 <div class="tab-icon">⭐</div>
-                <div>Герои</div>
+                <div class="tab-label">Герои</div>
             </div>
         </div>
     </div>
 
     <script>
-        // Переводы Библии
-        const bibleTranslations = {
+        // КОНФИГУРАЦИЯ ПЕРЕВОДОВ БИБЛИИ
+        const BIBLE_TRANSLATIONS = {
             ru_synodal: {
-                name: 'Синодальный перевод',
-                books: {
-                    mark: {
-                        name: 'От Марка святое благовествование',
-                        chapters: {
-                            1: [
-                                { number: 1, text: 'Начало Евангелия Иисуса Христа, Сына Божия,' },
-                                { number: 2, text: 'как написано у пророков: вот, Я посылаю Ангела Моего пред лицем Твоим, который приготовит путь Твой пред Тобою.' },
-                                { number: 3, text: 'Глас вопиющего в пустыне: приготовьте путь Господу, прямыми сделайте стези Ему.' },
-                                { number: 4, text: 'Явился Иоанн, крестя в пустыне и проповедуя крещение покаяния для прощения грехов.' },
-                                { number: 5, text: 'И выходили к нему вся страна Иудейская и Иерусалимляне, и крестились от него все в реке Иордане, исповедуя грехи свои.' },
-                                { number: 6, text: 'Иоанн же носил одежду из верблюжьего волоса и пояс кожаный на чреслах своих, и ел акриды и дикий мед.' }
-                            ],
-                            2: [
-                                { number: 1, text: 'Через несколько дней опять пришел Он в Капернаум; и слышно стало, что Он в доме.' },
-                                { number: 2, text: 'Тотчас собрались многие, так что уже и у дверей не было места; и Он говорил им слово.' },
-                                { number: 3, text: 'И пришли к Нему с расслабленным, которого несли четверо;' }
-                            ],
-                            3: [
-                                { number: 1, text: 'И пришел опять в синагогу; там был человек, имевший иссохшую руку.' },
-                                { number: 2, text: 'И наблюдали за Ним, не исцелит ли его в субботу, чтобы обвинить Его.' }
-                            ]
-                        }
-                    }
+                id: "ru_synodal",
+                name: "Синодальный",
+                language: "ru",
+                year: "1876",
+                url: "https://raw.githubusercontent.com/thiagobodruk/bible/master/json/ru_synodal.json",
+                status: "ready"
+            },
+            en_kjv: {
+                id: "en_kjv",
+                name: "King James",
+                language: "en", 
+                year: "1611",
+                url: "https://raw.githubusercontent.com/thiagobodruk/bible/master/json/en_kjv.json",
+                status: "ready"
+            },
+            en_bbe: {
+                id: "en_bbe",
+                name: "Basic English",
+                language: "en",
+                year: "1949",
+                url: "https://raw.githubusercontent.com/thiagobodruk/bible/master/json/en_bbe.json", 
+                status: "ready"
+            },
+            de_schlachter: {
+                id: "de_schlachter",
+                name: "Schlachter",
+                language: "de",
+                year: "1951",
+                url: "https://raw.githubusercontent.com/thiagobodruk/bible/master/json/de_schlachter.json",
+                status: "loading"
+            },
+            zh_cuv: {
+                id: "zh_cuv", 
+                name: "Chinese Union",
+                language: "zh",
+                year: "1919",
+                url: "https://raw.githubusercontent.com/thiagobodruk/bible/master/json/zh_cuv.json",
+                status: "loading"
+            },
+            es_rvr: {
+                id: "es_rvr",
+                name: "Reina Valera", 
+                language: "es",
+                year: "1909",
+                url: "https://raw.githubusercontent.com/thiagobodruk/bible/master/json/es_rvr.json",
+                status: "loading"
+            }
+        };
+
+        // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+        let currentScreen = 'home';
+        let selectedTestament = '';
+        let selectedBook = '';
+        let selectedChapter = 1;
+        let currentTranslation = 'ru_synodal';
+        let currentLanguage = 'ru';
+        let bibleData = {};
+        let bookmarks = new Set();
+
+        // ДАННЫЕ О КНИГАХ БИБЛИИ
+        const BIBLE_BOOKS = {
+            old: [
+                { id: 'gen', name: 'Бытие', chapters: 50 },
+                { id: 'exo', name: 'Исход', chapters: 40 },
+                { id: 'lev', name: 'Левит', chapters: 27 },
+                { id: 'num', name: 'Числа', chapters: 36 },
+                { id: 'deu', name: 'Второзаконие', chapters: 34 },
+                { id: 'jos', name: 'Иисус Навин', chapters: 24 },
+                { id: 'jdg', name: 'Судьи', chapters: 21 },
+                { id: 'rut', name: 'Руфь', chapters: 4 },
+                { id: '1sa', name: '1 Царств', chapters: 31 },
+                { id: '2sa', name: '2 Царств', chapters: 24 },
+                { id: '1ki', name: '3 Царств', chapters: 22 },
+                { id: '2ki', name: '4 Царств', chapters: 25 },
+                { id: '1ch', name: '1 Паралипоменон', chapters: 29 },
+                { id: '2ch', name: '2 Паралипоменон', chapters: 36 },
+                { id: 'ezr', name: 'Ездра', chapters: 10 },
+                { id: 'neh', name: 'Неемия', chapters: 13 },
+                { id: 'est', name: 'Есфирь', chapters: 10 },
+                { id: 'job', name: 'Иов', chapters: 42 },
+                { id: 'psa', name: 'Псалтирь', chapters: 150 },
+                { id: 'pro', name: 'Притчи', chapters: 31 },
+                { id: 'ecc', name: 'Екклесиаст', chapters: 12 },
+                { id: 'sng', name: 'Песнь Песней', chapters: 8 },
+                { id: 'isa', name: 'Исаия', chapters: 66 },
+                { id: 'jer', name: 'Иеремия', chapters: 52 },
+                { id: 'lam', name: 'Плач Иеремии', chapters: 5 },
+                { id: 'ezk', name: 'Иезекииль', chapters: 48 },
+                { id: 'dan', name: 'Даниил', chapters: 12 },
+                { id: 'hos', name: 'Осия', chapters: 14 },
+                { id: 'jol', name: 'Иоиль', chapters: 3 },
+                { id: 'amo', name: 'Амос', chapters: 9 },
+                { id: 'oba', name: 'Авдий', chapters: 1 },
+                { id: 'jon', name: 'Иона', chapters: 4 },
+                { id: 'mic', name: 'Михей', chapters: 7 },
+                { id: 'nah', name: 'Наум', chapters: 3 },
+                { id: 'hab', name: 'Аввакум', chapters: 3 },
+                { id: 'zep', name: 'Софония', chapters: 3 },
+                { id: 'hag', name: 'Аггей', chapters: 2 },
+                { id: 'zec', name: 'Захария', chapters: 14 },
+                { id: 'mal', name: 'Малахия', chapters: 4 }
+            ],
+            new: [
+                { id: 'mat', name: 'От Матфея', chapters: 28 },
+                { id: 'mrk', name: 'От Марка', chapters: 16 },
+                { id: 'luk', name: 'От Луки', chapters: 24 },
+                { id: 'jhn', name: 'От Иоанна', chapters: 21 },
+                { id: 'act', name: 'Деяния', chapters: 28 },
+                { id: 'rom', name: 'К Римлянам', chapters: 16 },
+                { id: '1co', name: '1 К Коринфянам', chapters: 16 },
+                { id: '2co', name: '2 К Коринфянам', chapters: 13 },
+                { id: 'gal', name: 'К Галатам', chapters: 6 },
+                { id: 'eph', name: 'К Ефесянам', chapters: 6 },
+                { id: 'php', name: 'К Филиппийцам', chapters: 4 },
+                { id: 'col', name: 'К Колоссянам', chapters: 4 },
+                { id: '1th', name: '1 К Фессалоникийцам', chapters: 5 },
+                { id: '2th', name: '2 К Фессалоникийцам', chapters: 3 },
+                { id: '1ti', name: '1 К Тимофею', chapters: 6 },
+                { id: '2ti', name: '2 К Тимофею', chapters: 4 },
+                { id: 'tit', name: 'К Титу', chapters: 3 },
+                { id: 'phm', name: 'К Филимону', chapters: 1 },
+                { id: 'heb', name: 'К Евреям', chapters: 13 },
+                { id: 'jas', name: 'Иакова', chapters: 5 },
+                { id: '1pe', name: '1 Петра', chapters: 5 },
+                { id: '2pe', name: '2 Петра', chapters: 3 },
+                { id: '1jn', name: '1 Иоанна', chapters: 5 },
+                { id: '2jn', name: '2 Иоанна', chapters: 1 },
+                { id: '3jn', name: '3 Иоанна', chapters: 1 },
+                { id: 'jud', name: 'Иуды', chapters: 1 },
+                { id: 'rev', name: 'Откровение', chapters: 22 }
+            ]
+        };
+
+        // ДЕМО-ДАННЫЕ БИБЛИИ (для работы без API)
+        const DEMO_BIBLE_DATA = {
+            ru_synodal: {
+                mark: {
+                    name: "Евангелие от Марка",
+                    chapters: [
+                        [
+                            "Начало Евангелия Иисуса Христа, Сына Божия,",
+                            "как написано у пророков: вот, Я посылаю Ангела Моего пред лицем Твоим, который приготовит путь Твой пред Тобою.",
+                            "Глас вопиющего в пустыне: приготовьте путь Господу, прямыми сделайте стези Ему.",
+                            "Явился Иоанн, крестя в пустыне и проповедуя крещение покаяния для прощения грехов.",
+                            "И выходили к нему вся страна Иудейская и Иерусалимляне, и крестились от него все в реке Иордане, исповедуя грехи свои.",
+                            "Иоанн же носил одежду из верблюжьего волоса и пояс кожаный на чреслах своих, и ел акриды и дикий мед."
+                        ]
+                    ]
                 }
             },
             en_kjv: {
-                name: 'King James Version',
-                books: {
-                    mark: {
-                        name: 'The Gospel According to Saint Mark',
-                        chapters: {
-                            1: [
-                                { number: 1, text: 'The beginning of the gospel of Jesus Christ, the Son of God;' },
-                                { number: 2, text: 'As it is written in the prophets, Behold, I send my messenger before thy face, which shall prepare thy way before thee.' },
-                                { number: 3, text: 'The voice of one crying in the wilderness, Prepare ye the way of the Lord, make his paths straight.' },
-                                { number: 4, text: 'John did baptize in the wilderness, and preach the baptism of repentance for the remission of sins.' },
-                                { number: 5, text: 'And there went out unto him all the land of Judaea, and they of Jerusalem, and were all baptized of him in the river of Jordan, confessing their sins.' },
-                                { number: 6, text: 'And John was clothed with camels hair, and with a girdle of a skin about his loins; and he did eat locusts and wild honey;' }
-                            ],
-                            2: [
-                                { number: 1, text: 'And again he entered into Capernaum after some days; and it was noised that he was in the house.' },
-                                { number: 2, text: 'And straightway many were gathered together, insomuch that there was no room to receive them, no, not so much as about the door: and he preached the word unto them.' }
-                            ]
-                        }
-                    }
+                mark: {
+                    name: "The Gospel According to Mark",
+                    chapters: [
+                        [
+                            "The beginning of the gospel of Jesus Christ, the Son of God;",
+                            "As it is written in the prophets, Behold, I send my messenger before thy face, which shall prepare thy way before thee.",
+                            "The voice of one crying in the wilderness, Prepare ye the way of the Lord, make his paths straight.",
+                            "John did baptize in the wilderness, and preach the baptism of repentance for the remission of sins.",
+                            "And there went out unto him all the land of Judaea, and they of Jerusalem, and were all baptized of him in the river of Jordan, confessing their sins.",
+                            "And John was clothed with camel's hair, and with a girdle of a skin about his loins; and he did eat locusts and wild honey."
+                        ]
+                    ]
+                }
+            },
+            en_bbe: {
+                mark: {
+                    name: "Mark",
+                    chapters: [
+                        [
+                            "The first words of the good news of Jesus Christ, the Son of God.",
+                            "Even as it is said in the book of Isaiah the prophet, See, I send my servant before your face, who will make ready your way;",
+                            "The voice of one crying in the waste land, Make ready the way of the Lord, make his roads straight;",
+                            "John came, and gave baptism in the waste land, preaching baptism as a sign of forgiveness of sin for those whose hearts were changed.",
+                            "And there went out to him all the people of Judaea, and all those of Jerusalem, and they were given baptism by him in the river Jordan, saying that they were sinners.",
+                            "And John was clothed in camel's hair, with a leather band about him; and his food was locusts and honey."
+                        ]
+                    ]
                 }
             }
         };
 
-        // Состояние приложения
-        let currentState = {
-            screen: 'main',
-            translation: 'ru_synodal',
-            book: 'mark',
-            chapter: 1,
-            bookmarks: []
-        };
-
-        // Инициализация Telegram WebApp
-        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-            Telegram.WebApp.ready();
-            Telegram.WebApp.expand();
+        // ИНИЦИАЛИЗАЦИЯ TELEGRAM WEB APP
+        function initTelegramApp() {
+            if (window.Telegram?.WebApp) {
+                const tg = window.Telegram.WebApp;
+                tg.ready();
+                tg.expand();
+                
+                // Настройка темы
+                document.body.style.background = tg.themeParams.bg_color || '#0A0A0A';
+                
+                // Настройка кнопки назад
+                tg.BackButton.onClick(() => goBack());
+            }
         }
 
-        // Навигация
-        function openBible() {
-            currentState.screen = 'bible';
-            showScreen('bibleScreen');
-            loadBibleText();
+        // УПРАВЛЕНИЕ ЭКРАНАМИ
+        function showScreen(screenName) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            document.getElementById(screenName + '-screen').classList.add('active');
+            currentScreen = screenName;
+            
+            updateHeader(screenName);
+            updateBackButton(screenName);
+        }
+
+        function updateHeader(screenName) {
+            const titleElement = document.getElementById('header-title');
+            const subtitleElement = document.getElementById('header-subtitle');
+            
+            switch(screenName) {
+                case 'home':
+                    titleElement.textContent = 'ORA';
+                    subtitleElement.textContent = 'мини-приложение';
+                    break;
+                case 'testament':
+                    titleElement.textContent = 'Библия';
+                    subtitleElement.textContent = 'Выбор завета';
+                    break;
+                case 'book':
+                    titleElement.textContent = selectedTestament === 'old' ? 'Ветхий Завет' : 'Новый Завет';
+                    subtitleElement.textContent = 'Выбор книги';
+                    break;
+                case 'chapter':
+                    titleElement.textContent = getBookName(selectedBook);
+                    subtitleElement.textContent = 'Выбор главы';
+                    break;
+                case 'translation':
+                    titleElement.textContent = getBookName(selectedBook);
+                    subtitleElement.textContent = `Глава ${selectedChapter}`;
+                    break;
+                case 'bible':
+                    titleElement.textContent = getBookName(selectedBook);
+                    subtitleElement.textContent = `Глава ${selectedChapter}`;
+                    break;
+                default:
+                    titleElement.textContent = 'ORA';
+                    subtitleElement.textContent = 'мини-приложение';
+            }
+        }
+
+        function updateBackButton(screenName) {
+            const backBtn = document.getElementById('back-btn');
+            if (screenName === 'home') {
+                backBtn.style.display = 'none';
+            } else {
+                backBtn.style.display = 'block';
+            }
         }
 
         function goBack() {
-            currentState.screen = 'main';
-            showScreen('mainScreen');
-        }
-
-        function showScreen(screenId) {
-            document.querySelectorAll('.main-screen, .bible-screen').forEach(screen => {
-                screen.style.display = 'none';
-            });
-            document.getElementById(screenId).style.display = 'block';
-        }
-
-        // Переключение языка
-        function toggleLanguage() {
-            const langBtn = document.getElementById('langBtn');
-            if (currentState.translation === 'ru_synodal') {
-                currentState.translation = 'en_kjv';
-                langBtn.textContent = 'EN';
-            } else {
-                currentState.translation = 'ru_synodal';
-                langBtn.textContent = 'RU';
+            switch(currentScreen) {
+                case 'testament':
+                    showScreen('home');
+                    break;
+                case 'book':
+                    showScreen('testament');
+                    break;
+                case 'chapter':
+                    showScreen('book');
+                    break;
+                case 'translation':
+                    showScreen('chapter');
+                    break;
+                case 'bible':
+                    showScreen('translation');
+                    break;
+                default:
+                    if (window.Telegram?.WebApp) {
+                        window.Telegram.WebApp.close();
+                    }
             }
-            loadBibleText();
         }
 
-        // Загрузка текста
-        function loadBibleText() {
-            const translation = bibleTranslations[currentState.translation];
-            const book = translation.books[currentState.book];
-            const verses = book.chapters[currentState.chapter];
+        // ФУНКЦИИ ВЫБОРА
+        function openBible() {
+            showScreen('testament');
+        }
+
+        function selectTestament(testament) {
+            selectedTestament = testament;
+            showScreen('book');
+            renderBooks();
+        }
+
+        function selectBook(bookId) {
+            selectedBook = bookId;
+            showScreen('chapter');
+            renderChapters();
+        }
+
+        function selectChapter(chapter) {
+            selectedChapter = chapter;
+            showScreen('translation');
+            renderTranslations();
+        }
+
+        function selectTranslation(translationId) {
+            currentTranslation = translationId;
+            const translation = BIBLE_TRANSLATIONS[translationId];
+            currentLanguage = translation.language;
             
-            if (!verses) {
-                document.getElementById('bibleContent').innerHTML = 
-                    '<div class="error">Глава не найдена</div>';
-                return;
-            }
-
-            // Определяем количество глав
-            const totalChapters = Object.keys(book.chapters).length;
-
-            // Навигация
-            document.getElementById('prevChapterBtn').disabled = currentState.chapter === 1;
-            document.getElementById('nextChapterBtn').disabled = currentState.chapter >= totalChapters;
-            document.getElementById('currentChapter').textContent = currentState.chapter;
-
-            // Отображаем стихи
-            const content = document.getElementById('bibleContent');
-            content.innerHTML = verses.map(verse => 
-                `<div class="verse" onclick="toggleVerseBookmark(${verse.number})">
-                    <span class="verse-number">${verse.number}</span>
-                    <span class="verse-text">${verse.text}</span>
-                </div>`
-            ).join('');
+            // Обновляем кнопку языка
+            document.getElementById('lang-btn').textContent = translation.language.toUpperCase();
+            
+            showScreen('bible');
+            loadBibleReader();
         }
 
-        // Навигация по главам
+        // РЕНДЕРИНГ ЭКРАНОВ
+        function renderBooks() {
+            const grid = document.getElementById('books-grid');
+            const title = document.getElementById('book-screen-title');
+            
+            title.textContent = selectedTestament === 'old' ? '📜 Ветхий Завет' : '📕 Новый Завет';
+            grid.innerHTML = '';
+            
+            const books = BIBLE_BOOKS[selectedTestament];
+            
+            books.forEach(book => {
+                const item = document.createElement('div');
+                item.className = 'book-item';
+                item.onclick = () => selectBook(book.id);
+                
+                item.innerHTML = `
+                    <div class="book-name">${book.name}</div>
+                    <div class="book-chapters">${book.chapters} глав</div>
+                `;
+                
+                grid.appendChild(item);
+            });
+        }
+
+        function renderChapters() {
+            const grid = document.getElementById('chapters-grid');
+            const title = document.getElementById('chapter-screen-title');
+            
+            const book = getBookData(selectedBook);
+            title.textContent = `📄 ${book.name}`;
+            grid.innerHTML = '';
+            
+            for (let i = 1; i <= book.chapters; i++) {
+                const item = document.createElement('div');
+                item.className = 'selection-item';
+                item.onclick = () => selectChapter(i);
+                
+                item.innerHTML = `
+                    <div class="selection-item-title">Глава ${i}</div>
+                `;
+                
+                grid.appendChild(item);
+            }
+        }
+
+        function renderTranslations() {
+            const grid = document.getElementById('translation-grid');
+            grid.innerHTML = '';
+            
+            Object.values(BIBLE_TRANSLATIONS).forEach(translation => {
+                const item = document.createElement('div');
+                item.className = 'selection-item';
+                item.onclick = () => selectTranslation(translation.id);
+                
+                let statusClass = 'status-ready';
+                let statusText = 'Готов';
+                
+                if (translation.status === 'loading') {
+                    statusClass = 'status-loading';
+                    statusText = 'Загрузка...';
+                } else if (translation.status === 'error') {
+                    statusClass = 'status-error';
+                    statusText = 'Ошибка';
+                }
+                
+                item.innerHTML = `
+                    <div class="selection-item-title">${translation.name}</div>
+                    <div class="selection-item-subtitle">${translation.language.toUpperCase()} · ${translation.year}</div>
+                `;
+                
+                if (translation.status !== 'ready') {
+                    item.style.opacity = '0.5';
+                    item.onclick = null;
+                }
+                
+                grid.appendChild(item);
+            });
+        }
+
+        // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+        function getBookData(bookId) {
+            const allBooks = [...BIBLE_BOOKS.old, ...BIBLE_BOOKS.new];
+            return allBooks.find(book => book.id === bookId);
+        }
+
+        function getBookName(bookId) {
+            const book = getBookData(bookId);
+            return book ? book.name : '';
+        }
+
+        // ФУНКЦИИ СЕКЦИЙ
+        function openORA() {
+            showComingSoon('ORA');
+        }
+
+        function openBible() {
+            showScreen('bible');
+            initBibleScreen();
+        }
+
+        function showComingSoon(sectionName) {
+            if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.showAlert(`${sectionName} - раздел в разработке! 🚀\n\nСкоро будет готов!`);
+            } else {
+                alert(`${sectionName} - раздел в разработке! 🚀\n\nСкоро будет готов!`);
+            }
+        }
+
+        // ИНИЦИАЛИЗАЦИЯ ЭКРАНА БИБЛИИ
+        function initBibleScreen() {
+            renderTranslationSelector();
+            
+            // Автоматически выбираем первый доступный перевод
+            const availableTranslations = Object.values(BIBLE_TRANSLATIONS).filter(t => t.status === 'ready');
+            if (availableTranslations.length > 0) {
+                selectTranslation(availableTranslations[0].id);
+            }
+        }
+
+        // РЕНДЕР СЕЛЕКТОРА ПЕРЕВОДОВ
+        function renderTranslationSelector() {
+            const grid = document.getElementById('translation-grid');
+            grid.innerHTML = '';
+            
+            Object.values(BIBLE_TRANSLATIONS).forEach(translation => {
+                const item = document.createElement('div');
+                item.className = 'translation-item';
+                item.onclick = () => selectTranslation(translation.id);
+                
+                let statusClass = 'status-ready';
+                let statusText = 'Готов';
+                
+                if (translation.status === 'loading') {
+                    statusClass = 'status-loading';
+                    statusText = 'Загрузка...';
+                } else if (translation.status === 'error') {
+                    statusClass = 'status-error';
+                    statusText = 'Ошибка';
+                }
+                
+                item.innerHTML = `
+                    <div class="translation-name">${translation.name}</div>
+                    <div class="translation-lang">${translation.language.toUpperCase()} · ${translation.year}</div>
+                    <div class="translation-status ${statusClass}">${statusText}</div>
+                `;
+                
+                if (translation.id === currentTranslation) {
+                    item.classList.add('selected');
+                }
+                
+                grid.appendChild(item);
+            });
+        }
+
+        // ВЫБОР ПЕРЕВОДА
+        function selectTranslation(translationId) {
+            const translation = BIBLE_TRANSLATIONS[translationId];
+            if (!translation || translation.status !== 'ready') return;
+            
+            currentTranslation = translationId;
+            currentLanguage = translation.language;
+            
+            // Обновляем кнопку языка
+            document.getElementById('lang-btn').textContent = translation.language.toUpperCase();
+            
+            // Обновляем селектор
+            renderTranslationSelector();
+            
+            // Загружаем данные Библии
+            loadBibleData(translationId);
+        }
+
+        // ЗАГРУЗКА ДАННЫХ БИБЛИИ
+        async function loadBibleData(translationId) {
+            const translation = BIBLE_TRANSLATIONS[translationId];
+            
+            showLoading();
+            
+            try {
+                // Имитируем загрузку с сервера (в реальности здесь был бы fetch)
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Используем демо-данные
+                if (DEMO_BIBLE_DATA[translationId]) {
+                    bibleData[translationId] = DEMO_BIBLE_DATA[translationId];
+                    displayBibleReader();
+                } else {
+                    // Генерируем демо-данные для других переводов
+                    bibleData[translationId] = {
+                        mark: {
+                            name: translation.language === 'ru' ? "Евангелие от Марка" : "Gospel of Mark",
+                            chapters: [
+                                [
+                                    `Demo verse 1 in ${translation.name}`,
+                                    `Demo verse 2 in ${translation.name}`,
+                                    `Demo verse 3 in ${translation.name}`
+                                ]
+                            ]
+                        }
+                    };
+                    displayBibleReader();
+                }
+                
+            } catch (error) {
+                showError();
+                console.error('Error loading Bible data:', error);
+            }
+        }
+
+        // ОТОБРАЖЕНИЕ СОСТОЯНИЙ
+        function showLoading() {
+            document.getElementById('bible-reader').style.display = 'none';
+            document.getElementById('loading-state').style.display = 'block';
+            document.getElementById('error-state').style.display = 'none';
+        }
+
+        function showError() {
+            document.getElementById('bible-reader').style.display = 'none';
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'block';
+        }
+
+        function displayBibleReader() {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'none';
+            document.getElementById('bible-reader').style.display = 'block';
+            
+            displayCurrentChapter();
+        }
+
+        // ОТОБРАЖЕНИЕ ТЕКУЩЕЙ ГЛАВЫ
+        function displayCurrentChapter() {
+            const bookData = bibleData[currentTranslation]?.[currentBook];
+            if (!bookData) return;
+            
+            // Обновляем заголовок книги
+            document.getElementById('book-title').textContent = bookData.name;
+            
+            // Обновляем информацию о главе
+            document.getElementById('chapter-info').textContent = `Глава ${currentChapter}`;
+            
+            // Отображаем стихи
+            const verses = bookData.chapters[currentChapter - 1] || [];
+            const container = document.getElementById('verses-container');
+            
+            container.innerHTML = '';
+            
+            verses.forEach((verseText, index) => {
+                const verseElement = document.createElement('div');
+                verseElement.className = 'verse';
+                verseElement.onclick = () => toggleBookmark(currentBook, currentChapter, index + 1);
+                
+                const verseId = `${currentBook}-${currentChapter}-${index + 1}`;
+                if (bookmarks.has(verseId)) {
+                    verseElement.classList.add('bookmarked');
+                }
+                
+                verseElement.innerHTML = `
+                    <span class="verse-number">${index + 1}</span>
+                    <span class="verse-text">${verseText}</span>
+                `;
+                
+                container.appendChild(verseElement);
+            });
+        }
+
+        // НАВИГАЦИЯ ПО ГЛАВАМ
         function previousChapter() {
-            if (currentState.chapter > 1) {
-                currentState.chapter--;
-                loadBibleText();
+            if (currentChapter > 1) {
+                currentChapter--;
+                displayCurrentChapter();
             }
         }
 
         function nextChapter() {
-            const book = bibleTranslations[currentState.translation].books[currentState.book];
-            const totalChapters = Object.keys(book.chapters).length;
-            if (currentState.chapter < totalChapters) {
-                currentState.chapter++;
-                loadBibleText();
+            const bookData = bibleData[currentTranslation]?.[currentBook];
+            if (bookData && currentChapter < bookData.chapters.length) {
+                currentChapter++;
+                displayCurrentChapter();
             }
         }
 
-        // Закладки
-        function toggleVerseBookmark(verseNumber) {
-            showNotification(`Стих ${verseNumber} добавлен в закладки`);
-        }
-
-        function toggleBookmark() {
-            showNotification('Глава добавлена в закладки');
-        }
-
-        // Меню
-        function showBibleMenu() {
-            showNotification('Меню Библии:\n🔍 Поиск\n🔖 Закладки\n📚 Выбор книги');
-        }
-
-        // Tab Navigation
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-item').forEach(item => {
-                item.classList.remove('active');
-            });
+        // ЗАКЛАДКИ
+        function toggleBookmark(book, chapter, verse) {
+            const verseId = `${book}-${chapter}-${verse}`;
             
-            event.target.closest('.tab-item').classList.add('active');
-            
-            switch(tab) {
-                case 'home':
-                    goBack();
-                    break;
-                case 'bible':
-                    openBible();
-                    break;
-                case 'ora':
-                case 'mentor':
-                case 'heroes':
-                    showComingSoon(tab);
-                    break;
-            }
-        }
-
-        // Уведомления
-        function showNotification(message) {
-            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-                Telegram.WebApp.showAlert(message);
+            if (bookmarks.has(verseId)) {
+                bookmarks.delete(verseId);
             } else {
-                alert(message);
+                bookmarks.add(verseId);
+            }
+            
+            displayCurrentChapter();
+        }
+
+        // ПЕРЕКЛЮЧЕНИЕ ЯЗЫКОВ
+        function toggleLanguage() {
+            const availableLanguages = ['ru', 'en', 'de', 'zh', 'es'];
+            const currentIndex = availableLanguages.indexOf(currentLanguage);
+            const nextIndex = (currentIndex + 1) % availableLanguages.length;
+            const nextLanguage = availableLanguages[nextIndex];
+            
+            // Находим первый доступный перевод на этом языке
+            const translationsForLang = Object.values(BIBLE_TRANSLATIONS).filter(
+                t => t.language === nextLanguage && t.status === 'ready'
+            );
+            
+            if (translationsForLang.length > 0) {
+                selectTranslation(translationsForLang[0].id);
             }
         }
 
-        // Заглушки
-        function showComingSoon(section) {
-            showNotification(`${section} - раздел в разработке! 🚀`);
+        // МЕНЮ
+        function showMenu() {
+            if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.showAlert('Меню:\n• Закладки\n• Поиск\n• Настройки\n\nВ разработке! 🚀');
+            } else {
+                alert('Меню:\n• Закладки\n• Поиск\n• Настройки\n\nВ разработке! 🚀');
+            }
         }
 
-        function showSettings() {
-            showNotification('Настройки скоро будут доступны! ⚙️');
+        // ПОВТОР ЗАГРУЗКИ
+        function retryLoad() {
+            loadBibleData(currentTranslation);
         }
 
-        // Инициализация
+        // ИНИЦИАЛИЗАЦИЯ
         document.addEventListener('DOMContentLoaded', function() {
-            if (currentState.screen === 'bible') {
-                openBible();
-            }
+            initTelegramApp();
+            console.log('🚀 ORA приложение с системой переводов загружено!');
+            console.log('📚 Доступных переводов:', Object.keys(BIBLE_TRANSLATIONS).length);
         });
     </script>
 </body>
