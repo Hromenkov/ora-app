@@ -555,20 +555,17 @@
             </button>
             
             <div class="header-title">
-                <h1 id="reader-book-title">Ев. от Марка</h1>
+                <h1 id="reader-book-title">Новый Завет</h1>
                 <p>мини-приложение</p>
             </div>
             
-            <div style="display: flex; gap: 8px;">
-                <button class="action-btn" onclick="toggleLanguage()" id="lang-btn" style="padding: 8px 12px; font-size: 12px;">RU</button>
-                <button class="menu-btn">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="5" cy="12" r="2"/>
-                        <circle cx="12" cy="12" r="2"/>
-                        <circle cx="19" cy="12" r="2"/>
-                    </svg>
-                </button>
-            </div>
+            <button class="menu-btn">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="5" cy="12" r="2"/>
+                    <circle cx="12" cy="12" r="2"/>
+                    <circle cx="19" cy="12" r="2"/>
+                </svg>
+            </button>
         </div>
 
         <div class="reader-content">
@@ -579,7 +576,7 @@
                 </div>
                 <div class="reader-actions">
                     <button class="action-btn" onclick="toggleLanguage()" id="lang-btn">RU</button>
-                    <button class="action-btn">+</button>
+                    <button class="action-btn" onclick="showBibleMenu()">+</button>
                 </div>
             </div>
             
@@ -668,46 +665,131 @@
         let currentChapter = 1;
         let currentLanguage = 'ru'; // RU или EN
 
+        // Расширенный список всех книг Библии
         const bibleBooks = {
-            'Genesis': { name: 'Бытие', chapters: 50, testament: 'ot' },
-            'Exodus': { name: 'Исход', chapters: 40, testament: 'ot' },
-            'Leviticus': { name: 'Левит', chapters: 27, testament: 'ot' },
-            'Numbers': { name: 'Числа', chapters: 36, testament: 'ot' },
-            'Deuteronomy': { name: 'Второзаконие', chapters: 34, testament: 'ot' },
-            'Matthew': { name: 'Ев. от Матфея', chapters: 28, testament: 'nt' },
-            'Mark': { name: 'Ев. от Марка', chapters: 16, testament: 'nt' },
-            'Luke': { name: 'Ев. от Луки', chapters: 24, testament: 'nt' },
-            'John': { name: 'Ев. от Иоанна', chapters: 21, testament: 'nt' },
-            'Acts': { name: 'Деяния', chapters: 28, testament: 'nt' },
-            'Romans': { name: 'Римлянам', chapters: 16, testament: 'nt' },
-            '1 Corinthians': { name: '1-е Коринфянам', chapters: 16, testament: 'nt' },
-            '2 Corinthians': { name: '2-е Коринфянам', chapters: 13, testament: 'nt' },
-            'Galatians': { name: 'Галатам', chapters: 6, testament: 'nt' },
-            'Ephesians': { name: 'Ефесянам', chapters: 6, testament: 'nt' },
-            'Philippians': { name: 'Филиппийцам', chapters: 4, testament: 'nt' },
-            'Colossians': { name: 'Колоссянам', chapters: 4, testament: 'nt' },
-            '1 Thessalonians': { name: '1-е Фессалоникийцам', chapters: 5, testament: 'nt' },
-            '2 Thessalonians': { name: '2-е Фессалоникийцам', chapters: 3, testament: 'nt' }
+            // Ветхий Завет
+            'Genesis': { name: 'Бытие', chapters: 50, testament: 'ot', key: 'gen' },
+            'Exodus': { name: 'Исход', chapters: 40, testament: 'ot', key: 'exo' },
+            'Leviticus': { name: 'Левит', chapters: 27, testament: 'ot', key: 'lev' },
+            'Numbers': { name: 'Числа', chapters: 36, testament: 'ot', key: 'num' },
+            'Deuteronomy': { name: 'Второзаконие', chapters: 34, testament: 'ot', key: 'deu' },
+            'Joshua': { name: 'Иисус Навин', chapters: 24, testament: 'ot', key: 'jos' },
+            'Judges': { name: 'Судьи', chapters: 21, testament: 'ot', key: 'jdg' },
+            'Ruth': { name: 'Руфь', chapters: 4, testament: 'ot', key: 'rut' },
+            '1 Samuel': { name: '1-я Царств', chapters: 31, testament: 'ot', key: '1sa' },
+            '2 Samuel': { name: '2-я Царств', chapters: 24, testament: 'ot', key: '2sa' },
+            '1 Kings': { name: '3-я Царств', chapters: 22, testament: 'ot', key: '1ki' },
+            '2 Kings': { name: '4-я Царств', chapters: 25, testament: 'ot', key: '2ki' },
+            '1 Chronicles': { name: '1-я Паралипоменон', chapters: 29, testament: 'ot', key: '1ch' },
+            '2 Chronicles': { name: '2-я Паралипоменон', chapters: 36, testament: 'ot', key: '2ch' },
+            'Ezra': { name: 'Ездра', chapters: 10, testament: 'ot', key: 'ezr' },
+            'Nehemiah': { name: 'Неемия', chapters: 13, testament: 'ot', key: 'neh' },
+            'Esther': { name: 'Есфирь', chapters: 10, testament: 'ot', key: 'est' },
+            'Job': { name: 'Иов', chapters: 42, testament: 'ot', key: 'job' },
+            'Psalms': { name: 'Псалтирь', chapters: 150, testament: 'ot', key: 'psa' },
+            'Proverbs': { name: 'Притчи', chapters: 31, testament: 'ot', key: 'pro' },
+            'Ecclesiastes': { name: 'Екклесиаст', chapters: 12, testament: 'ot', key: 'ecc' },
+            'Song of Solomon': { name: 'Песни Песней', chapters: 8, testament: 'ot', key: 'sng' },
+            'Isaiah': { name: 'Исайя', chapters: 66, testament: 'ot', key: 'isa' },
+            'Jeremiah': { name: 'Иеремия', chapters: 52, testament: 'ot', key: 'jer' },
+            'Lamentations': { name: 'Плач Иеремии', chapters: 5, testament: 'ot', key: 'lam' },
+            'Ezekiel': { name: 'Иезекииль', chapters: 48, testament: 'ot', key: 'eze' },
+            'Daniel': { name: 'Даниил', chapters: 12, testament: 'ot', key: 'dan' },
+            'Hosea': { name: 'Осия', chapters: 14, testament: 'ot', key: 'hos' },
+            'Joel': { name: 'Иоиль', chapters: 3, testament: 'ot', key: 'joe' },
+            'Amos': { name: 'Амос', chapters: 9, testament: 'ot', key: 'amo' },
+            'Obadiah': { name: 'Авдий', chapters: 1, testament: 'ot', key: 'oba' },
+            'Jonah': { name: 'Иона', chapters: 4, testament: 'ot', key: 'jon' },
+            'Micah': { name: 'Михей', chapters: 7, testament: 'ot', key: 'mic' },
+            'Nahum': { name: 'Наум', chapters: 3, testament: 'ot', key: 'nah' },
+            'Habakkuk': { name: 'Аввакум', chapters: 3, testament: 'ot', key: 'hab' },
+            'Zephaniah': { name: 'Софония', chapters: 3, testament: 'ot', key: 'zep' },
+            'Haggai': { name: 'Аггей', chapters: 2, testament: 'ot', key: 'hag' },
+            'Zechariah': { name: 'Захария', chapters: 14, testament: 'ot', key: 'zec' },
+            'Malachi': { name: 'Малахия', chapters: 4, testament: 'ot', key: 'mal' },
+            
+            // Новый Завет
+            'Matthew': { name: 'Ев. от Матфея', chapters: 28, testament: 'nt', key: 'mat' },
+            'Mark': { name: 'Ев. от Марка', chapters: 16, testament: 'nt', key: 'mrk' },
+            'Luke': { name: 'Ев. от Луки', chapters: 24, testament: 'nt', key: 'luk' },
+            'John': { name: 'Ев. от Иоанна', chapters: 21, testament: 'nt', key: 'jhn' },
+            'Acts': { name: 'Деяния Апостолов', chapters: 28, testament: 'nt', key: 'act' },
+            'Romans': { name: 'Послание к Римлянам', chapters: 16, testament: 'nt', key: 'rom' },
+            '1 Corinthians': { name: '1-е Коринфянам', chapters: 16, testament: 'nt', key: '1co' },
+            '2 Corinthians': { name: '2-е Коринфянам', chapters: 13, testament: 'nt', key: '2co' },
+            'Galatians': { name: 'Послание к Галатам', chapters: 6, testament: 'nt', key: 'gal' },
+            'Ephesians': { name: 'Послание к Ефесянам', chapters: 6, testament: 'nt', key: 'eph' },
+            'Philippians': { name: 'Послание к Филиппийцам', chapters: 4, testament: 'nt', key: 'php' },
+            'Colossians': { name: 'Послание к Колоссянам', chapters: 4, testament: 'nt', key: 'col' },
+            '1 Thessalonians': { name: '1-е Фессалоникийцам', chapters: 5, testament: 'nt', key: '1th' },
+            '2 Thessalonians': { name: '2-е Фессалоникийцам', chapters: 3, testament: 'nt', key: '2th' },
+            '1 Timothy': { name: '1-е Тимофею', chapters: 6, testament: 'nt', key: '1ti' },
+            '2 Timothy': { name: '2-е Тимофею', chapters: 4, testament: 'nt', key: '2ti' },
+            'Titus': { name: 'Послание к Титу', chapters: 3, testament: 'nt', key: 'tit' },
+            'Philemon': { name: 'Послание к Филимону', chapters: 1, testament: 'nt', key: 'phm' },
+            'Hebrews': { name: 'Послание к Евреям', chapters: 13, testament: 'nt', key: 'heb' },
+            'James': { name: 'Послание Иакова', chapters: 5, testament: 'nt', key: 'jas' },
+            '1 Peter': { name: '1-е Петра', chapters: 5, testament: 'nt', key: '1pe' },
+            '2 Peter': { name: '2-е Петра', chapters: 3, testament: 'nt', key: '2pe' },
+            '1 John': { name: '1-е Иоанна', chapters: 5, testament: 'nt', key: '1jn' },
+            '2 John': { name: '2-е Иоанна', chapters: 1, testament: 'nt', key: '2jn' },
+            '3 John': { name: '3-е Иоанна', chapters: 1, testament: 'nt', key: '3jn' },
+            'Jude': { name: 'Послание Иуды', chapters: 1, testament: 'nt', key: 'jud' },
+            'Revelation': { name: 'Откровение', chapters: 22, testament: 'nt', key: 'rev' }
         };
 
-        // Тексты на двух языках
-        const bibleTexts = {
-            ru: [
-                { verse: 1, text: "Начало Евангелия Иисуса Христа, Сына Божия," },
-                { verse: 2, text: "как написано у пророков: «Вот, Я посылаю Ангела Моего пред лицом Твоим, который приготовит путь Твой пред Тобою»." },
-                { verse: 3, text: "«Глас вопиющего в пустыне: приготовьте путь Господу, прямыми сделайте стези Ему»." },
-                { verse: 4, text: "Явился Иоанн, крестя в пустыне и проповедуя крещение покаяния для прощения грехов." },
-                { verse: 5, text: "И выходили к нему вся страна Иудейская и Иерусалимляне, и крестились от него все в реке Иордане, исповедуя грехи свои." },
-                { verse: 6, text: "Иоанн же носил одежду из верблюжьего волоса и пояс кожаный на чреслах своих, и ел акриды и дикий мед." }
-            ],
-            en: [
-                { verse: 1, text: "The beginning of the gospel of Jesus Christ, the Son of God;" },
-                { verse: 2, text: "As it is written in the prophets, Behold, I send my messenger before thy face, which shall prepare thy way before thee." },
-                { verse: 3, text: "The voice of one crying in the wilderness, Prepare ye the way of the Lord, make his paths straight." },
-                { verse: 4, text: "John did baptize in the wilderness, and preach the baptism of repentance for the remission of sins." },
-                { verse: 5, text: "And there went out unto him all the land of Judaea, and they of Jerusalem, and were all baptized of him in the river of Jordan, confessing their sins." },
-                { verse: 6, text: "And John was clothed with camel's hair, and with a girdle of a skin about his loins; and he did eat locusts and wild honey." }
-            ]
+        // Тексты для демонстрации (расширенные)
+        const sampleTexts = {
+            'Mark': {
+                ru: {
+                    1: [
+                        { verse: 1, text: "Начало Евангелия Иисуса Христа, Сына Божия," },
+                        { verse: 2, text: "как написано у пророков: «Вот, Я посылаю Ангела Моего пред лицом Твоим, который приготовит путь Твой пред Тобою»." },
+                        { verse: 3, text: "«Глас вопиющего в пустыне: приготовьте путь Господу, прямыми сделайте стези Ему»." },
+                        { verse: 4, text: "Явился Иоанн, крестя в пустыне и проповедуя крещение покаяния для прощения грехов." },
+                        { verse: 5, text: "И выходили к нему вся страна Иудейская и Иерусалимляне, и крестились от него все в реке Иордане, исповедуя грехи свои." },
+                        { verse: 6, text: "Иоанн же носил одежду из верблюжьего волоса и пояс кожаный на чреслах своих, и ел акриды и дикий мед." }
+                    ],
+                    2: [
+                        { verse: 1, text: "И опять вошел Он в Капернаум через несколько дней, и слышно стало, что Он в доме." },
+                        { verse: 2, text: "Тотчас собрались многие, так что уже и у дверей не было места; и Он говорил им слово." },
+                        { verse: 3, text: "И пришли к Нему с расслабленным, которого несли четверо;" },
+                        { verse: 4, text: "и, не имея возможности приблизиться к Нему за многолюдством, раскрыли кровлю дома, где Он находился, и, прокопав ее, спустили постель, на которой лежал расслабленный." }
+                    ]
+                },
+                en: {
+                    1: [
+                        { verse: 1, text: "The beginning of the gospel of Jesus Christ, the Son of God;" },
+                        { verse: 2, text: "As it is written in the prophets, Behold, I send my messenger before thy face, which shall prepare thy way before thee." },
+                        { verse: 3, text: "The voice of one crying in the wilderness, Prepare ye the way of the Lord, make his paths straight." },
+                        { verse: 4, text: "John did baptize in the wilderness, and preach the baptism of repentance for the remission of sins." },
+                        { verse: 5, text: "And there went out unto him all the land of Judaea, and they of Jerusalem, and were all baptized of him in the river of Jordan, confessing their sins." },
+                        { verse: 6, text: "And John was clothed with camel's hair, and with a girdle of a skin about his loins; and he did eat locusts and wild honey." }
+                    ],
+                    2: [
+                        { verse: 1, text: "And again he entered into Capernaum after some days; and it was noised that he was in the house." },
+                        { verse: 2, text: "And straightway many were gathered together, insomuch that there was no room to receive them, no, not so much as about the door: and he preached the word unto them." },
+                        { verse: 3, text: "And they come unto him, bringing one sick of the palsy, which was borne of four." },
+                        { verse: 4, text: "And when they could not come nigh unto him for the press, they uncovered the roof where he was: and when they had broken it up, they let down the bed wherein the sick of the palsy lay." }
+                    ]
+                }
+            },
+            'Matthew': {
+                ru: {
+                    1: [
+                        { verse: 1, text: "Родословие Иисуса Христа, Сына Давидова, Сына Авраамова." },
+                        { verse: 2, text: "Авраам родил Исаака; Исаак родил Иакова; Иаков родил Иуду и братьев его;" },
+                        { verse: 3, text: "Иуда родил Фареса и Зару от Фамари; Фарес родил Есрома; Есром родил Арама;" }
+                    ]
+                },
+                en: {
+                    1: [
+                        { verse: 1, text: "The book of the generation of Jesus Christ, the son of David, the son of Abraham." },
+                        { verse: 2, text: "Abraham begat Isaac; and Isaac begat Jacob; and Jacob begat Judas and his brethren;" },
+                        { verse: 3, text: "And Judas begat Phares and Zara of Thamar; and Phares begat Esrom; and Esrom begat Aram;" }
+                    ]
+                }
+            }
         };
 
         try {
@@ -744,21 +826,378 @@
             document.getElementById('lang-btn').textContent = currentLanguage.toUpperCase();
             loadBibleTextLocal(currentBook, currentChapter);
         }
+        function searchBible(query) {
+            if (!query || query.length < 3) {
+                showAlert('Введите минимум 3 символа для поиска');
+                return;
+            }
 
-        async function loadBibleTextLocal(book, chapter) {
-            // Показываем загрузку
-            document.getElementById('verses-container').innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    Загрузка ${bibleBooks[book].name} ${chapter}...
+            const searchResults = [];
+            
+            // Поиск в локальных данных
+            Object.entries(sampleTexts).forEach(([bookKey, bookData]) => {
+                Object.entries(bookData[currentLanguage] || {}).forEach(([chapter, verses]) => {
+                    verses.forEach(verse => {
+                        if (verse.text.toLowerCase().includes(query.toLowerCase())) {
+                            searchResults.push({
+                                book: bookKey,
+                                bookName: bibleBooks[bookKey].name,
+                                chapter: parseInt(chapter),
+                                verse: verse.verse,
+                                text: verse.text,
+                                highlight: verse.text.replace(
+                                    new RegExp(query, 'gi'), 
+                                    `<mark>        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
+            document.getElementById('lang-btn').textContent = currentLanguage.toUpperCase();
+            loadBibleTextLocal(currentBook, currentChapter);
+        }</mark>`
+                                )
+                            });
+                        }
+                    });
+                });
+            });
+
+            displaySearchResults(searchResults, query);
+        }
+
+        function displaySearchResults(results, query) {
+            const container = document.getElementById('verses-container');
+            
+            if (results.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <p>По запросу "${query}" ничего не найдено</p>
+                        <p style="margin-top: 16px; font-size: 14px;">Попробуйте другие ключевые слова</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div style="margin-bottom: 24px; padding: 16px; background: #4a4a4a; border-radius: 8px;">
+                    <h3 style="color: #E5FF53; margin-bottom: 8px;">Результаты поиска</h3>
+                    <p style="color: #ccc; font-size: 14px;">Найдено ${results.length} результатов по запросу "${query}"</p>
                 </div>
             `;
 
-            // Имитируем загрузку
-            setTimeout(() => {
-                const verses = bibleTexts[currentLanguage];
-                displayVerses(verses, book, chapter);
-            }, 500);
+            results.forEach(result => {
+                const resultElement = document.createElement('div');
+                resultElement.className = 'search-result';
+                resultElement.style.cssText = `
+                    margin-bottom: 16px;
+                    padding: 16px;
+                    background: #3a3a3a;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    border-left: 4px solid #E5FF53;
+                `;
+                
+                resultElement.onclick = () => {
+                    currentBook = result.book;
+                    currentChapter = result.chapter;
+                    loadBibleTextLocal(result.book, result.chapter);
+                };
+                
+                resultElement.innerHTML = `
+                    <div style="font-size: 12px; color: #888; margin-bottom: 8px;">
+                        ${result.bookName} ${result.chapter}:${result.verse}
+                    </div>
+                    <div style="line-height: 1.5;">
+                        <span style="color: #E5FF53; font-weight: 600; margin-right: 8px;">${result.verse}</span>
+                        <span style="color: white;">${result.highlight}</span>
+                    </div>
+                `;
+                
+                container.appendChild(resultElement);
+            });
+        }
+
+        // Добавляем функцию для кнопки +
+        function showBibleMenu() {
+            const actions = [
+                { title: 'Поиск по Библии', action: () => promptSearch() },
+                { title: 'Мои закладки', action: () => showBookmarks() },
+                { title: 'Выбрать книгу', action: () => showBooksList() },
+                { title: 'История чтения', action: () => showReadingHistory() }
+            ];
+
+            let menuHtml = `
+                <div style="background: #3a3a3a; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                    <h3 style="color: #E5FF53; margin-bottom: 16px; text-align: center;">Меню Библии</h3>
+            `;
+
+            actions.forEach(action => {
+                menuHtml += `
+                    <div onclick="${action.action.name}()" style="
+                        padding: 12px; 
+                        margin-bottom: 8px; 
+                        background: #4a4a4a; 
+                        border-radius: 8px; 
+                        cursor: pointer; 
+                        text-align: center;
+                        transition: background 0.2s;
+                    " onmouseover="this.style.background='#5a5a5a'" onmouseout="this.style.background='#4a4a4a'">
+                        ${action.title}
+                    </div>
+                `;
+            });
+
+            menuHtml += '</div>';
+
+            document.getElementById('verses-container').innerHTML = menuHtml;
+        }
+
+        function promptSearch() {
+            const query = prompt('Введите текст для поиска в Библии:');
+            if (query) {
+                searchBible(query.trim());
+            }
+        }
+
+        function showBookmarks() {
+            if (bookmarks.length === 0) {
+                document.getElementById('verses-container').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <h3 style="color: #E5FF53; margin-bottom: 16px;">Мои закладки</h3>
+                        <p>У вас пока нет сохраненных закладок</p>
+                        <p style="margin-top: 16px; font-size: 14px;">Нажмите на любой стих при чтении, чтобы добавить его в закладки</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let bookmarksHtml = `
+                <div style="margin-bottom: 24px; padding: 16px; background: #4a4a4a; border-radius: 8px;">
+                    <h3 style="color: #E5FF53; margin-bottom: 8px;">Мои закладки</h3>
+                    <p style="color: #ccc; font-size: 14px;">Сохранено ${bookmarks.length} стихов</p>
+                </div>
+            `;
+
+            bookmarks.reverse().forEach(bookmark => {
+                bookmarksHtml += `
+                    <div style="
+                        margin-bottom: 16px;
+                        padding: 16px;
+                        background: #3a3a3a;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        border-left: 4px solid #E5FF53;
+                    " onclick="goToBookmark('${bookmark.book}', ${bookmark.chapter}, ${bookmark.verse})">
+                        <div style="font-size: 12px; color: #888; margin-bottom: 8px;">
+                            ${bookmark.bookName} ${bookmark.chapter}:${bookmark.verse}
+                        </div>
+                        <div style="color: #ccc; font-size: 14px;">
+                            ${new Date(bookmark.date).toLocaleDateString('ru-RU')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('verses-container').innerHTML = bookmarksHtml;
+        }
+
+        function goToBookmark(book, chapter, verse) {
+            currentBook = book;
+            currentChapter = chapter;
+            loadBibleTextLocal(book, chapter);
+        }
+
+        function showReadingHistory() {
+            const history = JSON.parse(localStorage.getItem('ora_reading_history') || '[]');
+            
+            if (history.length === 0) {
+                document.getElementById('verses-container').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <h3 style="color: #E5FF53; margin-bottom: 16px;">История чтения</h3>
+                        <p>История чтения пуста</p>
+                        <p style="margin-top: 16px; font-size: 14px;">Начните читать Библию, и здесь будут отображаться последние открытые места</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let historyHtml = `
+                <div style="margin-bottom: 24px; padding: 16px; background: #4a4a4a; border-radius: 8px;">
+                    <h3 style="color: #E5FF53; margin-bottom: 8px;">История чтения</h3>
+                    <p style="color: #ccc; font-size: 14px;">Последние ${history.length} мест</p>
+                </div>
+            `;
+
+            history.reverse().forEach(item => {
+                historyHtml += `
+                    <div style="
+                        margin-bottom: 16px;
+                        padding: 16px;
+                        background: #3a3a3a;
+                        border-radius: 8px;
+                        cursor: pointer;
+                    " onclick="goToHistoryItem('${item.book}', ${item.chapter})">
+                        <div style="font-weight: 600; margin-bottom: 4px;">
+                            ${item.bookName} ${item.chapter}
+                        </div>
+                        <div style="color: #ccc; font-size: 14px;">
+                            ${new Date(item.date).toLocaleString('ru-RU')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('verses-container').innerHTML = historyHtml;
+        }
+
+        function goToHistoryItem(book, chapter) {
+            currentBook = book;
+            currentChapter = chapter;
+            loadBibleTextLocal(book, chapter);
+        }
+
+        // Сохранение истории чтения
+        function saveToHistory(book, chapter) {
+            try {
+                let history = JSON.parse(localStorage.getItem('ora_reading_history') || '[]');
+                
+                // Убираем дубликаты
+                history = history.filter(item => !(item.book === book && item.chapter === chapter));
+                
+                // Добавляем в начало
+                history.unshift({
+                    book: book,
+                    chapter: chapter,
+                    bookName: bibleBooks[book].name,
+                    date: new Date().toISOString()
+                });
+
+                // Оставляем только последние 20
+                history = history.slice(0, 20);
+                
+                localStorage.setItem('ora_reading_history', JSON.stringify(history));
+            } catch (e) {
+                console.error('Cannot save reading history:', e);
+            }
+        }
+
+        async function loadBibleTextLocal(book, chapter) {
+            try {
+                // Показываем загрузку
+                document.getElementById('verses-container').innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Загрузка ${bibleBooks[book].name} ${chapter}...
+                    </div>
+                `;
+
+                // Пробуем загрузить через API
+                const apiData = await loadFromAPI(book, chapter);
+                if (apiData && apiData.verses && apiData.verses.length > 0) {
+                    displayVerses(apiData.verses, book, chapter);
+                    return;
+                }
+
+                // Fallback на локальные данные
+                const localData = getSampleText(book, chapter);
+                if (localData && localData.length > 0) {
+                    setTimeout(() => {
+                        displayVerses(localData, book, chapter);
+                    }, 500);
+                } else {
+                    throw new Error('Текст не найден');
+                }
+
+            } catch (error) {
+                console.error('Ошибка загрузки:', error);
+                document.getElementById('verses-container').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <p>Не удалось загрузить ${bibleBooks[book].name} ${chapter}</p>
+                        <button onclick="loadBibleTextLocal('${book}', ${chapter})" style="margin-top: 16px; background: #E5FF53; color: #000; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+                            Попробовать снова
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadFromAPI(book, chapter) {
+            try {
+                const bookKey = bibleBooks[book].key;
+                
+                // Используем multiple API sources
+                const apis = [
+                    `https://bible-api.com/${bookKey}+${chapter}`,
+                    `https://bolls.life/get-text/${bookKey}/${chapter}/`,
+                    `https://api.esv.org/v3/passage/text/?q=${book}+${chapter}&format=json`
+                ];
+
+                for (const apiUrl of apis) {
+                    try {
+                        const response = await fetch(apiUrl, {
+                            headers: {
+                                'Accept': 'application/json',
+                                'User-Agent': 'ORA-Bible-App'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            
+                            // Обрабатываем разные форматы ответов
+                            if (data.verses && Array.isArray(data.verses)) {
+                                return { verses: data.verses };
+                            } else if (data.text) {
+                                // Парсим текст в стихи
+                                return parseTextToVerses(data.text);
+                            }
+                        }
+                    } catch (apiError) {
+                        console.log(`API ${apiUrl} failed:`, apiError);
+                        continue;
+                    }
+                }
+
+                return null;
+            } catch (error) {
+                console.error('All APIs failed:', error);
+                return null;
+            }
+        }
+
+        function parseTextToVerses(text) {
+            const verses = [];
+            const lines = text.split('\n').filter(line => line.trim());
+            
+            lines.forEach((line, index) => {
+                const verseMatch = line.match(/^(\d+)\s*(.+)/);
+                if (verseMatch) {
+                    verses.push({
+                        verse: parseInt(verseMatch[1]),
+                        text: verseMatch[2].trim()
+                    });
+                } else if (line.trim()) {
+                    verses.push({
+                        verse: index + 1,
+                        text: line.trim()
+                    });
+                }
+            });
+
+            return { verses };
+        }
+
+        function getSampleText(book, chapter) {
+            if (sampleTexts[book] && sampleTexts[book][currentLanguage] && sampleTexts[book][currentLanguage][chapter]) {
+                return sampleTexts[book][currentLanguage][chapter];
+            }
+            
+            // Возвращаем демо-текст если нет конкретной главы
+            if (sampleTexts[book] && sampleTexts[book][currentLanguage] && sampleTexts[book][currentLanguage][1]) {
+                return sampleTexts[book][currentLanguage][1].map(verse => ({
+                    ...verse,
+                    text: `(Глава ${chapter}) ${verse.text}`
+                }));
+            }
+
+            return null;
         }
 
         function startReading() {
@@ -856,11 +1295,22 @@
             const container = document.getElementById('verses-container');
             container.innerHTML = '';
 
-            // Обновляем заголовок в шапке
-            document.getElementById('reader-book-title').textContent = bibleBooks[book].name;
+            // Сохраняем в историю чтения
+            saveToHistory(book, chapter);
+
+            // Обновляем заголовки
+            const bookData = bibleBooks[book];
+            document.getElementById('reader-book-title').textContent = bookData.testament === 'nt' ? 'Новый Завет' : 'Ветхий Завет';
             
-            // Обновляем заголовок главы
-            document.getElementById('chapter-title').textContent = `${chapter} Глава`;
+            // Обновляем название книги динамически
+            const bookNameParts = bookData.name.split(' ');
+            if (bookNameParts.length > 1) {
+                document.getElementById('book-subtitle').textContent = bookNameParts.slice(0, -1).join(' ');
+                document.getElementById('book-title').textContent = bookNameParts[bookNameParts.length - 1].toUpperCase();
+            } else {
+                document.getElementById('book-subtitle').textContent = `Глава ${chapter}`;
+                document.getElementById('book-title').textContent = bookData.name.toUpperCase();
+            }
 
             verses.forEach(verse => {
                 const verseElement = document.createElement('div');
@@ -880,13 +1330,24 @@
 
         function updateChapterNavigation(book, chapter) {
             const maxChapters = bibleBooks[book].chapters;
+            const chapterNumbers = document.querySelector('.chapter-numbers');
             
-            // Обновляем кнопки навигации
+            chapterNumbers.innerHTML = '';
+            
+            // Показываем текущую главу и соседние (как 4, 5, 6)
+            for (let i = Math.max(1, chapter - 1); i <= Math.min(maxChapters, chapter + 1); i++) {
+                const chapterSpan = document.createElement('span');
+                chapterSpan.className = `chapter-num ${i === chapter ? 'current' : ''}`;
+                chapterSpan.textContent = i;
+                chapterSpan.onclick = () => {
+                    currentChapter = i;
+                    loadBibleTextLocal(currentBook, i);
+                };
+                chapterNumbers.appendChild(chapterSpan);
+            }
+
             document.getElementById('prev-chapter').disabled = chapter <= 1;
             document.getElementById('next-chapter').disabled = chapter >= maxChapters;
-            
-            // Обновляем заголовок главы
-            document.getElementById('chapter-title').textContent = `${chapter} Глава`;
         }
 
         function previousChapter() {
