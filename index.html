@@ -572,10 +572,15 @@
         </div>
 
         <div class="reader-content">
-            <div class="chapter-header">
-                <button class="nav-btn" id="prev-chapter" onclick="previousChapter()">‹</button>
-                <span class="chapter-title" id="chapter-title">1 Глава</span>
-                <button class="nav-btn" id="next-chapter" onclick="nextChapter()">›</button>
+            <div class="book-header">
+                <div class="book-info">
+                    <div class="book-subtitle" id="book-subtitle">2 -е Соборное послание к</div>
+                    <div class="book-title" id="book-title">ФЕССОЛОНИКИЙЦАМ</div>
+                </div>
+                <div class="reader-actions">
+                    <button class="action-btn" onclick="toggleLanguage()" id="lang-btn">RU</button>
+                    <button class="action-btn">+</button>
+                </div>
             </div>
             
             <div class="verses-container" id="verses-container">
@@ -583,6 +588,16 @@
                     <div class="loading-spinner"></div>
                     Загрузка текста...
                 </div>
+            </div>
+
+            <div class="chapter-nav">
+                <button class="nav-btn" id="prev-chapter" onclick="previousChapter()">‹</button>
+                <div class="chapter-numbers">
+                    <span class="chapter-num">4</span>
+                    <span class="chapter-num current">5</span>
+                    <span class="chapter-num">6</span>
+                </div>
+                <button class="nav-btn" id="next-chapter" onclick="nextChapter()">›</button>
             </div>
         </div>
     </div>
