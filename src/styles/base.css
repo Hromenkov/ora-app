@@ -1,0 +1,87 @@
+:root{
+  --bg:#19161f;
+  --card:#242230;
+  --ink:#ffffff;
+  --muted:#9DA3AE;
+  --accent:#E5FF53;
+  --blue:#CFE2F5;
+  --violet:#4E098E;
+  --deep:#2C2A38;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg); color:var(--ink);
+}
+
+#app{max-width:390px;margin:0 auto;min-height:100vh;position:relative}
+
+/* header */
+.header, .subheader{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 20px;
+}
+.header .title h1{font-size:28px;font-weight:800}
+.header .title p{color:var(--muted);margin-top:6px}
+.icon-btn{
+  background:#2b2836;border:none;color:#fff;width:44px;height:44px;border-radius:12px;font-size:18px;cursor:pointer
+}
+
+/* cards */
+.stack{display:flex;flex-direction:column;gap:16px;padding:0 20px 96px}
+.card{
+  border-radius:18px;padding:24px;cursor:pointer;
+  box-shadow:0 2px 0 rgba(0,0,0,.12);
+  border:1px solid rgba(255,255,255,.06);
+}
+.card h2{font-size:40px;line-height:1;font-weight:800;margin:8px 0 6px}
+.card span{opacity:.85}
+.card.ora{background:var(--accent);color:#000}
+.card.bible{background:var(--blue);color:#000}
+.card.heroes{background:#35384a}
+.card.mentor{background:#4b0d9a}
+.card.dark h2,.card.dark span{color:#fff}
+
+/* form */
+.screen{padding:0 20px 96px}
+.form{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+label{color:var(--muted);font-size:14px}
+select{
+  width:100%; background:#24242d; color:#dbe1f1; border:1px solid #3a3847;
+  padding:18px 16px; border-radius:12px; font-size:18px; outline:none;
+}
+
+/* bible reader */
+.reader-card{
+  background:#1e1e26;border:1px solid #3a3847;color:#dbe1f1;
+  padding:20px;border-radius:22px;margin-top:16px; line-height:1.8
+}
+.reader-card .num{color:#E5FF53;font-weight:700;margin-right:6px}
+
+.lang-badge{
+  background:var(--accent); color:#000; font-weight:800; border-radius:14px; padding:10px 14px; border:none; cursor:pointer
+}
+
+.badge{
+  background:#2b2836; color:#fff; border-radius:20px; padding:10px 14px; display:inline-block
+}
+
+/* paginator */
+.pager{display:flex;gap:12px;justify-content:center;margin:18px 0}
+.pager .btn{
+  background:#24242d; color:#fff; border:1px solid #3a3847; min-width:52px; height:52px;
+  border-radius:12px; font-size:18px; display:grid; place-items:center; cursor:pointer
+}
+.pager .btn--current{background:var(--accent); color:#000; font-weight:800}
+
+/* tabs */
+.tabbar{
+  position:fixed; left:50%; transform:translateX(-50%); bottom:16px;
+  width:372px; height:84px; background:#141319; border-radius:22px;
+  display:flex; justify-content:space-around; align-items:center; border:1px solid rgba(255,255,255,.06)
+}
+.tab{display:flex;flex-direction:column;align-items:center;font-size:12px;color:#c9ccd6;gap:6px}
+.tab .icon{width:40px;height:40px;display:grid;place-items:center;border-radius:14px;background:#1b1a22}
+.tab.active .icon{outline:2px solid #3a3847}
