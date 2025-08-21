@@ -104,7 +104,7 @@
             border-radius: 10px;
             padding: 20px;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
+            transition: transform 0.3s ease;
             height: 80px;
             display: flex;
             align-items: center;
@@ -112,8 +112,17 @@
         }
 
         .card:hover {
-            transform: translateY(-2px);
-            background: #2A2A2A;
+            animation: cardWiggle 0.6s ease-in-out;
+        }
+
+        @keyframes cardWiggle {
+            0% { transform: rotate(0deg); }
+            15% { transform: rotate(1deg); }
+            30% { transform: rotate(-1deg); }
+            45% { transform: rotate(0.5deg); }
+            60% { transform: rotate(-0.5deg); }
+            75% { transform: rotate(0.2deg); }
+            100% { transform: rotate(0deg); }
         }
 
         .card-ora { background: #E5FF53; color: #000; }
@@ -169,12 +178,20 @@
             padding: 16px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: transform 0.3s ease, border-color 0.2s;
         }
 
         .selection-item:hover {
             border-color: #E5FF53;
-            background: #333;
+            animation: itemWiggle 0.4s ease-in-out;
+        }
+
+        @keyframes itemWiggle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(0.5deg); }
+            50% { transform: rotate(-0.5deg); }
+            75% { transform: rotate(0.3deg); }
+            100% { transform: rotate(0deg); }
         }
 
         .selection-item-title {
@@ -201,14 +218,23 @@
             border-radius: 8px;
             padding: 16px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: transform 0.3s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .book-item:hover {
-            background: #333;
+            animation: bookWiggle 0.5s ease-in-out;
+        }
+
+        @keyframes bookWiggle {
+            0% { transform: rotate(0deg); }
+            20% { transform: rotate(0.3deg); }
+            40% { transform: rotate(-0.3deg); }
+            60% { transform: rotate(0.2deg); }
+            80% { transform: rotate(-0.1deg); }
+            100% { transform: rotate(0deg); }
         }
 
         .book-name {
@@ -521,6 +547,35 @@
 
             <!-- Bible Reader Screen -->
             <div class="screen" id="bible-screen">
+                <!-- Bible Reader -->
+                <div class="bible-reader" id="bible-reader" style="display: none;">
+                    <div class="book-header">
+                        <div class="book-title" id="book-title">Евангелие от Марка</div>
+                    </div>
+                    
+                    <div class="chapter-nav">
+                        <button class="chapter-btn" onclick="previousChapter()">‹</button>
+                        <div class="chapter-info" id="chapter-info">Глава 1</div>
+                        <button class="chapter-btn" onclick="nextChapter()">›</button>
+                    </div>
+
+                    <div class="verses-container" id="verses-container">
+                        <!-- Стихи будут загружены динамически -->
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading-state" id="loading-state" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Загружаем Библию...</p>
+                </div>
+
+                <!-- Error State -->
+                <div class="error-state" id="error-state" style="display: none;">
+                    <p>Не удалось загрузить текст</p>
+                    <button class="retry-btn" onclick="retryLoad()">Попробовать снова</button>
+                </div>
+            </div>
                 <!-- Translation Selector -->
                 <div class="translation-selector">
                     <h3>📚 Выберите перевод</h3>
@@ -725,8 +780,16 @@
         // ДЕМО-ДАННЫЕ БИБЛИИ (для работы без API)
         const DEMO_BIBLE_DATA = {
             ru_synodal: {
-                mark: {
-                    name: "Евангелие от Марка",
+                mat: {
+                    name: "Евангелие от Матфея",
+                    chapters: Array.from({length: 28}, (_, i) => 
+                        Array.from({length: i === 0 ? 25 : 20}, (_, j) => 
+                            `Стих ${j + 1} из ${i + 1} главы Евангелия от Матфея (Синодальный перевод)`
+                        )
+                    )
+                },
+                mrk: {
+                    name: "Евангелие от Марка", 
                     chapters: [
                         [
                             "Начало Евангелия Иисуса Христа, Сына Божия,",
@@ -737,10 +800,30 @@
                             "Иоанн же носил одежду из верблюжьего волоса и пояс кожаный на чреслах своих, и ел акриды и дикий мед."
                         ]
                     ]
+                },
+                gen: {
+                    name: "Бытие",
+                    chapters: [
+                        [
+                            "В начале сотворил Бог небо и землю.",
+                            "Земля же была безвидна и пуста, и тьма над бездною, и Дух Божий носился над водою.",
+                            "И сказал Бог: да будет свет. И стал свет.",
+                            "И увидел Бог свет, что он хорош, и отделил Бог свет от тьмы.",
+                            "И назвал Бог свет днем, а тьму ночью. И был вечер, и было утро: день один."
+                        ]
+                    ]
                 }
             },
             en_kjv: {
-                mark: {
+                mat: {
+                    name: "The Gospel According to Matthew",
+                    chapters: Array.from({length: 28}, (_, i) => 
+                        Array.from({length: i === 0 ? 25 : 20}, (_, j) => 
+                            `Verse ${j + 1} from chapter ${i + 1} of Matthew (King James Version)`
+                        )
+                    )
+                },
+                mrk: {
                     name: "The Gospel According to Mark",
                     chapters: [
                         [
@@ -752,10 +835,30 @@
                             "And John was clothed with camel's hair, and with a girdle of a skin about his loins; and he did eat locusts and wild honey."
                         ]
                     ]
+                },
+                gen: {
+                    name: "Genesis",
+                    chapters: [
+                        [
+                            "In the beginning God created the heaven and the earth.",
+                            "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+                            "And God said, Let there be light: and there was light.",
+                            "And God saw the light, that it was good: and God divided the light from the darkness.",
+                            "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day."
+                        ]
+                    ]
                 }
             },
             en_bbe: {
-                mark: {
+                mat: {
+                    name: "Matthew",
+                    chapters: Array.from({length: 28}, (_, i) => 
+                        Array.from({length: i === 0 ? 25 : 20}, (_, j) => 
+                            `Verse ${j + 1} from chapter ${i + 1} of Matthew (Basic English)`
+                        )
+                    )
+                },
+                mrk: {
                     name: "Mark",
                     chapters: [
                         [
@@ -765,6 +868,18 @@
                             "John came, and gave baptism in the waste land, preaching baptism as a sign of forgiveness of sin for those whose hearts were changed.",
                             "And there went out to him all the people of Judaea, and all those of Jerusalem, and they were given baptism by him in the river Jordan, saying that they were sinners.",
                             "And John was clothed in camel's hair, with a leather band about him; and his food was locusts and honey."
+                        ]
+                    ]
+                },
+                gen: {
+                    name: "Genesis",
+                    chapters: [
+                        [
+                            "At the first God made the heaven and the earth.",
+                            "And the earth was waste and without form; and it was dark on the face of the deep: and the Spirit of God was moving on the face of the waters.",
+                            "And God said, Let there be light: and there was light.",
+                            "And God, looking on the light, saw that it was good: and God made a division between the light and the dark,",
+                            "Naming the light, Day, and the dark, Night. And there was evening and there was morning, the first day."
                         ]
                     ]
                 }
@@ -981,15 +1096,150 @@
             });
         }
 
-        // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-        function getBookData(bookId) {
-            const allBooks = [...BIBLE_BOOKS.old, ...BIBLE_BOOKS.new];
-            return allBooks.find(book => book.id === bookId);
+        // ЗАГРУЗКА ЧИТАЛКИ БИБЛИИ
+        function loadBibleReader() {
+            showLoading();
+            
+            // Имитируем загрузку
+            setTimeout(() => {
+                try {
+                    // Загружаем демо-данные для выбранного перевода
+                    if (DEMO_BIBLE_DATA[currentTranslation] && DEMO_BIBLE_DATA[currentTranslation][selectedBook]) {
+                        bibleData[currentTranslation] = DEMO_BIBLE_DATA[currentTranslation];
+                        displayBibleReader();
+                    } else {
+                        // Генерируем демо-данные для недоступных книг
+                        generateDemoData();
+                        displayBibleReader();
+                    }
+                } catch (error) {
+                    showError();
+                    console.error('Error loading Bible:', error);
+                }
+            }, 1000);
         }
 
-        function getBookName(bookId) {
-            const book = getBookData(bookId);
-            return book ? book.name : '';
+        function generateDemoData() {
+            const translation = BIBLE_TRANSLATIONS[currentTranslation];
+            const book = getBookData(selectedBook);
+            
+            if (!bibleData[currentTranslation]) {
+                bibleData[currentTranslation] = {};
+            }
+            
+            // Генерируем демо-стихи для выбранной книги
+            const chapters = [];
+            for (let i = 0; i < Math.min(book.chapters, 5); i++) { // Ограничиваем 5 главами для демо
+                const verses = [];
+                const verseCount = Math.min(i === 0 ? 20 : 15, 25); // Разное количество стихов
+                
+                for (let j = 0; j < verseCount; j++) {
+                    if (translation.language === 'ru') {
+                        verses.push(`Стих ${j + 1} из ${i + 1} главы книги "${book.name}" (${translation.name}). Это демонстрационный текст для проверки работы приложения.`);
+                    } else {
+                        verses.push(`Verse ${j + 1} from chapter ${i + 1} of "${book.name}" (${translation.name}). This is demo text for testing the application.`);
+                    }
+                }
+                chapters.push(verses);
+            }
+            
+            bibleData[currentTranslation][selectedBook] = {
+                name: translation.language === 'ru' ? book.name : book.name,
+                chapters: chapters
+            };
+        }
+
+        // ОТОБРАЖЕНИЕ СОСТОЯНИЙ
+        function showLoading() {
+            document.getElementById('bible-reader').style.display = 'none';
+            document.getElementById('loading-state').style.display = 'block';
+            document.getElementById('error-state').style.display = 'none';
+        }
+
+        function showError() {
+            document.getElementById('bible-reader').style.display = 'none';
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'block';
+        }
+
+        function displayBibleReader() {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'none';
+            document.getElementById('bible-reader').style.display = 'block';
+            
+            displayCurrentChapter();
+        }
+
+        // ОТОБРАЖЕНИЕ ТЕКУЩЕЙ ГЛАВЫ
+        function displayCurrentChapter() {
+            const bookData = bibleData[currentTranslation]?.[selectedBook];
+            if (!bookData) return;
+            
+            // Обновляем заголовок книги
+            document.getElementById('book-title').textContent = bookData.name;
+            
+            // Обновляем информацию о главе
+            document.getElementById('chapter-info').textContent = `Глава ${selectedChapter}`;
+            
+            // Отображаем стихи
+            const verses = bookData.chapters[selectedChapter - 1] || [];
+            const container = document.getElementById('verses-container');
+            
+            container.innerHTML = '';
+            
+            verses.forEach((verseText, index) => {
+                const verseElement = document.createElement('div');
+                verseElement.className = 'verse';
+                verseElement.onclick = () => toggleBookmark(selectedBook, selectedChapter, index + 1);
+                
+                const verseId = `${selectedBook}-${selectedChapter}-${index + 1}`;
+                if (bookmarks.has(verseId)) {
+                    verseElement.classList.add('bookmarked');
+                }
+                
+                verseElement.innerHTML = `
+                    <span class="verse-number">${index + 1}</span>
+                    <span class="verse-text">${verseText}</span>
+                `;
+                
+                container.appendChild(verseElement);
+            });
+        }
+
+        // НАВИГАЦИЯ ПО ГЛАВАМ
+        function previousChapter() {
+            if (selectedChapter > 1) {
+                selectedChapter--;
+                displayCurrentChapter();
+                updateHeader('bible');
+            }
+        }
+
+        function nextChapter() {
+            const bookData = bibleData[currentTranslation]?.[selectedBook];
+            if (bookData && selectedChapter < bookData.chapters.length) {
+                selectedChapter++;
+                displayCurrentChapter();
+                updateHeader('bible');
+            }
+        }
+
+        // ЗАКЛАДКИ
+        function toggleBookmark(book, chapter, verse) {
+            const verseId = `${book}-${chapter}-${verse}`;
+            
+            if (bookmarks.has(verseId)) {
+                bookmarks.delete(verseId);
+            } else {
+                bookmarks.add(verseId);
+            }
+            
+            displayCurrentChapter();
+        }
+
+        // ПОВТОР ЗАГРУЗКИ
+        function retryLoad() {
+            loadBibleReader();
         }
 
         // ФУНКЦИИ СЕКЦИЙ
