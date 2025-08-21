@@ -21,7 +21,6 @@
             overflow-x: hidden;
         }
 
-        /* ЭКРАНЫ */
         .screen {
             display: none;
             min-height: 100vh;
@@ -32,7 +31,6 @@
             display: block;
         }
 
-        /* ШАПКА */
         .header {
             display: flex;
             align-items: center;
@@ -89,7 +87,6 @@
             fill: white;
         }
 
-        /* ГЛАВНАЯ СТРАНИЦА */
         .home-header {
             text-align: center;
             padding: 40px 20px;
@@ -196,7 +193,6 @@
             font-size: 12px;
         }
 
-        /* БИБЛИЯ - ВЫБОР */
         .bible-setup {
             padding: 20px;
         }
@@ -236,7 +232,19 @@
             font-size: 18px;
         }
 
-        /* БИБЛИЯ - ЧИТАЛКА */
+        .read-btn {
+            width: 100%;
+            background: #E5FF53;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
         .reader-content {
             padding: 20px;
         }
@@ -348,7 +356,6 @@
             font-weight: 600;
         }
 
-        /* TABBAR */
         .tab-bar {
             position: fixed;
             bottom: 20px;
@@ -404,7 +411,6 @@
             font-weight: 600;
         }
 
-        /* ЗАГРУЗКА */
         .loading {
             text-align: center;
             padding: 40px;
@@ -426,7 +432,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* СПИСОК КНИГ */
         .books-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -458,7 +463,6 @@
     </style>
 </head>
 <body>
-    <!-- ГЛАВНАЯ СТРАНИЦА -->
     <div id="home" class="screen active">
         <div class="home-header">
             <button class="settings-btn" onclick="showComingSoon('Настройки')">
@@ -502,7 +506,6 @@
         </div>
     </div>
 
-    <!-- БИБЛИЯ - ВЫБОР КНИГИ/ГЛАВЫ -->
     <div id="bible-setup" class="screen">
         <div class="header">
             <button class="back-btn" onclick="goHome()">
@@ -547,14 +550,13 @@
             </div>
 
             <div class="setup-section">
-                <button onclick="startReading()" style="width: 100%; background: #E5FF53; color: #000; border: none; border-radius: 10px; padding: 16px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 20px;">
+                <button onclick="startReading()" class="read-btn">
                     Читать
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- БИБЛИЯ - ЧИТАЛКА -->
     <div id="bible-reader" class="screen">
         <div class="header">
             <button class="back-btn" onclick="goToBibleSetup()">
@@ -575,8 +577,8 @@
 
         <div class="reader-content">
             <div class="book-header">
-                <div class="book-subtitle" id="book-subtitle">2 -е Соборное послание к</div>
-                <div class="book-title" id="book-title">ФЕССОЛОНИКИЙЦАМ</div>
+                <div class="book-subtitle" id="book-subtitle">Глава 1</div>
+                <div class="book-title" id="book-title">ЕВ. ОТ МАРКА</div>
             </div>
 
             <div class="reader-actions">
@@ -594,16 +596,15 @@
             <div class="chapter-nav">
                 <button class="nav-btn" id="prev-chapter" onclick="previousChapter()">‹</button>
                 <div class="chapter-numbers">
-                    <span class="chapter-num">4</span>
-                    <span class="chapter-num current">5</span>
-                    <span class="chapter-num">6</span>
+                    <span class="chapter-num">1</span>
+                    <span class="chapter-num current">2</span>
+                    <span class="chapter-num">3</span>
                 </div>
                 <button class="nav-btn" id="next-chapter" onclick="nextChapter()">›</button>
             </div>
         </div>
     </div>
 
-    <!-- СПИСОК КНИГ -->
     <div id="books-list" class="screen">
         <div class="header">
             <button class="back-btn" onclick="goToBibleSetup()">
@@ -627,7 +628,6 @@
         </div>
     </div>
 
-    <!-- TABBAR -->
     <div class="tab-bar">
         <div class="tab-item active" onclick="activateTab('home')">
             <svg class="tab-icon" viewBox="0 0 24 24">
@@ -666,21 +666,17 @@
     </div>
 
     <script>
-        // Инициализация Telegram WebApp
         let tg = null;
         let currentBook = 'Mark';
         let currentChapter = 1;
         let currentTranslation = 'kjv';
 
-        // Список книг Библии
         const bibleBooks = {
-            // Ветхий Завет
             'Genesis': { name: 'Бытие', chapters: 50, testament: 'ot' },
             'Exodus': { name: 'Исход', chapters: 40, testament: 'ot' },
             'Leviticus': { name: 'Левит', chapters: 27, testament: 'ot' },
             'Numbers': { name: 'Числа', chapters: 36, testament: 'ot' },
             'Deuteronomy': { name: 'Второзаконие', chapters: 34, testament: 'ot' },
-            // Новый Завет
             'Matthew': { name: 'Ев. от Матфея', chapters: 28, testament: 'nt' },
             'Mark': { name: 'Ев. от Марка', chapters: 16, testament: 'nt' },
             'Luke': { name: 'Ев. от Луки', chapters: 24, testament: 'nt' },
@@ -702,13 +698,11 @@
                 tg = window.Telegram.WebApp;
                 tg.ready();
                 tg.expand();
-                console.log('Telegram WebApp initialized');
             }
         } catch (e) {
             console.error('Error initializing Telegram WebApp:', e);
         }
 
-        // НАВИГАЦИЯ
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
@@ -719,11 +713,6 @@
         function goHome() {
             showScreen('home');
             activateTab('home');
-        }
-
-        function openBible() {
-            showScreen('bible-setup');
-            activateTab('bible');
         }
 
         function goToBibleSetup() {
@@ -749,7 +738,6 @@
             showComingSoon('Выбор перевода');
         }
 
-        // TABBAR
         function activateTab(tabName) {
             document.querySelectorAll('.tab-item').forEach(tab => {
                 tab.classList.remove('active');
@@ -769,7 +757,6 @@
             }
         }
 
-        // ЗАГРУЗКА КНИГ
         function loadBooksList() {
             const booksGrid = document.getElementById('books-grid');
             booksGrid.innerHTML = '';
@@ -794,7 +781,6 @@
             goToBibleSetup();
         }
 
-        // ЗАГРУЗКА ТЕКСТА БИБЛИИ
         async function loadBibleText(book, chapter) {
             try {
                 document.getElementById('verses-container').innerHTML = `
@@ -804,7 +790,6 @@
                     </div>
                 `;
 
-                // Используем Bible API
                 const response = await fetch(`https://bible-api.com/${book}+${chapter}?translation=kjv`);
                 const data = await response.json();
 
@@ -830,7 +815,6 @@
             const container = document.getElementById('verses-container');
             container.innerHTML = '';
 
-            // Обновляем заголовок
             document.getElementById('reader-book-title').textContent = bibleBooks[book].name;
             document.getElementById('book-title').textContent = bibleBooks[book].name.toUpperCase();
             document.getElementById('book-subtitle').textContent = `Глава ${chapter}`;
@@ -848,10 +832,7 @@
                 container.appendChild(verseElement);
             });
 
-            // Обновляем навигацию по главам
             updateChapterNavigation(book, chapter);
-            
-            // Показываем читалку
             showScreen('bible-reader');
         }
 
@@ -861,7 +842,6 @@
             
             chapterNumbers.innerHTML = '';
             
-            // Показываем текущую главу и соседние
             for (let i = Math.max(1, chapter - 1); i <= Math.min(maxChapters, chapter + 1); i++) {
                 const chapterSpan = document.createElement('span');
                 chapterSpan.className = `chapter-num ${i === chapter ? 'current' : ''}`;
@@ -873,7 +853,6 @@
                 chapterNumbers.appendChild(chapterSpan);
             }
 
-            // Управление кнопками навигации
             document.getElementById('prev-chapter').disabled = chapter <= 1;
             document.getElementById('next-chapter').disabled = chapter >= maxChapters;
         }
@@ -893,8 +872,12 @@
             }
         }
 
-        // ЗАКЛАДКИ
-        let bookmarks = JSON.parse(localStorage.getItem('ora_bookmarks') || '[]');
+        let bookmarks = [];
+        try {
+            bookmarks = JSON.parse(localStorage.getItem('ora_bookmarks') || '[]');
+        } catch (e) {
+            bookmarks = [];
+        }
 
         function toggleBookmark(book, chapter, verse) {
             const bookmarkId = `${book}_${chapter}_${verse}`;
@@ -915,10 +898,13 @@
                 showAlert('Закладка добавлена');
             }
             
-            localStorage.setItem('ora_bookmarks', JSON.stringify(bookmarks));
+            try {
+                localStorage.setItem('ora_bookmarks', JSON.stringify(bookmarks));
+            } catch (e) {
+                console.error('Cannot save bookmarks:', e);
+            }
         }
 
-        // ОБЩИЕ ФУНКЦИИ
         function showComingSoon(section) {
             const message = `${section} - раздел в разработке! 🚀\n\nСкоро будет готов!`;
             showAlert(message);
@@ -936,36 +922,11 @@
             }
         }
 
-        // ИНИЦИАЛИЗАЦИЯ
         document.addEventListener('DOMContentLoaded', function() {
-            // Инициализируем с Евангелием от Марка, глава 1
             currentBook = 'Mark';
             currentChapter = 1;
-            
-            // Обработчик для автозагрузки когда переходим в читалку
-            const originalShowScreen = showScreen;
-            window.showScreen = function(screenId) {
-                originalShowScreen(screenId);
-                
-                if (screenId === 'bible-reader') {
-                    loadBibleText(currentBook, currentChapter);
-                }
-            };
-
-            // Быстрый переход к чтению при клике на выбранную конфигурацию
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.dropdown')) {
-                    // Если все параметры выбраны, можно переходить к чтению
-                    setTimeout(() => {
-                        if (currentBook && currentChapter) {
-                            showScreen('bible-reader');
-                        }
-                    }, 100);
-                }
-            });
         });
 
-        // Адаптация под тему Telegram
         if (tg && tg.themeParams) {
             document.body.style.backgroundColor = tg.themeParams.bg_color || '#2a2a2a';
             document.body.style.color = tg.themeParams.text_color || 'white';
