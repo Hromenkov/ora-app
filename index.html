@@ -187,99 +187,36 @@
         }
 
         .bible-header {
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 15px 20px;
+            padding: 20px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: #1a1a2e;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
+        .bible-header h1 {
             color: #fff;
             font-size: 18px;
-            cursor: pointer;
-        }
-
-        .bible-title {
-            text-align: center;
-            flex: 1;
-        }
-
-        .bible-title h1 {
-            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 2px;
+            line-height: 1.2;
+            margin: 0;
         }
 
-        .bible-title span {
-            font-size: 12px;
-            opacity: 0.7;
-        }
-
-        .header-right {
+        .header-controls {
             display: flex;
-            align-items: center;
             gap: 10px;
         }
 
         .lang-btn, .menu-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: #E5FF53;
             border: none;
             border-radius: 8px;
-            color: #fff;
-            padding: 8px 12px;
+            color: #000;
+            padding: 8px 16px;
             font-size: 14px;
-            cursor: pointer;
-        }
-
-        .book-info {
-            background: rgba(45, 45, 68, 0.9);
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .book-name {
-            flex: 1;
-        }
-
-        .book-name h2 {
-            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .book-name span {
-            font-size: 12px;
-            opacity: 0.7;
-        }
-
-        .book-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .control-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 6px;
-            color: #fff;
-            padding: 6px 10px;
-            font-size: 12px;
             cursor: pointer;
+            min-width: 50px;
         }
 
         .bible-content {
@@ -288,6 +225,12 @@
             overflow-y: auto;
             background: #1a1a2e;
             padding-bottom: 120px;
+        }
+
+        .verses-container {
+            background: rgba(45, 45, 68, 0.8);
+            border-radius: 16px;
+            padding: 20px;
         }
 
         .verse {
@@ -429,28 +372,10 @@
         <!-- ОБНОВЛЕННЫЙ ЭКРАН БИБЛИИ -->
         <div class="bible-screen" id="bibleScreen">
             <div class="bible-header">
-                <div class="header-left">
-                    <button class="back-btn" onclick="goBack()">←</button>
-                </div>
-                
-                <div class="bible-title">
-                    <h1 id="bibleTitle">Новый Завет</h1>
-                    <span>мини-приложение</span>
-                </div>
-
-                <div class="header-right">
+                <h1 id="bibleTitle">ЕВ. ОТ<br>МАРКА</h1>
+                <div class="header-controls">
                     <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">RU</button>
-                    <button class="menu-btn" onclick="showBibleMenu()">...</button>
-                </div>
-            </div>
-
-            <div class="book-info">
-                <div class="book-name">
-                    <h2 id="currentBookName">От Марка святое благовествование</h2>
-                    <span id="currentBookInfo"></span>
-                </div>
-                <div class="book-controls">
-                    <button class="control-btn" onclick="toggleBookmark()">+</button>
+                    <button class="menu-btn" onclick="showBibleMenu()">+</button>
                 </div>
             </div>
 
@@ -605,26 +530,26 @@
                 return;
             }
 
-            // Обновляем информацию
-            document.getElementById('currentBookName').textContent = book.name;
-            document.getElementById('currentChapter').textContent = currentState.chapter;
-
             // Определяем количество глав
             const totalChapters = Object.keys(book.chapters).length;
-            document.getElementById('currentBookInfo').textContent = `${totalChapters} глав`;
 
             // Навигация
             document.getElementById('prevChapterBtn').disabled = currentState.chapter === 1;
             document.getElementById('nextChapterBtn').disabled = currentState.chapter >= totalChapters;
+            document.getElementById('currentChapter').textContent = currentState.chapter;
 
-            // Отображаем стихи
+            // Отображаем стихи в темно-сером блоке
             const content = document.getElementById('bibleContent');
-            content.innerHTML = verses.map(verse => 
-                `<div class="verse" onclick="toggleVerseBookmark(${verse.number})">
-                    <span class="verse-number">${verse.number}</span>
-                    <span class="verse-text">${verse.text}</span>
-                </div>`
-            ).join('');
+            content.innerHTML = `
+                <div class="verses-container">
+                    ${verses.map(verse => 
+                        `<div class="verse" onclick="toggleVerseBookmark(${verse.number})">
+                            <span class="verse-number">${verse.number}</span>
+                            <span class="verse-text">${verse.text}</span>
+                        </div>`
+                    ).join('')}
+                </div>
+            `;
         }
 
         // Навигация по главам
