@@ -187,36 +187,70 @@
         }
 
         .bible-header {
-            padding: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 20px;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
-            background: #1a1a2e;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .bible-header h1 {
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
             color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .bible-title {
+            text-align: center;
+            flex: 1;
+        }
+
+        .bible-title h1 {
             font-size: 18px;
             font-weight: 600;
-            line-height: 1.2;
-            margin: 0;
+            margin-bottom: 2px;
+            color: #fff;
         }
 
-        .header-controls {
+        .bible-title span {
+            font-size: 12px;
+            opacity: 0.7;
+            color: #fff;
+        }
+
+        .header-right {
             display: flex;
+            align-items: center;
             gap: 10px;
         }
 
         .lang-btn, .menu-btn {
-            background: #E5FF53;
+            background: rgba(255, 255, 255, 0.1);
             border: none;
             border-radius: 8px;
-            color: #000;
-            padding: 8px 16px;
+            color: #fff;
+            padding: 8px 12px;
             font-size: 14px;
-            font-weight: 600;
             cursor: pointer;
-            min-width: 50px;
+        }
+
+        .chapter-nav {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background: rgba(45, 45, 68, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .bible-content {
@@ -224,13 +258,7 @@
             padding: 20px;
             overflow-y: auto;
             background: #1a1a2e;
-            padding-bottom: 120px;
-        }
-
-        .verses-container {
-            background: rgba(45, 45, 68, 0.8);
-            border-radius: 16px;
-            padding: 20px;
+            padding-bottom: 90px;
         }
 
         .verse {
@@ -264,18 +292,7 @@
         }
 
         .chapter-pagination {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
         }
 
         .nav-btn {
@@ -369,26 +386,34 @@
             </div>
         </div>
 
-        <!-- ОБНОВЛЕННЫЙ ЭКРАН БИБЛИИ -->
+        <!-- ЭКРАН БИБЛИИ - ТОЧНО ПО ВАШЕМУ ДИЗАЙНУ -->
         <div class="bible-screen" id="bibleScreen">
             <div class="bible-header">
-                <h1 id="bibleTitle">ЕВ. ОТ<br>МАРКА</h1>
-                <div class="header-controls">
+                <div class="header-left">
+                    <button class="back-btn" onclick="goBack()">← Назад</button>
+                </div>
+                
+                <div class="bible-title">
+                    <h1>Ев. от Марка</h1>
+                    <span>мини-приложение</span>
+                </div>
+
+                <div class="header-right">
                     <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">RU</button>
-                    <button class="menu-btn" onclick="showBibleMenu()">+</button>
+                    <button class="menu-btn" onclick="showBibleMenu()">...</button>
                 </div>
             </div>
 
-            <div class="bible-content" id="bibleContent">
-                <div class="loading">Загрузка...</div>
-            </div>
-
-            <div class="chapter-pagination">
+            <div class="chapter-nav">
                 <button class="nav-btn" id="prevChapterBtn" onclick="previousChapter()">‹</button>
                 <div class="chapter-display">
                     <span id="currentChapter">1</span> Глава
                 </div>
                 <button class="nav-btn" id="nextChapterBtn" onclick="nextChapter()">›</button>
+            </div>
+
+            <div class="bible-content" id="bibleContent">
+                <div class="loading">Загрузка...</div>
             </div>
         </div>
 
@@ -538,18 +563,14 @@
             document.getElementById('nextChapterBtn').disabled = currentState.chapter >= totalChapters;
             document.getElementById('currentChapter').textContent = currentState.chapter;
 
-            // Отображаем стихи в темно-сером блоке
+            // Отображаем стихи
             const content = document.getElementById('bibleContent');
-            content.innerHTML = `
-                <div class="verses-container">
-                    ${verses.map(verse => 
-                        `<div class="verse" onclick="toggleVerseBookmark(${verse.number})">
-                            <span class="verse-number">${verse.number}</span>
-                            <span class="verse-text">${verse.text}</span>
-                        </div>`
-                    ).join('')}
-                </div>
-            `;
+            content.innerHTML = verses.map(verse => 
+                `<div class="verse" onclick="toggleVerseBookmark(${verse.number})">
+                    <span class="verse-number">${verse.number}</span>
+                    <span class="verse-text">${verse.text}</span>
+                </div>`
+            ).join('');
         }
 
         // Навигация по главам
