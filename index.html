@@ -482,7 +482,7 @@
                 <div class="card-subtitle">Друг и наставник</div>
             </div>
 
-            <div class="card card-bible" onclick="goToBibleSetup()">
+            <div class="card card-bible" onclick="startReadingDirect()">
                 <div class="card-icon">📖</div>
                 <div class="card-title">БИБЛИЯ</div>
                 <div class="card-subtitle">Читать и изучать</div>
@@ -715,9 +715,36 @@
             activateTab('home');
         }
 
-        function goToBibleSetup() {
-            showScreen('bible-setup');
+        function startReadingDirect() {
+            // Сразу переходим к читалке
+            showScreen('bible-reader');
             activateTab('bible');
+            loadBibleTextLocal(currentBook, currentChapter);
+        }
+
+        async function loadBibleTextLocal(book, chapter) {
+            // Локальные данные для демонстрации (Марк 1:1-6)
+            const demoVerses = [
+                { verse: 1, text: "Начало Евангелия Иисуса Христа, Сына Божия," },
+                { verse: 2, text: "как написано у пророков: «Вот, Я посылаю Ангела Моего пред лицом Твоим, который приготовит путь Твой пред Тобою»." },
+                { verse: 3, text: "«Глас вопиющего в пустыне: приготовьте путь Господу, прямыми сделайте стези Ему»." },
+                { verse: 4, text: "Явился Иоанн, крестя в пустыне и проповедуя крещение покаяния для прощения грехов." },
+                { verse: 5, text: "И выходили к нему вся страна Иудейская и Иерусалимляне, и крестились от него все в реке Иордане, исповедуя грехи свои." },
+                { verse: 6, text: "Иоанн же носил одежду из верблюжьего волоса и пояс кожаный на чреслах своих, и ел акриды и дикий мед." }
+            ];
+
+            // Показываем загрузку
+            document.getElementById('verses-container').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Загрузка ${bibleBooks[book].name} ${chapter}...
+                </div>
+            `;
+
+            // Имитируем загрузку
+            setTimeout(() => {
+                displayVerses(demoVerses, book, chapter);
+            }, 1000);
         }
 
         function startReading() {
@@ -848,7 +875,7 @@
                 chapterSpan.textContent = i;
                 chapterSpan.onclick = () => {
                     currentChapter = i;
-                    loadBibleText(currentBook, i);
+                    loadBibleTextLocal(currentBook, i);
                 };
                 chapterNumbers.appendChild(chapterSpan);
             }
