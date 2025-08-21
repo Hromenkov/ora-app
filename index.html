@@ -6,37 +6,164 @@
     <title>ORA - Друг и наставник</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #2a2a2a;
-            color: white;
-            text-align: center;
-            padding: 40px 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--tg-theme-bg-color, #2a2a2a);
+            color: var(--tg-theme-text-color, white);
+            min-height: 100vh;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--tg-theme-text-color, white);
+        }
+
+        .header p {
+            color: var(--tg-theme-hint-color, #888);
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
         .card {
             background: #E5FF53;
             color: #000;
             border-radius: 16px;
-            padding: 20px;
+            padding: 24px;
             margin: 16px auto;
             max-width: 300px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .version {
+            margin-top: 40px;
+            color: var(--tg-theme-hint-color, #888);
+            font-size: 12px;
+        }
+
+        .debug {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 10px;
+            color: #666;
         }
     </style>
 </head>
 <body>
-    <h1>🕊️ ORA</h1>
-    <p>Приложение для духовного роста</p>
-    
-    <div class="card">
-        <div style="font-size: 32px;">📖</div>
-        <h3>БИБЛИЯ</h3>
-        <p>Читать и изучать</p>
+    <div class="header">
+        <h1>🕊️ ORA</h1>
+        <p>Приложение для духовного роста</p>
     </div>
 
+    <div class="card" onclick="showComingSoon('Библия')">
+        <div class="card-icon">📖</div>
+        <div class="card-title">БИБЛИЯ</div>
+        <div class="card-subtitle">Читать и изучать</div>
+    </div>
+
+    <div class="card" onclick="showComingSoon('Герои')">
+        <div class="card-icon">👑</div>
+        <div class="card-title">ГЕРОИ</div>
+        <div class="card-subtitle">Библейские персонажи</div>
+    </div>
+
+    <div class="card" onclick="showComingSoon('ORA ИИ')">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">ORA ИИ</div>
+        <div class="card-subtitle">Христианский наставник</div>
+    </div>
+
+    <div class="version">
+        Версия 0.1 - Тестируем в Telegram!
+    </div>
+
+    <div class="debug" id="debug"></div>
+
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
+        console.log('ORA App started');
+        
+        // Инициализация Telegram WebApp
+        let tg = null;
+        
+        try {
+            if (window.Telegram && window.Telegram.WebApp) {
+                tg = window.Telegram.WebApp;
+                tg.ready();
+                tg.expand();
+                console.log('Telegram WebApp initialized');
+                document.getElementById('debug').textContent = 'TG: OK';
+            } else {
+                console.log('Telegram WebApp not available');
+                document.getElementById('debug').textContent = 'TG: NO';
+            }
+        } catch (e) {
+            console.error('Error initializing Telegram WebApp:', e);
+            document.getElementById('debug').textContent = 'TG: ERROR';
+        }
+
+        function showComingSoon(section) {
+            const message = `${section} - раздел в разработке! 🚀\n\nСкоро будет готов!`;
+            
+            console.log('Showing message for:', section);
+            
+            try {
+                // Пробуем Telegram alert
+                if (tg && tg.showAlert) {
+                    tg.showAlert(message);
+                    console.log('Used Telegram alert');
+                } else {
+                    // Fallback на обычный alert
+                    alert(message);
+                    console.log('Used browser alert');
+                }
+            } catch (e) {
+                console.error('Error showing alert:', e);
+                // Последний fallback
+                alert(message);
+            }
+        }
+
+        // Адаптация под тему Telegram
+        if (tg && tg.themeParams) {
+            document.body.style.backgroundColor = tg.themeParams.bg_color || '#2a2a2a';
+            document.body.style.color = tg.themeParams.text_color || 'white';
+        }
     </script>
 </body>
 </html>
