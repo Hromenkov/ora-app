@@ -478,11 +478,11 @@
                 <div class="card-subtitle">Друг и наставник</div>
             </div>
 
-            <<div class="card card-bible" onclick="openBible()">
-    <div class="card-icon">📖</div>
-    <div class="card-title">БИБЛИЯ</div>
-    <div class="card-subtitle">Читать и изучать</div>
-</div>
+            <div class="card card-bible" onclick="goToBibleSetup()">
+                <div class="card-icon">📖</div>
+                <div class="card-title">БИБЛИЯ</div>
+                <div class="card-subtitle">Читать и изучать</div>
+            </div>
 
             <div class="card card-heroes" onclick="showComingSoon('Герои')">
                 <div class="card-icon">👑</div>
@@ -533,7 +533,7 @@
             <div class="setup-section">
                 <label class="setup-label">Выбери главу</label>
                 <div class="dropdown" onclick="showChaptersList()">
-                    <span id="selected-chapter">9</span>
+                    <span id="selected-chapter">1</span>
                     <span class="dropdown-arrow">▼</span>
                 </div>
             </div>
@@ -541,9 +541,15 @@
             <div class="setup-section">
                 <label class="setup-label">Выбери перевод</label>
                 <div class="dropdown" onclick="showTranslationsList()">
-                    <span id="selected-translation">Библия КОроля Иакова</span>
+                    <span id="selected-translation">Синодальный перевод</span>
                     <span class="dropdown-arrow">▼</span>
                 </div>
+            </div>
+
+            <div class="setup-section">
+                <button onclick="startReading()" style="width: 100%; background: #E5FF53; color: #000; border: none; border-radius: 10px; padding: 16px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 20px;">
+                    Читать
+                </button>
             </div>
         </div>
     </div>
@@ -722,6 +728,12 @@
 
         function goToBibleSetup() {
             showScreen('bible-setup');
+            activateTab('bible');
+        }
+
+        function startReading() {
+            showScreen('bible-reader');
+            loadBibleText(currentBook, currentChapter);
         }
 
         function showBooksList() {
