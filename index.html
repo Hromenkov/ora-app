@@ -3,19 +3,32 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
   <title>ORA</title>
+
+  <!-- Telegram Web App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- Стили приложения -->
   <link rel="stylesheet" href="./src/styles/base.css?v=3" />
 </head>
 <body>
+  <!-- Корневой контейнер приложения -->
   <div id="app"></div>
-  <script type="module" src="./src/main.js?v=boot6"></script>
+
+  <!-- Загружаем главный модуль без динамического import(), так стабильнее в WebView -->
+  <script type="module" src="./src/main.js?v=boot7"></script>
+
+  <!-- Фолбэк: если модуль не выполнился, покажем понятное сообщение -->
   <script>
+    // через 2 секунды проверим, что что-то отрендерилось
     setTimeout(() => {
       const el = document.getElementById('app');
       if (!el || !el.childNodes.length) {
         el.innerHTML =
-          '<pre style="padding:12px;background:#1f1d29;color:#fff;border:1px solid #333;border-radius:8px;white-space:pre-wrap">Boot error: main.js didn\'t run.\nCheck: /src/main.js?v=boot6 is reachable.</pre>';
+          '<pre style="padding:12px;background:#1f1d29;color:#fff;border:1px solid #333;border-radius:8px;white-space:pre-wrap">Boot error: main.js didn’t run.\n' +
+          'Проверь, что файл доступен по адресу:\n/src/main.js?v=boot7\n' +
+          'и что в его импортируемых путях есть расширение .js.</pre>';
       }
     }, 2000);
   </script>
