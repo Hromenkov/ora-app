@@ -1,87 +1,54 @@
-/* ====== READER v2 ====== */
-.reader {
-  padding: 16px 18px calc(88px + env(safe-area-inset-bottom));
+// Плейсхолдер «текста»: рендерим 20 псевдо-стихов
+function mockVerses(count = 20) {
+  const arr = [];
+  for (let i=1;i<=count;i++){
+    arr.push({ no:i, text:`Текст стиха-заглушки ${i}. Здесь будет реальный текст перевода.` });
+  }
+  return arr;
 }
 
-.reader-top {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 12px 10px;
-  margin: -16px -12px 8px;
-  background:
-    linear-gradient(180deg, rgba(17,16,22,.92), rgba(17,16,22,.82) 60%, rgba(17,16,22,0) 100%);
-  backdrop-filter: blur(8px);
-}
+export default function reader(root, {go}, params) {
+  const book = params.book || 'mrk';
+  const chap = Number(params.chap || 1);
+  const tr   = params.tr || 'syn';
 
-.reader-back {
-  width: 44px; height: 44px;
-  display: grid; place-items: center;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: #2b2836;
-  color: var(--ink, #fff);
-}
+  const verses = mockVerses(20);
 
-.reader-title {
-  font-size: 42px;
-  line-height: 1.05;
-  font-weight: 900;
-  letter-spacing: .2px;
-}
+  root.innerHTML = `
+    <div class="container reader">
+      <div class="reader__header">
+        <button class="back-btn" data-go="#/bible">←</button>
+        <h1 class="reader__title">Глава ${chap}</h1>
+        <div></div>
 
-.reader-sub {
-  margin-top: 6px;
-  font-size: 18px;
-  color: rgba(255,255,255,.64);
-}
+        <div class="reader__meta">${book} · ${tr}</div>
+        <div class="reader__btns">
+          <button class="btn">RU</button>
+          <button class="btn">+</button>
+          <button class="btn">…</button>
+        </div>
+      </div>
 
-.reader-chips {
-  display: flex;
-  gap: 8px;
-}
+      <div class="reader__list">
+        ${verses.map(v=>`
+          <div class="verse">
+            <div class="verse__row">
+              <div class="verse__no">${v.no}</div>
+              <div class="verse__text">${v.text}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
 
-.chip {
-  height: 36px;
-  padding: 0 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: #25232e;
-  color: #fff;
-  font-weight: 600;
-}
+    <nav class="tabbar">
+      <div class="tabbar__row">
+        <div class="tab active" data-go="#/bible"><div class="icon">✝️</div>Библия</div>
+        <div class="tab" data-go="#/ora"><div class="icon">⭕</div>ORA</div>
+        <div class="tab" data-go="#/mentor"><div class="icon">👨‍🏫</div>Наставник</div>
+      </div>
+    </nav>
+  `;
 
-/* Список стихов */
-.verses {
-  display: grid;
-  gap: 18px;
-  margin-top: 8px;
-}
-
-.verse {
-  display: grid;
-  grid-template-columns: 28px 1fr;
-  column-gap: 12px;
-  align-items: start;
-}
-
-.v-num {
-  color: #E3FF5E;           /* акцентный жёлтый */
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 1;
-  padding-top: 6px;
-}
-
-.v-text {
-  color: #fff;
-  font-size: 19px;
-  line-height: 1.55;
+  root.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click', ()=>go(el.dataset.go)));
 }
