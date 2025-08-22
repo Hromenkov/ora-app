@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <title>ORA</title>
 
-  <!-- Telegram WebApp SDK (не ломает работу в браузере) -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Шрифт и базовые стили -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../src/styles/base.css?v=35" />
+  <!-- Абсолютные пути под GitHub Pages -->
+  <link rel="stylesheet" href="/ora-app/src/styles/base.css?v=40" />
+  <style>
+    #boot{position:fixed;top:8px;left:8px;padding:6px 10px;border-radius:10px;
+      background:#1f2937;color:#e5e7eb;border:1px solid #374151;font:12px/1 ui-monospace,Menlo,Consolas}
+  </style>
 </head>
 <body>
+  <div id="boot">boot…</div>
   <div id="app"></div>
 
-  <!-- Главный модуль -->
-  <script type="module" src="../src/main.js?v=34"></script>
+  <script type="module" src="/ora-app/src/main.js?v=40"></script>
 </body>
 </html>
+
