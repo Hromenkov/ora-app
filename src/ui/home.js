@@ -1,4 +1,5 @@
 // src/ui/home.js
+
 export function renderHome(root) {
   root.innerHTML = `
     <div class="screen">
@@ -11,19 +12,24 @@ export function renderHome(root) {
       </header>
 
       <section class="stack">
-        <a class="card card--blue"   href="#/bible"  data-open="bible">
-          <h2>БИБЛИЯ</h2><span>Читать и изучать</span>
+        <a class="card card--blue"   href="#/bible">
+          <h2>БИБЛИЯ</h2>
+          <span>Читать и изучать</span>
         </a>
-        <a class="card card--yellow" href="#/ora"    data-open="ora">
-          <h2>ORA</h2><span>Друг и наставник</span>
+
+        <a class="card card--accent" href="#/ora">
+          <h2>ORA</h2>
+          <span>Друг и наставник</span>
         </a>
-        <a class="card card--purple" href="#/mentor" data-open="mentor">
-          <h2>НАСТАВНИК</h2><span>Конспекты. Заметки. Исследования</span>
+
+        <a class="card card--violet" href="#/mentor">
+          <h2>НАСТАВНИК</h2>
+          <span>Конспекты. Заметки. Исследования</span>
         </a>
       </section>
     </div>
 
-    ${tabbar('bible')}
+    ${tabbar('home')}
   `;
 }
 
