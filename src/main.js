@@ -1,14 +1,17 @@
 // src/main.js
-import { startRouter } from '/ora-app/src/router.js?v=1';
+import { startRouter } from './router.js';
 
-(function initTelegram() {
+// Telegram WebApp (мягкая инициализация)
+(function initTelegram(){
   try {
     if (window.Telegram?.WebApp) {
       const tg = window.Telegram.WebApp;
       tg.ready();
-      tg.expand();
+      tg.expand?.();
     }
-  } catch (_) {}
+  } catch (e) { /* no-op */ }
 })();
 
-startRouter();
+// Точка входа
+const app = document.getElementById('app');
+startRouter(app);
