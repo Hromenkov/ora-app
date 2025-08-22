@@ -1,42 +1,45 @@
-// src/ui/home.js
-export function renderHome(root) {
-  root.innerHTML = `
-    <header class="app-header">
-      <div>
-        <h1>ORA</h1>
-        <p>Приложение для духовного роста</p>
-      </div>
-      <button class="icon-btn" aria-label="Настройки">⚙️</button>
-    </header>
-
-    <section class="stack">
-      <a href="#" class="card card--accent" data-route="home">
-        <div class="card-title">ORA</div>
-        <div class="card-sub">Друг и наставник</div>
-      </a>
-
-      <a href="#" class="card card--blue" data-route="bible">
-        <div class="card-title">БИБЛИЯ</div>
-        <div class="card-sub">Читать и изучать</div>
-      </a>
-
-      <a href="#" class="card card--dark" data-route="heroes">
-        <div class="card-title">ГЕРОИ</div>
-        <div class="card-sub">Библейские герои</div>
-      </a>
-
-      <a href="#" class="card card--violet" data-route="mentor">
-        <div class="card-title">НАСТАВНИК</div>
-        <div class="card-sub">Конспекты. Заметки. Исследования</div>
-      </a>
-    </section>
-
-    <nav class="tabbar">
-      <a href="#" class="tab" data-route="home"><div class="icon">🏠</div><div class="label">Домой</div></a>
-      <a href="#" class="tab" data-route="bible"><div class="icon">✝️</div><div class="label">Библия</div></a>
-      <a href="#" class="tab" data-route="ora"><div class="icon">⭕</div><div class="label">ORA</div></a>
-      <a href="#" class="tab" data-route="mentor"><div class="icon">👨‍🏫</div><div class="label">Наставник</div></a>
-      <a href="#" class="tab" data-route="heroes"><div class="icon">👕</div><div class="label">Герои</div></a>
-    </nav>
-  `;
+:root{
+  --bg:#14121a; --text:#f5f5f7; --muted:#b4b6c3;
+  --accent:#E5FF53; --blue:#CFE2F7; --dark:#3B3D53; --violet:#4b0d9a;
 }
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg); color:var(--text);
+}
+a{color:inherit; text-decoration:none}
+
+#app{max-width:390px; margin:0 auto; min-height:100vh; padding-bottom:90px}
+
+/* Header */
+.app-header{display:flex; justify-content:space-between; align-items:center; padding:16px 20px}
+.app-header h1{margin:0; font-size:28px}
+.app-header p{margin:4px 0 0; color:var(--muted)}
+.icon-btn{
+  width:44px; height:44px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#2b2836; color:#fff;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* Cards */
+.stack{display:flex; flex-direction:column; gap:16px; padding:0 20px}
+.card{border-radius:16px; padding:24px 20px}
+.card h2{margin:0 0 6px; font-size:36px; line-height:1}
+.card span{opacity:.9}
+.card--accent{background:var(--accent); color:#000}
+.card--blue{background:var(--blue); color:#000}
+.card--dark{background:var(--dark); color:#fff}
+.card--violet{background:var(--violet); color:#fff}
+
+/* Tab bar */
+.tabbar{
+  position:fixed; left:50%; transform:translateX(-50%);
+  bottom:12px; width:calc(100% - 24px); max-width:390px;
+  background:#1A1A1A; border-radius:22px; padding:10px 6px;
+  display:flex; justify-content:space-around; gap:6px
+}
+.tab{display:flex; flex-direction:column; align-items:center; font-size:12px; color:var(--muted)}
+.tab .icon{font-size:18px; margin-bottom:4px}
