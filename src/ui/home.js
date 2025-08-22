@@ -11,55 +11,35 @@ export function renderHome(root) {
       </header>
 
       <section class="stack">
-        <a class="card card--blue" href="#" data-open="bible">
-          <h2>БИБЛИЯ</h2>
-          <span>Читать и изучать</span>
+        <a class="card card--blue"   href="#/bible"  data-open="bible">
+          <h2>БИБЛИЯ</h2><span>Читать и изучать</span>
         </a>
-
-        <a class="card card--yellow" href="#" data-open="ora">
-          <h2>ORA</h2>
-          <span>Друг и наставник</span>
+        <a class="card card--yellow" href="#/ora"    data-open="ora">
+          <h2>ORA</h2><span>Друг и наставник</span>
         </a>
-
-        <a class="card card--purple" href="#" data-open="mentor">
-          <h2>НАСТАВНИК</h2>
-          <span>Конспекты. Заметки. Исследования</span>
+        <a class="card card--purple" href="#/mentor" data-open="mentor">
+          <h2>НАСТАВНИК</h2><span>Конспекты. Заметки. Исследования</span>
         </a>
       </section>
     </div>
 
-    <nav class="tabbar" role="tablist">
-      <div class="tabbar__inner">
-        <a class="tab tab--active" href="#" role="tab" aria-selected="true" data-open="bible">
-          <div class="icon">✝️</div>
-          <div class="label">Библия</div>
-        </a>
-        <a class="tab" href="#" role="tab" data-open="ora">
-          <div class="icon">⭕</div>
-          <div class="label">ORA</div>
-        </a>
-        <a class="tab" href="#" role="tab" data-open="mentor">
-          <div class="icon">👨‍🏫</div>
-          <div class="label">Наставник</div>
-        </a>
-      </div>
-    </nav>
+    ${tabbar('bible')}
   `;
-
-  // Заглушки навигации (пока просто тосты в консоль)
-  root.querySelectorAll('[data-open]').forEach(el => {
-    el.addEventListener('click', (e) => {
-      e.preventDefault();
-      const to = el.getAttribute('data-open');
-      console.log('open:', to);
-      highlightTab(root, to);
-      // здесь позже подключим реальную навигацию (reader / chat / notes)
-    });
-  });
 }
 
-function highlightTab(root, key) {
-  root.querySelectorAll('.tab').forEach(t => t.classList.remove('tab--active'));
-  const tab = root.querySelector(`.tab[data-open="${key}"]`);
-  if (tab) tab.classList.add('tab--active');
+function tabbar(active) {
+  return `
+  <nav class="tabbar" role="tablist">
+    <div class="tabbar__inner">
+      <a class="tab ${active==='bible'?'tab--active':''}" href="#/bible" role="tab">
+        <div class="icon">✝️</div><div class="label">Библия</div>
+      </a>
+      <a class="tab ${active==='ora'?'tab--active':''}" href="#/ora" role="tab">
+        <div class="icon">⭕</div><div class="label">ORA</div>
+      </a>
+      <a class="tab ${active==='mentor'?'tab--active':''}" href="#/mentor" role="tab">
+        <div class="icon">👨‍🏫</div><div class="label">Наставник</div>
+      </a>
+    </div>
+  </nav>`;
 }
