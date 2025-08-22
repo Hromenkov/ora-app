@@ -1,51 +1,42 @@
-// src/ui/home.js
-
-export function renderHome(root) {
+export default function home(root, {go}) {
   root.innerHTML = `
-    <div class="screen">
-      <header class="header">
+    <div class="container">
+      <header class="app-header">
         <div>
-          <h1>ORA</h1>
-          <p>Приложение для духовного роста</p>
+          <h1 class="app-title">ORA</h1>
+          <p class="app-sub">Приложение для духовного роста</p>
         </div>
-        <button class="gear" aria-label="Настройки">⚙️</button>
+        <button class="icon-btn" aria-label="Настройки">⚙️</button>
       </header>
 
       <section class="stack">
-        <a class="card card--blue"   href="#/bible">
+        <div class="card card--blue" data-go="#/bible">
           <h2>БИБЛИЯ</h2>
           <span>Читать и изучать</span>
-        </a>
+        </div>
 
-        <a class="card card--accent" href="#/ora">
+        <div class="card card--accent" data-go="#/ora">
           <h2>ORA</h2>
           <span>Друг и наставник</span>
-        </a>
+        </div>
 
-        <a class="card card--violet" href="#/mentor">
+        <div class="card card--violet" data-go="#/mentor">
           <h2>НАСТАВНИК</h2>
           <span>Конспекты. Заметки. Исследования</span>
-        </a>
+        </div>
       </section>
     </div>
 
-    ${tabbar('home')}
+    <nav class="tabbar">
+      <div class="tabbar__row">
+        <div class="tab active" data-go="#/bible"><div class="icon">✝️</div>Библия</div>
+        <div class="tab" data-go="#/ora"><div class="icon">⭕</div>ORA</div>
+        <div class="tab" data-go="#/mentor"><div class="icon">👨‍🏫</div>Наставник</div>
+      </div>
+    </nav>
   `;
-}
 
-function tabbar(active) {
-  return `
-  <nav class="tabbar" role="tablist">
-    <div class="tabbar__inner">
-      <a class="tab ${active==='bible'?'tab--active':''}" href="#/bible" role="tab">
-        <div class="icon">✝️</div><div class="label">Библия</div>
-      </a>
-      <a class="tab ${active==='ora'?'tab--active':''}" href="#/ora" role="tab">
-        <div class="icon">⭕</div><div class="label">ORA</div>
-      </a>
-      <a class="tab ${active==='mentor'?'tab--active':''}" href="#/mentor" role="tab">
-        <div class="icon">👨‍🏫</div><div class="label">Наставник</div>
-      </a>
-    </div>
-  </nav>`;
+  root.querySelectorAll('[data-go]').forEach(el=>{
+    el.addEventListener('click', ()=> go(el.dataset.go));
+  });
 }
