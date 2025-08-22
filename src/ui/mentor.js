@@ -2,16 +2,12 @@ export default function mentor(root, {go}) {
   root.innerHTML = `
     <div class="container">
       <header class="app-header">
-        <button class="back-btn" data-go="#/">← Назад</button>
+        <button class="icon-btn" data-go="#/">←</button>
         <div style="flex:1"></div>
       </header>
-
       <h1 class="app-title" style="font-size:40px;margin-top:8px">Наставник</h1>
       <p class="app-sub">Конспекты. Заметки. Исследования</p>
-
-      <p style="opacity:.75;margin-top:16px">
-        Здесь появятся ваши заметки, планы чтения, конспекты и закладки.
-      </p>
+      <p style="opacity:.75;margin-top:16px">Здесь появятся ваши заметки и планы.</p>
     </div>
 
     <nav class="tabbar">
@@ -22,5 +18,6 @@ export default function mentor(root, {go}) {
       </div>
     </nav>
   `;
-  root.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click', ()=>go(el.dataset.go)));
+  root.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>go(el.dataset.go));
 }
+
