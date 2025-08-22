@@ -1,45 +1,27 @@
-:root{
-  --bg:#14121a; --text:#f5f5f7; --muted:#b4b6c3;
-  --accent:#E5FF53; --blue:#CFE2F7; --dark:#3B3D53; --violet:#4b0d9a;
-}
-
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{
-  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:var(--bg); color:var(--text);
-}
-a{color:inherit; text-decoration:none}
-
-#app{max-width:390px; margin:0 auto; min-height:100vh; padding-bottom:90px}
-
-/* Header */
-.app-header{display:flex; justify-content:space-between; align-items:center; padding:16px 20px}
-.app-header h1{margin:0; font-size:28px}
-.app-header p{margin:4px 0 0; color:var(--muted)}
-.icon-btn{
-  width:44px; height:44px; border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background:#2b2836; color:#fff;
-  display:flex; align-items:center; justify-content:center;
-}
-
-/* Cards */
-.stack{display:flex; flex-direction:column; gap:16px; padding:0 20px}
-.card{border-radius:16px; padding:24px 20px}
-.card h2{margin:0 0 6px; font-size:36px; line-height:1}
-.card span{opacity:.9}
-.card--accent{background:var(--accent); color:#000}
-.card--blue{background:var(--blue); color:#000}
-.card--dark{background:var(--dark); color:#fff}
-.card--violet{background:var(--violet); color:#fff}
-
-/* Tab bar */
+/* --- нижняя навигация: теперь 3 колонки --- */
 .tabbar{
-  position:fixed; left:50%; transform:translateX(-50%);
-  bottom:12px; width:calc(100% - 24px); max-width:390px;
-  background:#1A1A1A; border-radius:22px; padding:10px 6px;
-  display:flex; justify-content:space-around; gap:6px
+  position:fixed; left:0; right:0; bottom:0;
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:6px; padding:10px 12px calc(env(safe-area-inset-bottom,0) + 10px);
+  background:rgba(0,0,0,.45); backdrop-filter:blur(10px);
 }
-.tab{display:flex; flex-direction:column; align-items:center; font-size:12px; color:var(--muted)}
-.tab .icon{font-size:18px; margin-bottom:4px}
+.tab{display:flex; flex-direction:column; align-items:center; gap:6px; padding:10px 0; border-radius:16px}
+.tab .icon{font-size:22px}
+
+/* --- формы/чипы на экране Библии --- */
+.form{padding:0 8px 24px}
+.field{display:flex; flex-direction:column; gap:8px; margin:12px 12px 0}
+.field label{color:var(--muted)}
+select,.btn{
+  width:100%; padding:14px 16px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#1d1b26; color:var(--text); font-size:16px;
+}
+.btn{background:var(--accent); color:#000; border:none; font-weight:700; margin:20px 12px 0}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin:0 12px 12px}
+.chip{
+  padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.12);
+  background:transparent; color:var(--text); font-size:14px;
+}
+.chip--on{background:var(--accent); color:#000; border-color:var(--accent)}
