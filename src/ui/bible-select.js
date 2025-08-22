@@ -1,95 +1,58 @@
-// src/ui/bible-select.js
-import * as BooksData from '../data/books.js?v=ui15';
-
-const BOOKS = BooksData.BOOKS || BooksData.books || [];
-const CHAPTERS_MAP = BooksData.BOOK_CHAPTERS || BooksData.bookChapters || {};
-
-const TRANSLATIONS = [
-  { code: 'RURSP', name: 'Синодальный' },
-  { code: 'RUKJV', name: 'Короля Иакова' },
-];
-
-export function renderBibleSelect(root){
+export default function bibleSelect(root, {go}) {
   root.innerHTML = `
-    <header class="app-header">
-      <a class="icon-btn" href="#home" aria-label="Назад">⬅️</a>
-      <div>
-        <h1>Библия</h1>
-        <p>мини-приложение</p>
-      </div>
-      <button class="icon-btn" aria-label="Меню">⋯</button>
-    </header>
+    <div class="container">
+      <header class="app-header">
+        <button class="back-btn" data-go="#/">← Назад</button>
+        <div style="flex:1"></div>
+      </header>
 
-    <section class="stack">
-      <div class="card card--dark">
-        <h3 style="margin:0 12px 8px">Функции</h3>
-        <div class="chips">
-          <button class="chip chip--on" data-mode="read">Читать</button>
-          <button class="chip" data-mode="study">Изучать</button>
-          <button class="chip" data-mode="compare">Сравнить переводы</button>
-          <button class="chip" data-mode="search">Поиск</button>
-        </div>
+      <h2 class="app-title" style="font-size:36px;margin-top:8px">Библия</h2>
+      <p class="app-sub" style="margin-top:4px">мини-приложение</p>
 
-        <form class="form" id="bibleForm">
-          <div class="field">
-            <label for="book">Выбери книгу</label>
-            <select id="book" required></select>
-          </div>
-          <div class="field">
-            <label for="chapter">Выбери главу</label>
-            <select id="chapter" required></select>
-          </div>
-          <div class="field">
-            <label for="tr">Выбери перевод</label>
-            <select id="tr" required></select>
-          </div>
-          <button class="btn" type="submit">Открыть</button>
-        </form>
+      <div style="margin-top:18px; display:grid; gap:16px">
+        <label style="display:grid; gap:6px">
+          <span style="color:var(--muted); font-weight:600">Выбери книгу</span>
+          <select id="book" style="height:48px;border-radius:14px;border:1px solid var(--divider);background:#201d28;color:#fff;padding:0 12px">
+            <option value="mrk">Ев. от Марка</option>
+            <option value="mat">Ев. от Матфея</option>
+            <option value="luk">Ев. от Луки</option>
+            <option value="jhn">Ев. от Иоанна</option>
+          </select>
+        </label>
+
+        <label style="display:grid; gap:6px">
+          <span style="color:var(--muted); font-weight:600">Выбери главу</span>
+          <input id="chap" type="number" min="1" value="1" style="height:48px;border-radius:14px;border:1px solid var(--divider);background:#201d28;color:#fff;padding:0 12px" />
+        </label>
+
+        <label style="display:grid; gap:6px">
+          <span style="color:var(--muted); font-weight:600">Выбери перевод</span>
+          <select id="tr" style="height:48px;border-radius:14px;border:1px solid var(--divider);background:#201d28;color:#fff;padding:0 12px">
+            <option value="syn">Синодальный (RU)</option>
+            <option value="kng">Кинг Джеймс (EN)</option>
+          </select>
+        </label>
+
+        <button id="goRead" class="btn" style="height:52px;border-radius:16px;background:#3a364a;font-weight:800">Открыть читалку</button>
       </div>
-    </section>
+    </div>
 
     <nav class="tabbar">
-      <a class="tab" href="#bible"><div class="icon">✝️</div>Библия</a>
-      <a class="tab" href="#ora"><div class="icon">⭕</div>ORA</a>
-      <a class="tab" href="#mentor"><div class="icon">👨‍🏫</div>Наставник</a>
+      <div class="tabbar__row">
+        <div class="tab active"><div class="icon">✝️</div>Библия</div>
+        <div class="tab" data-go="#/ora"><div class="icon">⭕</div>ORA</div>
+        <div class="tab" data-go="#/mentor"><div class="icon">👨‍🏫</div>Наставник</div>
+      </div>
     </nav>
   `;
 
-  const fallbackBooks = [
-    { code: 'MRK', name: 'Ев. от Марка' },
-    { code: 'MAT', name: 'Ев. от Матфея' },
-    { code: 'LUK', name: 'Ев. от Луки' },
-    { code: 'JHN', name: 'Ев. от Иоанна' },
-  ];
-  const books = BOOKS.length ? BOOKS : fallbackBooks;
+  root.querySelector('[data-go="#/"]').addEventListener('click', ()=>go('#/'));
+  root.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click', ()=>go(el.dataset.go)));
 
-  const $book = root.querySelector('#book');
-  const $chapter = root.querySelector('#chapter');
-  const $tr = root.querySelector('#tr');
-
-  $book.innerHTML = books.map(b => `<option value="${b.code}">${b.name}</option>`).join('');
-
-  function fillChapters() {
-    const code = $book.value;
-    const n = CHAPTERS_MAP[code] || 50;
-    $chapter.innerHTML = Array.from({length:n}, (_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
-  }
-  fillChapters();
-  $book.addEventListener('change', fillChapters);
-
-  $tr.innerHTML = TRANSLATIONS.map(t => `<option value="${t.code}">${t.name}</option>`).join('');
-
-  const chips = root.querySelectorAll('.chip');
-  chips.forEach(c => c.addEventListener('click', () => {
-    chips.forEach(x => x.classList.remove('chip--on'));
-    c.classList.add('chip--on');
-  }));
-
-  root.querySelector('#bibleForm').addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const book = $book.value;
-    const ch   = $chapter.value;
-    const tr   = $tr.value;
-    location.hash = `#reader?book=${encodeURIComponent(book)}&ch=${encodeURIComponent(ch)}&tr=${encodeURIComponent(tr)}`;
+  root.getElementById('goRead').addEventListener('click', ()=>{
+    const book = root.getElementById('book').value;
+    const chap = root.getElementById('chap').value || 1;
+    const tr   = root.getElementById('tr').value;
+    go(`#/read?book=${encodeURIComponent(book)}&chap=${encodeURIComponent(chap)}&tr=${encodeURIComponent(tr)}`);
   });
 }
