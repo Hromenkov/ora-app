@@ -1,11 +1,8 @@
-// НИКАКИХ import './styles/base.css' здесь быть не должно!
-
-import { mountHome }   from './ui/home.js';
-import { mountBible }  from './ui/bible.js';
-import { mountORA }    from './ui/ora.js';
-import { mountMentor } from './ui/mentor.js';
-import { initRouter, navigate } from './router.js';
-
+var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+if (tg) {
+  try { tg.ready(); } catch (e) {}
+  try { if (tg.expand) tg.expand(); } catch (e) {}
+}
 // Инициализация Telegram (без ошибок вне TG)
 if (window.Telegram?.WebApp) {
   const tg = window.Telegram.WebApp;
