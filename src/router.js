@@ -1,43 +1,32 @@
 // src/router.js
-import { renderHome }   from '/ora-app/src/ui/home.js?v=2';
-import { renderBible }  from '/ora-app/src/ui/bible.js?v=2';
-import { renderReader } from '/ora-app/src/ui/reader.js?v=2';
-import { renderOra }    from '/ora-app/src/ui/ora.js?v=1';
-import { renderMentor } from '/ora-app/src/ui/mentor.js?v=1';
+import { renderHome }   from './ui/home.js';
+import { renderBible }  from './ui/bible.js';
+import { renderOra }    from './ui/ora.js';
+import { renderMentor } from './ui/mentor.js';
+import { renderReader } from './ui/reader.js';
 
-export function startRouter() {
-  const app = document.getElementById('app');
+export function startRouter(root) {
+  const routes = {
+    '#/home'   : (p) => renderHome(root, p),
+    '#/bible'  : (p) => renderBible(root, p),
+    '#/ora'    : (p) => renderOra(root, p),
+    '#/mentor' : (p) => renderMentor(root, p),
+    '#/reader' : (p) => renderReader(root, p),
+  };
 
   function parseHash() {
-    const [path, qs=''] = (location.hash || '#/').slice(1).split('?');
-    const params = Object.fromEntries(new URLSearchParams(qs));
-    return { path: '/'+(path||''), params };
+    const [path, queryStr=''] = location.hash.split('?');
+    const params = Object.fromEntries(new URLSearchParams(queryStr));
+    return { path, params };
   }
 
-  async function render() {
+  function render() {
     const { path, params } = parseHash();
-    switch (path) {
-      case '/':
-      case '/home':
-        renderHome(app);
-        break;
-      case '/bible':
-        renderBible(app);
-        break;
-      case '/reader':
-        renderReader(app, params); // params: book, ch, tr
-        break;
-      case '/ora':
-        renderOra(app);
-        break;
-      case '/mentor':
-        renderMentor(app);
-        break;
-      default:
-        location.hash = '#/home';
-    }
+    const handler = routes[path] || routes['#/home'];
+    handler(params);
   }
 
   window.addEventListener('hashchange', render);
+  if (!location.hash) location.hash = '#/home';
   render();
 }
