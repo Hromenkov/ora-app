@@ -1,20 +1,16 @@
 // src/main.js
-import { startRouter } from './router.js?v=ui15';
+import { renderHome } from '/ora-app/src/ui/home.js?v=1';
 
-(function initTelegram(){
+(function initTelegram() {
   try {
     if (window.Telegram?.WebApp) {
       const tg = window.Telegram.WebApp;
       tg.ready();
       tg.expand();
+      // можно будет использовать mainButton позже
     }
-  } catch {}
+  } catch (_) {}
 })();
 
 const app = document.getElementById('app');
-if (!app) throw new Error('#app not found');
-
-startRouter(app);
-
-// если хэш пуст — на домашний
-if (!location.hash) location.replace('#home');
+renderHome(app);
