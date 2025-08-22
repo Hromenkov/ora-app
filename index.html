@@ -16,6 +16,10 @@
   <div id="app"></div>
 
   <!-- ПРАВИЛЬНЫЙ путь к JS (./ ) и новая версия -->
-  <script type="module" src="./src/main.js?v=ui12"></script>
+  <script type="module">
+  const app = document.getElementById('app');
+  import('./src/main.js?v=ui14')
+    .catch(e => { app.innerHTML = '<pre>Boot error…</pre>'; console.error(e); });
+</script>
 </body>
 </html>
