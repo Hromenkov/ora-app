@@ -1,17 +1,10 @@
-// Плейсхолдер «текста»: рендерим 20 псевдо-стихов
-function mockVerses(count = 20) {
-  const arr = [];
-  for (let i=1;i<=count;i++){
-    arr.push({ no:i, text:`Текст стиха-заглушки ${i}. Здесь будет реальный текст перевода.` });
-  }
-  return arr;
+function mockVerses(n=20){
+  return Array.from({length:n},(_,i)=>({no:i+1, text:`Текст стиха-заглушки ${i+1}. Здесь будет реальный текст перевода.`}));
 }
-
 export default function reader(root, {go}, params) {
   const book = params.book || 'mrk';
   const chap = Number(params.chap || 1);
   const tr   = params.tr || 'syn';
-
   const verses = mockVerses(20);
 
   root.innerHTML = `
@@ -29,16 +22,14 @@ export default function reader(root, {go}, params) {
         </div>
       </div>
 
-      <div class="reader__list">
-        ${verses.map(v=>`
-          <div class="verse">
-            <div class="verse__row">
-              <div class="verse__no">${v.no}</div>
-              <div class="verse__text">${v.text}</div>
-            </div>
+      ${verses.map(v=>`
+        <div class="verse">
+          <div class="verse__row">
+            <div class="verse__no">${v.no}</div>
+            <div class="verse__text">${v.text}</div>
           </div>
-        `).join('')}
-      </div>
+        </div>
+      `).join('')}
     </div>
 
     <nav class="tabbar">
@@ -49,6 +40,5 @@ export default function reader(root, {go}, params) {
       </div>
     </nav>
   `;
-
-  root.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click', ()=>go(el.dataset.go)));
+  root.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>go(el.dataset.go));
 }
