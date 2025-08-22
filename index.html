@@ -2,31 +2,22 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <title>ORA</title>
 
-  <!-- Telegram SDK (не мешает и вне TG) -->
+  <!-- Telegram WebApp SDK (не ломает работу в браузере) -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Подключаем СТИЛИ ТОЛЬКО ТАК -->
-  <link rel="stylesheet" href="../src/styles/base.css?v=css22" />
+  <!-- Шрифт и базовые стили -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../src/styles/base.css?v=33" />
 </head>
 <body>
   <div id="app"></div>
 
-  <script type="module">
-    const app = document.getElementById('app');
-    try {
-      // Бампни версию при каждом изменении, чтобы TG не кэшировал
-      await import('../src/main.js?v=boot22');
-      // Если нужно — покажем маленький бейдж, что всё ок:
-      // app.insertAdjacentHTML('afterbegin','<div style="position:fixed;top:8px;left:8px;background:#1f2937;color:#9ca3af;padding:4px 8px;border-radius:8px;font:12px/1 ui-sans-serif,system-ui">ok: main.js</div>');
-    } catch (e) {
-      app.innerHTML = `<pre style="white-space:pre-wrap;color:#fff;background:#1f2937;border:1px solid #374151;border-radius:8px;padding:12px">
-Import error: ${e.message}
-</pre>`;
-      console.error(e);
-    }
-  </script>
+  <!-- Главный модуль -->
+  <script type="module" src="../src/main.js?v=33"></script>
 </body>
 </html>
