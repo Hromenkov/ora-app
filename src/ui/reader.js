@@ -1,34 +1,55 @@
 // src/ui/reader.js
-export function renderReader(root, params={}){
-  const book = params.book || 'MRK';
-  const ch   = Number(params.ch || 1);
-  const tr   = params.tr || 'RURSP';
+export function renderReader(root, params = {}) {
+  const { book = 'mrk', ch = '1', tr = 'syn' } = params;
+
+  // Заглушечные стихи: пока текст фейковый, главное — вёрстка
+  const demoVerses = Array.from({ length: 12 }).map((_, i) => ({
+    n: i + 1,
+    t: `Текст стиха-заглушки ${i + 1}. Здесь будет реальный текст перевода.`,
+  }));
 
   root.innerHTML = `
-    <header class="app-header">
-      <a class="icon-btn" href="#bible" aria-label="Назад">⬅️</a>
-      <div>
-        <h1>Глава ${ch}</h1>
-        <p>${book} · ${tr}</p>
-      </div>
-      <button class="icon-btn" aria-label="Меню">⋯</button>
-    </header>
+    <div class="screen screen--reader">
+      <header class="header header--tight">
+        <button class="btn btn--icon back" onclick="history.back()" aria-label="Назад">←</button>
+        <div class="header__titles">
+          <h1>Глава ${ch}</h1>
+          <p>${book} · ${tr}</p>
+        </div>
+        <div class="header__actions">
+          <button class="chip">RU</button>
+          <button class="chip">＋</button>
+          <button class="chip">…</button>
+        </div>
+      </header>
 
-    <section class="stack" style="padding-bottom:0">
-      <div class="card card--dark">
-        <div id="verses" style="line-height:1.8"></div>
-      </div>
-    </section>
+      <section class="reader">
+        <ol class="verses">
+          ${demoVerses.map(v => `
+            <li class="verse-row">
+              <b class="vnum">${v.n}</b>
+              <p class="vtext">${v.t}</p>
+            </li>
+          `).join('')}
+        </ol>
 
-    <nav class="tabbar">
-      <a class="tab" href="#bible"><div class="icon">✝️</div>Библия</a>
-      <a class="tab" href="#ora"><div class="icon">⭕</div>ORA</a>
-      <a class="tab" href="#mentor"><div class="icon">👨‍🏫</div>Наставник</a>
-    </nav>
+        <div class="pager">
+          <a class="nav-btn" href="#/reader?book=${book}&ch=${Number(ch)-1}&tr=${tr}" ${Number(ch) <= 1 ? 'aria-disabled="true"' : ''}>‹</a>
+          <span class="pg">${ch}</span>
+          <a class="nav-btn" href="#/reader?book=${book}&ch=${Number(ch)+1}&tr=${tr}">›</a>
+        </div>
+      </section>
+    </div>
+
+    ${tabbar()}
   `;
+}
 
-  const $v = root.querySelector('#verses');
-  $v.innerHTML = Array.from({length:20}, (_,i)=>(
-    `<div><span style="color:#E5FF53">${i+1}</span> Текст стиха-заглушки ${i+1}…</div>`
-  )).join('');
+function tabbar(){
+  return `
+  <nav class="tabbar"><div class="tabbar__inner">
+    <a class="tab" href="#/bible"><div class="icon">✝️</div><div class="label">Библия</div></a>
+    <a class="tab" href="#/ora"><div class="icon">⭕</div><div class="label">ORA</div></a>
+    <a class="tab" href="#/mentor"><div class="icon">👨‍🏫</div><div class="label">Наставник</div></a>
+  </div></nav>`;
 }
