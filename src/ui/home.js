@@ -1,39 +1,42 @@
-import { router } from '../router.js';
-
-export function mountHome(root){
+// src/ui/home.js
+export function renderHome(root) {
   root.innerHTML = `
     <header class="app-header">
       <div>
         <h1>ORA</h1>
         <p>Приложение для духовного роста</p>
       </div>
-      <button class="icon-btn" title="Настройки">⚙️</button>
+      <button class="icon-btn" aria-label="Настройки">⚙️</button>
     </header>
 
     <section class="stack">
-      <div class="card card--accent" data-go="selectors">
-        <h2>ORA</h2><span>Друг и наставник</span>
-      </div>
-      <div class="card card--blue" data-go="selectors">
-        <h2>БИБЛИЯ</h2><span>Читать и изучать</span>
-      </div>
-      <div class="card card--dark">
-        <h2>ГЕРОИ</h2><span>Библейские герои</span>
-      </div>
-      <div class="card card--violet">
-        <h2>НАСТАВНИК</h2><span>Конспекты. Заметки. Исследования</span>
-      </div>
+      <a href="#" class="card card--accent" data-route="home">
+        <div class="card-title">ORA</div>
+        <div class="card-sub">Друг и наставник</div>
+      </a>
+
+      <a href="#" class="card card--blue" data-route="bible">
+        <div class="card-title">БИБЛИЯ</div>
+        <div class="card-sub">Читать и изучать</div>
+      </a>
+
+      <a href="#" class="card card--dark" data-route="heroes">
+        <div class="card-title">ГЕРОИ</div>
+        <div class="card-sub">Библейские герои</div>
+      </a>
+
+      <a href="#" class="card card--violet" data-route="mentor">
+        <div class="card-title">НАСТАВНИК</div>
+        <div class="card-sub">Конспекты. Заметки. Исследования</div>
+      </a>
     </section>
 
     <nav class="tabbar">
-      <div class="tab"><div class="icon">🏠</div>Домой</div>
-      <div class="tab"><div class="icon">✝️</div>Библия</div>
-      <div class="tab"><div class="icon">⭕</div>ORA</div>
-      <div class="tab"><div class="icon">👨‍🏫</div>Наставник</div>
-      <div class="tab"><div class="icon">👕</div>Герои</div>
+      <a href="#" class="tab" data-route="home"><div class="icon">🏠</div><div class="label">Домой</div></a>
+      <a href="#" class="tab" data-route="bible"><div class="icon">✝️</div><div class="label">Библия</div></a>
+      <a href="#" class="tab" data-route="ora"><div class="icon">⭕</div><div class="label">ORA</div></a>
+      <a href="#" class="tab" data-route="mentor"><div class="icon">👨‍🏫</div><div class="label">Наставник</div></a>
+      <a href="#" class="tab" data-route="heroes"><div class="icon">👕</div><div class="label">Герои</div></a>
     </nav>
   `;
-  root.querySelectorAll('[data-go="selectors"]')
-    .forEach(b=>b.addEventListener('click', ()=> router.go('selectors')));
 }
-
