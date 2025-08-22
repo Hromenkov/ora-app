@@ -1,5 +1,5 @@
 // src/main.js
-import { renderHome } from '/ora-app/src/ui/home.js?v=1';
+import { startRouter } from '/ora-app/src/router.js?v=1';
 
 (function initTelegram() {
   try {
@@ -7,10 +7,8 @@ import { renderHome } from '/ora-app/src/ui/home.js?v=1';
       const tg = window.Telegram.WebApp;
       tg.ready();
       tg.expand();
-      // можно будет использовать mainButton позже
     }
   } catch (_) {}
 })();
 
-const app = document.getElementById('app');
-renderHome(app);
+startRouter();
