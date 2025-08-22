@@ -2,43 +2,48 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <meta name="theme-color" content="#121019" />
 <title>ORA</title>
 
 <!-- Telegram SDK -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-<!-- Шрифт (можно удалить, но с ним аккуратнее типографика) -->
+<!-- Шрифт -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 
 <style>
-/* ====== базовые переменные и адаптив ====== */
+/* ====== тема и адаптив ====== */
 :root{
   --bg:#121019; --text:#ECECF1; --muted:#A7A7B3; --border:rgba(255,255,255,.08);
   --card:#1C1A24; --accent:#E7FF51; --blue:#D9EBFF; --violet:#4B0D9A;
-  --w:clamp(360px,90vw,430px); /* ширина макета под Telegram */
-  --r1:14px; --r2:22px; --r3:28px;
+  --w:clamp(360px,90vw,430px);
+  --r1:14px; --r2:18px; --r3:26px;
   --s1:8px; --s2:12px; --s3:16px; --s4:20px; --s5:24px;
+  --h0:clamp(28px,9vw,44px);
   --h1:clamp(22px,7vw,30px);
   --h2:clamp(18px,6vw,26px);
   --lead:clamp(13px,4.2vw,16px);
-  --text:clamp(14px,3.7vw,16px);
+  --text-size:clamp(14px,3.7vw,16px);
   --num:clamp(16px,4.6vw,20px);
 }
 *{box-sizing:border-box}
 html,body{height:100%} html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
-#app{min-height:100vh;padding-bottom:calc(92px + env(safe-area-inset-bottom));display:flex;justify-content:center}
+#app{min-height:100vh;display:flex;justify-content:center;
+     padding-bottom:calc(94px + env(safe-area-inset-bottom))}
+
 .container{width:var(--w);padding:var(--s4)}
+h1,h2,p{margin:0}
 
 /* header */
-.app-header{display:flex;align-items:center;justify-content:space-between}
-.app-title{margin:0 0 var(--s1);font:800 var(--h1)/1.08 Inter;letter-spacing:.2px}
-.app-sub{margin:0;color:var(--muted);font-size:var(--lead);font-weight:600}
-.icon-btn{width:44px;height:44px;border-radius:var(--r1);display:grid;place-items:center;background:#1f1b28;border:1px solid var(--border);color:#fff}
+.app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3)}
+.app-title{font:800 var(--h0)/1.05 Inter}
+.app-sub{margin-top:6px;color:var(--muted);font:600 var(--lead)/1.2 Inter}
+.icon-btn{width:44px;height:44px;border-radius:var(--r1);display:grid;place-items:center;
+  background:#1f1b28;border:1px solid var(--border);color:#fff}
 
 /* cards */
 .stack{display:grid;gap:var(--s4);margin-top:var(--s4)}
@@ -50,23 +55,33 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui
 .card--violet{background:var(--violet);color:#fff}
 
 /* form */
-.form{display:grid;gap:var(--s4);margin-top:var(--s4)}
-.label{color:var(--muted);font-weight:600;margin-bottom:6px}
-.input,.select,.btn{height:48px;border-radius:var(--r2);border:1px solid var(--border);background:#201d28;color:#fff;padding:0 var(--s3);font:600 var(--text)/48px Inter}
-.btn.primary{background:#3a364a}
+.form{display:grid;gap:var(--s4);margin-top:var(--s3)}
+.label{color:var(--muted);font-weight:700;margin-bottom:8px}
+.field{position:relative}
+.input,.select{width:100%;height:48px;border-radius:16px;border:1px solid var(--border);
+  background:#201d28;color:#fff;padding:0 var(--s3);font:600 var(--text-size)/48px Inter;
+  outline:none;box-shadow:none;-webkit-appearance:none;appearance:none}
+.select.chevron{padding-right:42px}
+.field .chev{position:absolute;right:12px;top:50%;translate:0 -50%;
+  background:#2b2836;border:1px solid var(--border);border-radius:10px;width:28px;height:28px;display:grid;place-items:center}
+
+/* number input: прячем спиннеры, делаем свои */
+.input[type=number]::-webkit-outer-spin-button,
+.input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.input[type=number]{-moz-appearance:textfield}
 
 /* reader */
 .reader-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--s3);margin-top:var(--s3)}
 .back{width:44px;height:44px;border-radius:var(--r1);border:1px solid var(--border);background:#2b2836;color:#fff;display:grid;place-items:center}
-.reader-title{margin:0;font:800 var(--h1)/1.06 Inter}
-.reader-meta{margin:6px 0 0;color:var(--muted);font:600 var(--lead)/1.2 Inter}
+.reader-title{font:800 var(--h1)/1.06 Inter}
+.reader-meta{margin-top:6px;color:var(--muted);font:600 var(--lead)/1.2 Inter}
 .chips{display:flex;gap:8px}
 .chip{height:36px;padding:0 12px;border-radius:10px;border:1px solid var(--border);background:#2b2836;color:#fff;font-weight:700}
 
 .verses{display:grid;gap:var(--s3);margin-top:var(--s3)}
 .verse{display:grid;grid-template-columns:28px 1fr;gap:12px;border-bottom:1px dashed var(--border);padding:12px 0}
 .v-no{color:var(--accent);font:800 var(--num)/1 Inter}
-.v-text{font:400 var(--text)/1.6 Inter}
+.v-text{font:400 var(--text-size)/1.6 Inter}
 
 /* tabbar */
 .tabbar{position:fixed;left:0;right:0;bottom:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));
@@ -77,15 +92,16 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui
 .tab .icon{font-size:20px;line-height:1;margin-bottom:6px}
 .tab.active{outline:2px solid rgba(255,255,255,.18);background:#241f2f}
 
-/* скрыть старый дебаг, если вдруг где-то остался */
-#boot{display:none!important}
+/* мелочи */
+.btn{height:50px;border-radius:18px;border:1px solid var(--border);background:#3a364a;color:#fff;
+  font:700 var(--text-size)/50px Inter;text-align:center}
 </style>
 </head>
 <body>
 <div id="app"></div>
 
 <script>
-/* мягкая инициализация Telegram */
+/* Telegram init (мягко, чтобы в браузере не падало) */
 (function(){var tg=(window.Telegram&&window.Telegram.WebApp)?window.Telegram.WebApp:null;try{tg&&tg.ready();tg&&tg.expand&&tg.expand()}catch(e){}})();
 
 /* простой роутер */
@@ -94,7 +110,7 @@ function go(hash){ if(location.hash===hash) render(); else location.hash=hash; }
 function get(){const h=location.hash||"#/home";const [p,q=""]=h.split("?");const o={};q.split("&").filter(Boolean).forEach(s=>{const[k,v='']=s.split("=");o[decodeURIComponent(k)]=decodeURIComponent(v)});return{path:p,query:o}}
 addEventListener('hashchange',render);
 
-/* экраны */
+/* общий низ */
 function tabbar(active){return `
 <nav class="tabbar"><div class="tabbar__row">
   <div class="tab ${active==='bible'?'active':''}" onclick="go('#/bible')"><div class="icon">✝️</div>Библия</div>
@@ -102,11 +118,12 @@ function tabbar(active){return `
   <div class="tab ${active==='mentor'?'active':''}" onclick="go('#/mentor')"><div class="icon">👨‍🏫</div>Наставник</div>
 </div></nav>`}
 
+/* Домой */
 function screenHome(){app.innerHTML=`
   <div class="container">
     <header class="app-header">
       <div><h1 class="app-title">ORA</h1><p class="app-sub">Приложение для духовного роста</p></div>
-      <button class="icon-btn">⚙️</button>
+      <button class="icon-btn" aria-label="Настройки">⚙️</button>
     </header>
     <section class="stack">
       <div class="card card--blue"   onclick="go('#/bible')"><h2>БИБЛИЯ</h2><span>Читать и изучать</span></div>
@@ -117,80 +134,110 @@ function screenHome(){app.innerHTML=`
   ${tabbar('bible')}
 `}
 
+/* Библия — выбор */
 function screenBible(){app.innerHTML=`
   <div class="container">
     <header class="app-header">
       <button class="icon-btn" onclick="go('#/home')">←</button><div style="flex:1"></div>
     </header>
-    <h2 class="app-title" style="margin-top:4px">Библия</h2>
+
+    <h1 class="app-title">Библия</h1>
     <p class="app-sub">мини-приложение</p>
+
     <div class="form">
-      <div><div class="label">Выбери книгу</div>
-        <select id="book" class="select">
+      <div class="field">
+        <div class="label">Выбери книгу</div>
+        <select id="book" class="select chevron">
           <option value="mrk">Ев. от Марка</option>
           <option value="mat">Ев. от Матфея</option>
           <option value="luk">Ев. от Луки</option>
           <option value="jhn">Ев. от Иоанна</option>
         </select>
+        <div class="chev">▾</div>
       </div>
-      <div><div class="label">Выбери главу</div><input id="chap" class="input" type="number" min="1" value="1"/></div>
-      <div><div class="label">Выбери перевод</div>
-        <select id="tr" class="select">
+
+      <div class="field">
+        <div class="label">Выбери главу</div>
+        <input id="chap" class="input" type="number" min="1" value="1"/>
+      </div>
+
+      <div class="field">
+        <div class="label">Выбери перевод</div>
+        <select id="tr" class="select chevron">
           <option value="syn">Синодальный (RU)</option>
           <option value="kjv">King James (EN)</option>
         </select>
+        <div class="chev">▾</div>
       </div>
-      <button class="btn primary" onclick="go('#/reader?book='+encodeURIComponent(document.getElementById('book').value)+'&chap='+encodeURIComponent(document.getElementById('chap').value||1)+'&tr='+encodeURIComponent(document.getElementById('tr').value))">Открыть читалку</button>
+
+      <button class="btn" onclick="go('#/reader?book='+encodeURIComponent(document.getElementById('book').value)+'&chap='+encodeURIComponent(document.getElementById('chap').value||1)+'&tr='+encodeURIComponent(document.getElementById('tr').value))">Открыть читалку</button>
     </div>
   </div>
   ${tabbar('bible')}
 `}
 
-function screenReader(q){const book=q.book||'mrk';const chap=Number(q.chap||1);const tr=q.tr||'syn';
+/* Читалка (заглушка текста) */
+function screenReader(q){
+  const book=q.book||'mrk'; const chap=Number(q.chap||1); const tr=q.tr||'syn';
   const verses=Array.from({length:18},(_,i)=>({n:i+1,t:`Текст стиха-заглушки ${i+1}. Здесь будет реальный текст перевода.`}));
   app.innerHTML=`
     <div class="container">
       <div class="reader-head">
         <button class="back" onclick="go('#/bible')">←</button>
-        <div><h1 class="reader-title">Глава ${chap}</h1><div class="reader-meta">${book} · ${tr}</div></div>
-        <div class="chips"><button class="chip">RU</button><button class="chip">+</button><button class="chip">…</button></div>
+        <div>
+          <div class="reader-title">Глава ${chap}</div>
+          <div class="reader-meta">${book} · ${tr}</div>
+        </div>
+        <div class="chips">
+          <button class="chip">RU</button>
+          <button class="chip">+</button>
+          <button class="chip">…</button>
+        </div>
       </div>
+
       <div class="verses">
-        ${verses.map(v=>`<div class="verse"><div class="v-no">${v.n}</div><div class="v-text">${v.t}</div></div>`).join('')}
+        ${verses.map(v=>`<div class="verse">
+          <div class="v-no">${v.n}</div>
+          <div class="v-text">${v.t}</div>
+        </div>`).join('')}
       </div>
     </div>
     ${tabbar('bible')}
   `
 }
 
+/* ORA */
 function screenOra(){app.innerHTML=`
   <div class="container">
     <header class="app-header"><button class="icon-btn" onclick="go('#/home')">←</button><div style="flex:1"></div></header>
-    <h1 class="app-title" style="margin-top:4px">ORA</h1><p class="app-sub">Друг и наставник</p>
-    <p style="opacity:.8;margin-top:var(--s3)">Здесь будет чат с ассистентом.</p>
+    <h1 class="app-title">ORA</h1><p class="app-sub">Друг и наставник</p>
+    <p style="opacity:.8;margin-top:var(--s3)">Здесь позже будет диалог с ассистентом.</p>
   </div>
   ${tabbar('ora')}
 `}
 
+/* Наставник */
 function screenMentor(){app.innerHTML=`
   <div class="container">
     <header class="app-header"><button class="icon-btn" onclick="go('#/home')">←</button><div style="flex:1"></div></header>
-    <h1 class="app-title" style="margin-top:4px">Наставник</h1><p class="app-sub">Конспекты. Заметки. Исследования</p>
+    <h1 class="app-title">Наставник</h1><p class="app-sub">Конспекты. Заметки. Исследования</p>
     <p style="opacity:.8;margin-top:var(--s3)">Здесь появятся ваши заметки и планы.</p>
   </div>
   ${tabbar('mentor')}
 `}
 
-/* рендер */
+/* рендерер */
 function render(){const {path,query}=get();
   if(path==="#/"||path==="#/home") screenHome();
-  else if(path==="#/bible") screenBible();
-  else if(path==="#/reader") screenReader(query);
-  else if(path==="#/ora") screenOra();
-  else if(path==="#/mentor") screenMentor();
+  else if(path==="#/bible")   screenBible();
+  else if(path==="#/reader")  screenReader(query);
+  else if(path==="#/ora")     screenOra();
+  else if(path==="#/mentor")  screenMentor();
   else go('#/home');
 }
 if(!location.hash) go('#/home'); else render();
 </script>
 </body>
+</html>
+
 </html>
