@@ -2,16 +2,12 @@ export default function ora(root, {go}) {
   root.innerHTML = `
     <div class="container">
       <header class="app-header">
-        <button class="back-btn" data-go="#/">← Назад</button>
+        <button class="icon-btn" data-go="#/">←</button>
         <div style="flex:1"></div>
       </header>
-
       <h1 class="app-title" style="font-size:40px;margin-top:8px">ORA</h1>
       <p class="app-sub">Друг и наставник</p>
-
-      <p style="opacity:.75;margin-top:16px">
-        Здесь будет чат с ИИ-ассистентом по вопросам содержания Библии.
-      </p>
+      <p style="opacity:.75;margin-top:16px">Здесь будет чат с ассистентом.</p>
     </div>
 
     <nav class="tabbar">
@@ -22,5 +18,5 @@ export default function ora(root, {go}) {
       </div>
     </nav>
   `;
-  root.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click', ()=>go(el.dataset.go)));
+  root.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>go(el.dataset.go));
 }
