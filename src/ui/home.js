@@ -6,23 +6,18 @@ export default function home(root, {go}) {
           <h1 class="app-title">ORA</h1>
           <p class="app-sub">Приложение для духовного роста</p>
         </div>
-        <button class="icon-btn" aria-label="Настройки">⚙️</button>
+        <button class="icon-btn">⚙️</button>
       </header>
 
       <section class="stack">
-        <div class="card card--blue" data-go="#/bible">
-          <h2>БИБЛИЯ</h2>
-          <span>Читать и изучать</span>
+        <div class="card card--blue"   data-go="#/bible">
+          <h2>БИБЛИЯ</h2><span>Читать и изучать</span>
         </div>
-
         <div class="card card--accent" data-go="#/ora">
-          <h2>ORA</h2>
-          <span>Друг и наставник</span>
+          <h2>ORA</h2><span>Друг и наставник</span>
         </div>
-
         <div class="card card--violet" data-go="#/mentor">
-          <h2>НАСТАВНИК</h2>
-          <span>Конспекты. Заметки. Исследования</span>
+          <h2>НАСТАВНИК</h2><span>Конспекты. Заметки. Исследования</span>
         </div>
       </section>
     </div>
@@ -35,8 +30,5 @@ export default function home(root, {go}) {
       </div>
     </nav>
   `;
-
-  root.querySelectorAll('[data-go]').forEach(el=>{
-    el.addEventListener('click', ()=> go(el.dataset.go));
-  });
+  root.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>go(el.dataset.go));
 }
