@@ -1,9 +1,9 @@
 // src/router.js
-import { renderHome } from './ui/home.js?v=ui14';
-import { renderBibleSelect } from './ui/bible-select.js?v=ui14';
-import { renderReader } from './ui/reader.js?v=ui14';
-import { renderOra } from './ui/ora.js?v=ui14';
-import { renderMentor } from './ui/mentor.js?v=ui14';
+import { renderHome } from './ui/home.js?v=ui15';
+import { renderBibleSelect } from './ui/bible-select.js?v=ui15';
+import { renderReader } from './ui/reader.js?v=ui15';
+import { renderOra } from './ui/ora.js?v=ui15';
+import { renderMentor } from './ui/mentor.js?v=ui15';
 
 export function startRouter(app) {
   const routes = {
