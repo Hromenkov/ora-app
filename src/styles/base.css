@@ -1,95 +1,87 @@
-/* ---------- ЧИТАЛКА (reader) ---------- */
-
-.reader-top{
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: grid;
-  grid-template-columns: 44px 1fr auto;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 16px 10px;
-  background: linear-gradient(180deg, #111016 0%, #111016 82%, rgba(17,16,22,0));
-  border-bottom: 1px solid rgba(255,255,255,.06);
+/* ====== READER v2 ====== */
+.reader {
+  padding: 16px 18px calc(88px + env(safe-area-inset-bottom));
 }
 
-.reader-back{
+.reader-top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 12px 10px;
+  margin: -16px -12px 8px;
+  background:
+    linear-gradient(180deg, rgba(17,16,22,.92), rgba(17,16,22,.82) 60%, rgba(17,16,22,0) 100%);
+  backdrop-filter: blur(8px);
+}
+
+.reader-back {
   width: 44px; height: 44px;
   display: grid; place-items: center;
   border-radius: 12px;
-  background: #1d1b24;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.08);
-  font-weight: 700;
-}
-
-.reader-headings{ display: grid; gap: 6px; }
-.reader-h{
-  font-size: 36px;
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: .2px;
-}
-.reader-meta{
-  color: #a4a7b0;
-  font-size: 16px;
-}
-
-.reader-actions{ display: flex; gap: 8px; }
-.chip{
-  height: 34px; padding: 0 12px;
-  border-radius: 10px;
-  display: inline-flex; align-items: center; gap: 6px;
-  font-weight: 700; font-size: 14px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: #2b2836; color: #fff;
-}
-.chip--ghost{ background: #2b2836; }
-.chip--accent{ background: #E8FF3A; color: #111; border-color: transparent; }
-
-.verses{
-  padding: 6px 16px 140px; /* нижний паддинг под таб-бар */
-}
-
-.verse{
-  display: grid;
-  grid-template-columns: 32px 1fr;
-  gap: 12px;
-  padding: 14px 0 18px;
-  border-bottom: 1px solid rgba(255,255,255,.05);
-}
-
-.v-num{
-  color: #E8FF3A; /* фирменный лаймовый */
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: .2px;
-  transform: translateY(2px);
-}
-
-.v-text{
-  color: #E9EAF0;
-  font-size: 18px;
-  line-height: 1.6;
-}
-.v-text .placeholder{ color: #C7CAD3; opacity: .8; }
-
-.chapter-pager{
-  position: sticky;
-  bottom: 72px; /* примерно высота таб-бара */
-  z-index: 15;
-  display: flex; justify-content: center; gap: 16px;
-  padding: 12px 16px 8px;
-  background: linear-gradient(0deg, #111016 0%, rgba(17,16,22,0));
-}
-
-.pager-btn{
-  width: 48px; height: 48px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.12);
   background: #2b2836;
-  color: #fff;
-  font-size: 22px;
-  font-weight: 700;
+  color: var(--ink, #fff);
 }
-.pager-btn:active{ transform: translateY(1px); }
+
+.reader-title {
+  font-size: 42px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+.reader-sub {
+  margin-top: 6px;
+  font-size: 18px;
+  color: rgba(255,255,255,.64);
+}
+
+.reader-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  height: 36px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: #25232e;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Список стихов */
+.verses {
+  display: grid;
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.verse {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 12px;
+  align-items: start;
+}
+
+.v-num {
+  color: #E3FF5E;           /* акцентный жёлтый */
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1;
+  padding-top: 6px;
+}
+
+.v-text {
+  color: #fff;
+  font-size: 19px;
+  line-height: 1.55;
+}
