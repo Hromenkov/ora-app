@@ -1,4 +1,3 @@
-// Простой hash-router
 export function go(hash) {
   if (location.hash === hash) render();
   else location.hash = hash;
@@ -16,11 +15,10 @@ export function getPathAndQuery() {
 }
 
 let routes = {};
-export function initRouter(map, onReady) {
+export function initRouter(map) {
   routes = map;
   addEventListener('hashchange', render);
   render();
-  onReady && onReady();
 }
 
 function render() {
