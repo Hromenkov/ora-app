@@ -1,31 +1,32 @@
 <!doctype html>
 <html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ORA</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ORA</title>
 
-    <!-- Telegram WebApp SDK -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Telegram SDK (не мешает и вне TG) -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- ВАЖНО: bump версии, чтобы пробить кэш -->
-    <link rel="stylesheet" href="./src/styles/base.css?v=9" />
-  </head>
-  <body>
-    <div id="app"></div>
+  <!-- Подключаем СТИЛИ ТОЛЬКО ТАК -->
+  <link rel="stylesheet" href="../src/styles/base.css?v=css22" />
+</head>
+<body>
+  <div id="app"></div>
 
-    <script type="module">
-      const app = document.getElementById('app');
-      try {
-        // небольшой bump, чтобы и main.js точно подтянулся заново
-        await import('./src/main.js?v=boot11');
-      } catch (e) {
-        app.innerHTML = `
-          <pre style="padding:12px;background:#1f1e26;color:#fff;border:1px solid #333;border-radius:8px;white-space:pre-wrap">
-Import error: ${e && (e.stack || e.message || e)}
-          </pre>`;
-        console.error(e);
-      }
-    </script>
-  </body>
+  <script type="module">
+    const app = document.getElementById('app');
+    try {
+      // Бампни версию при каждом изменении, чтобы TG не кэшировал
+      await import('../src/main.js?v=boot22');
+      // Если нужно — покажем маленький бейдж, что всё ок:
+      // app.insertAdjacentHTML('afterbegin','<div style="position:fixed;top:8px;left:8px;background:#1f2937;color:#9ca3af;padding:4px 8px;border-radius:8px;font:12px/1 ui-sans-serif,system-ui">ok: main.js</div>');
+    } catch (e) {
+      app.innerHTML = `<pre style="white-space:pre-wrap;color:#fff;background:#1f2937;border:1px solid #374151;border-radius:8px;padding:12px">
+Import error: ${e.message}
+</pre>`;
+      console.error(e);
+    }
+  </script>
+</body>
 </html>
