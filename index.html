@@ -5,18 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ORA</title>
 
-  <!-- Telegram SDK (не критично вне TG) -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Стили -->
-  <link rel="stylesheet" href="./src/styles/base.css?v=ui15" />
+  <!-- ВАЖНО: путь к css из КОРНЯ -->
+  <link rel="stylesheet" href="./src/styles/base.css?v=ui16" />
+
   <style>
-    /* маленький лог наверху, чтобы видеть этап загрузки */
     #bootlog{
       position:fixed;left:8px;top:8px;z-index:10;
       background:#0f172a;color:#cbd5e1;border:1px solid #334155;
-      border-radius:10px;padding:6px 10px;font:12px/1.3 ui-monospace,Menlo,Consolas,monospace;
-      opacity:.9
+      border-radius:10px;padding:6px 10px;font:12px/1.3 ui-monospace,Menlo,Consolas,monospace;opacity:.9
     }
   </style>
 </head>
@@ -25,16 +23,14 @@
   <div id="app"></div>
 
   <script type="module">
-    const log = (t)=>{ const el=document.getElementById('bootlog'); if(el) el.textContent=t };
+    const log = t => { const el = document.getElementById('bootlog'); if (el) el.textContent = t };
 
-    // импорт главного модуля
-    import('./src/main.js?v=ui15')
+    import('./src/main.js?v=ui16')
       .then(()=>log('ok: main.js'))
       .catch(e=>{
         document.getElementById('app').innerHTML =
           `<pre style="white-space:pre-wrap;background:#111827;color:#e5e7eb;padding:12px;border-radius:12px;">Boot error:\n${e}</pre>`;
-        log('import failed');
-        console.error(e);
+        log('import failed'); console.error(e);
       });
   </script>
 </body>
