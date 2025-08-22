@@ -2,7 +2,7 @@ export default function bibleSelect(root, {go}) {
   root.innerHTML = `
     <div class="container">
       <header class="app-header">
-        <button class="back-btn" data-go="#/">← Назад</button>
+        <button class="icon-btn" data-go="#/">←</button>
         <div style="flex:1"></div>
       </header>
 
@@ -33,7 +33,9 @@ export default function bibleSelect(root, {go}) {
           </select>
         </label>
 
-        <button id="goRead" class="btn" style="height:52px;border-radius:16px;background:#3a364a;font-weight:800">Открыть читалку</button>
+        <button id="goRead" class="btn" style="height:52px;border-radius:16px;background:#3a364a;font-weight:800">
+          Открыть читалку
+        </button>
       </div>
     </div>
 
@@ -46,13 +48,15 @@ export default function bibleSelect(root, {go}) {
     </nav>
   `;
 
-  root.querySelector('[data-go="#/"]').addEventListener('click', ()=>go('#/'));
-  root.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click', ()=>go(el.dataset.go)));
+  root.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>go(el.dataset.go));
 
-  root.getElementById('goRead').addEventListener('click', ()=>{
-    const book = root.getElementById('book').value;
-    const chap = root.getElementById('chap').value || 1;
-    const tr   = root.getElementById('tr').value;
+  const $book = root.querySelector('#book');
+  const $chap = root.querySelector('#chap');
+  const $tr   = root.querySelector('#tr');
+  root.querySelector('#goRead').onclick = () => {
+    const book = $book.value || 'mrk';
+    const chap = $chap.value || 1;
+    const tr   = $tr.value || 'syn';
     go(`#/read?book=${encodeURIComponent(book)}&chap=${encodeURIComponent(chap)}&tr=${encodeURIComponent(tr)}`);
-  });
+  };
 }
