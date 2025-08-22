@@ -1,6 +1,6 @@
-/// src/main.js
-import { renderHome } from './ui/home.js?v=boot8';
-import { initRouter } from './router.js?v=boot8';
+// src/main.js
+import { renderHome } from './ui/home.js?v=boot9';
+import { initRouter } from './router.js?v=boot9';
 
 (function initTelegram(){
   if (window.Telegram?.WebApp) {
