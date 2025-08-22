@@ -8,48 +8,11 @@
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="stylesheet" href="./src/styles/base.css?v=3" />
-  <style>
-    #log {
-      position: fixed; left: 12px; right: 12px; top: 12px;
-      background:#1f1d29; color:#fff; border:1px solid #333; border-radius:10px;
-      padding: 10px 12px; font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      white-space: pre-wrap; z-index: 9999;
-    }
-  </style>
 </head>
 <body>
-  <div id="log">boot: …</div>
   <div id="app"></div>
 
-  <!-- Диагностический загрузчик -->
-  <script type="module">
-    const log = (...a) => document.getElementById('log').textContent = a.join(' ');
-    const MAIN_URL = './src/main.js?v=boot9';
-
-    // 1) Проверим, что файл вообще доступен и какой у него MIME
-    try {
-      const r = await fetch(MAIN_URL, { cache: 'no-store' });
-      log(`fetch ${MAIN_URL}\nstatus: ${r.status} ${r.statusText}\ncontent-type: ${r.headers.get('content-type')||'-'}`);
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    } catch (e) {
-      log(`fetch failed for ${MAIN_URL}\n${e.message}`);
-    }
-
-    // 2) Пробуем импортировать модуль
-    try {
-      await import(MAIN_URL);
-      log(`import ok: ${MAIN_URL}`);
-    } catch (e) {
-      log(`import error: ${e.message}\nurl: ${new URL(MAIN_URL, location.href)}`);
-    }
-
-    // 3) Фолбэк, если модуль не отрисовал ничего
-    setTimeout(() => {
-      const el = document.getElementById('app');
-      if (!el || !el.childNodes.length) {
-        log(document.getElementById('log').textContent + `\n\nUI not rendered by main.js`);
-      }
-    }, 1200);
-  </script>
+  <!-- ВАЖНО: относительный путь (./), новая версия -->
+  <script type="module" src="./src/main.js?v=boot10"></script>
 </body>
 </html>
