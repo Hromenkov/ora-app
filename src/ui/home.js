@@ -1,5 +1,5 @@
 // src/ui/home.js
-export function renderHome(root) {
+export function renderHome(root){
   root.innerHTML = `
     <header class="app-header">
       <div>
@@ -10,33 +10,26 @@ export function renderHome(root) {
     </header>
 
     <section class="stack">
-      <a href="#" class="card card--accent" data-route="home">
-        <div class="card-title">ORA</div>
-        <div class="card-sub">Друг и наставник</div>
+      <a class="card card--accent" href="#ora">
+        <h2>ORA</h2><span>Друг и наставник</span>
       </a>
-
-      <a href="#" class="card card--blue" data-route="bible">
-        <div class="card-title">БИБЛИЯ</div>
-        <div class="card-sub">Читать и изучать</div>
+      <a class="card card--blue" href="#bible">
+        <h2>БИБЛИЯ</h2><span>Читать и изучать</span>
       </a>
-
-      <a href="#" class="card card--dark" data-route="heroes">
-        <div class="card-title">ГЕРОИ</div>
-        <div class="card-sub">Библейские герои</div>
+      <a class="card card--dark" href="#heroes">
+        <h2>ГЕРОИ</h2><span>Библейские герои</span>
       </a>
-
-      <a href="#" class="card card--violet" data-route="mentor">
-        <div class="card-title">НАСТАВНИК</div>
-        <div class="card-sub">Конспекты. Заметки. Исследования</div>
+      <a class="card card--violet" href="#mentor">
+        <h2>НАСТАВНИК</h2><span>Конспекты. Заметки. Исследования</span>
       </a>
     </section>
 
     <nav class="tabbar">
-      <a href="#" class="tab" data-route="home"><div class="icon">🏠</div><div class="label">Домой</div></a>
-      <a href="#" class="tab" data-route="bible"><div class="icon">✝️</div><div class="label">Библия</div></a>
-      <a href="#" class="tab" data-route="ora"><div class="icon">⭕</div><div class="label">ORA</div></a>
-      <a href="#" class="tab" data-route="mentor"><div class="icon">👨‍🏫</div><div class="label">Наставник</div></a>
-      <a href="#" class="tab" data-route="heroes"><div class="icon">👕</div><div class="label">Герои</div></a>
+      <a class="tab" href="#home"><div class="icon">🏠</div>Домой</a>
+      <a class="tab" href="#bible"><div class="icon">✝️</div>Библия</a>
+      <a class="tab" href="#ora"><div class="icon">⭕</div>ORA</a>
+      <a class="tab" href="#mentor"><div class="icon">👨‍🏫</div>Наставник</a>
+      <a class="tab" href="#heroes"><div class="icon">👕</div>Герои</a>
     </nav>
   `;
 }
