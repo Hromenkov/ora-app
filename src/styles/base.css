@@ -1,107 +1,95 @@
-/* ===== Bible Reader (добавить в конец base.css) ===== */
-:root{
-  --accent:#EAFE3A;
-  --bg-1:#0f0d15;
-  --bg-2:#1b1626;
-  --text-1:#f4f4f7;
-  --text-2:#c9c9d4;
-}
+/* ---------- ЧИТАЛКА (reader) ---------- */
 
-/* Шапка и мета */
 .reader-top{
   position: sticky;
   top: 0;
-  z-index: 5;
-  padding: 20px 16px 12px;
-  background: linear-gradient(180deg, rgba(15,13,21,.96), rgba(15,13,21,.7) 60%, rgba(15,13,21,0));
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-.reader-back,
-.reader-btn{
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--bg-2);
-  border: 1px solid rgba(255,255,255,.08);
-  color: #fff;
+  z-index: 20;
   display: grid;
-  place-items: center;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 10px;
+  background: linear-gradient(180deg, #111016 0%, #111016 82%, rgba(17,16,22,0));
+  border-bottom: 1px solid rgba(255,255,255,.06);
 }
-.reader-actions{ margin-left:auto; display:flex; gap:8px; }
+
+.reader-back{
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: #1d1b24;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.08);
+  font-weight: 700;
+}
+
+.reader-headings{ display: grid; gap: 6px; }
 .reader-h{
-  margin: 0;
   font-size: 36px;
-  line-height: 1.1;
   font-weight: 800;
+  line-height: 1.05;
   letter-spacing: .2px;
 }
 .reader-meta{
-  margin-top: 4px;
-  font-size: 14px;
-  color: #a8a8b8;
+  color: #a4a7b0;
+  font-size: 16px;
 }
 
-/* Список стихов */
+.reader-actions{ display: flex; gap: 8px; }
+.chip{
+  height: 34px; padding: 0 12px;
+  border-radius: 10px;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-weight: 700; font-size: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: #2b2836; color: #fff;
+}
+.chip--ghost{ background: #2b2836; }
+.chip--accent{ background: #E8FF3A; color: #111; border-color: transparent; }
+
 .verses{
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 8px 12px 120px; /* нижний отступ, чтобы не уезжало под таббар */
-}
-.verse{
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-}
-.v-num{
-  width: 22px;
-  color: var(--accent);
-  font-weight: 700;
-  padding-top: 3px;
-  flex: 0 0 22px;
-}
-.v-text{
-  flex: 1;
-  color: var(--text-1);
-  line-height: 1.7;
-  word-break: break-word;
-}
-.v-text .placeholder{
-  color: var(--text-2);
-  opacity: .5;
+  padding: 6px 16px 140px; /* нижний паддинг под таб-бар */
 }
 
-/* Пагинация главы (кнопки Назад/Вперёд) */
+.verse{
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  padding: 14px 0 18px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+
+.v-num{
+  color: #E8FF3A; /* фирменный лаймовый */
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: .2px;
+  transform: translateY(2px);
+}
+
+.v-text{
+  color: #E9EAF0;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.v-text .placeholder{ color: #C7CAD3; opacity: .8; }
+
 .chapter-pager{
   position: sticky;
-  bottom: calc(72px + env(safe-area-inset-bottom));
-  padding: 12px 16px;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  background: linear-gradient(180deg, rgba(15,13,21,0), rgba(15,13,21,.85) 30%);
+  bottom: 72px; /* примерно высота таб-бара */
+  z-index: 15;
+  display: flex; justify-content: center; gap: 16px;
+  padding: 12px 16px 8px;
+  background: linear-gradient(0deg, #111016 0%, rgba(17,16,22,0));
 }
+
 .pager-btn{
-  min-width: 44px;
-  height: 44px;
-  padding: 0 14px;
-  border-radius: 12px;
-  background: var(--bg-2);
-  border: 1px solid rgba(255,255,255,.08);
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: #2b2836;
   color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
 }
-.pager-btn[disabled]{ opacity:.4; pointer-events:none; }
-
-/* Чтоб контент не заезжал под таббар на всех экранах */
-body{ padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
-
-/* Если вдруг таббар не фиксируется – раскомменьти строку ниже */
-/* .tabbar{ position:fixed; left:0; right:0; bottom:0; } */
+.pager-btn:active{ transform: translateY(1px); }
