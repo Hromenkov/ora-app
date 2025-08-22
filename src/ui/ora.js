@@ -12,7 +12,7 @@ export function renderOra(root){
     <section class="stack">
       <div class="card card--dark">
         <p>Скоро: вопросы текстом и голосом по содержанию Писания.</p>
-        <p>Пока это заглушка экрана ORA.</p>
+        <p>Пока — заглушка.</p>
       </div>
     </section>
 
