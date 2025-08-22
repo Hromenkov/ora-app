@@ -1,12 +1,12 @@
 // src/ui/bible-select.js
-import * as BooksData from '../data/books.js?v=ui14';
+import * as BooksData from '../data/books.js?v=ui15';
 
 const BOOKS = BooksData.BOOKS || BooksData.books || [];
 const CHAPTERS_MAP = BooksData.BOOK_CHAPTERS || BooksData.bookChapters || {};
 
 const TRANSLATIONS = [
   { code: 'RURSP', name: 'Синодальный' },
-  { code: 'RUKJV', name: 'Библия Короля Иакова' },
+  { code: 'RUKJV', name: 'Короля Иакова' },
 ];
 
 export function renderBibleSelect(root){
@@ -22,7 +22,7 @@ export function renderBibleSelect(root){
 
     <section class="stack">
       <div class="card card--dark">
-        <h3 style="margin-bottom:8px">Функции</h3>
+        <h3 style="margin:0 12px 8px">Функции</h3>
         <div class="chips">
           <button class="chip chip--on" data-mode="read">Читать</button>
           <button class="chip" data-mode="study">Изучать</button>
@@ -55,15 +55,13 @@ export function renderBibleSelect(root){
     </nav>
   `;
 
-  // книги
-  const books = BOOKS.length
-    ? BOOKS
-    : [
-        { code: 'MRK', name: 'Ев. от Марка' },
-        { code: 'MAT', name: 'Ев. от Матфея' },
-        { code: 'LUK', name: 'Ев. от Луки' },
-        { code: 'JHN', name: 'Ев. от Иоанна' },
-      ];
+  const fallbackBooks = [
+    { code: 'MRK', name: 'Ев. от Марка' },
+    { code: 'MAT', name: 'Ев. от Матфея' },
+    { code: 'LUK', name: 'Ев. от Луки' },
+    { code: 'JHN', name: 'Ев. от Иоанна' },
+  ];
+  const books = BOOKS.length ? BOOKS : fallbackBooks;
 
   const $book = root.querySelector('#book');
   const $chapter = root.querySelector('#chapter');
@@ -81,7 +79,6 @@ export function renderBibleSelect(root){
 
   $tr.innerHTML = TRANSLATIONS.map(t => `<option value="${t.code}">${t.name}</option>`).join('');
 
-  // пока чипы просто переключают активную (визуально)
   const chips = root.querySelectorAll('.chip');
   chips.forEach(c => c.addEventListener('click', () => {
     chips.forEach(x => x.classList.remove('chip--on'));
