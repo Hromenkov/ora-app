@@ -5,20 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ORA</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="./src/styles/base.css?v=2" />
+  <link rel="stylesheet" href="./src/styles/base.css?v=3" />
 </head>
 <body>
   <div id="app"></div>
-
-  <script type="module">
-    const app = document.getElementById('app');
-    try {
-      await import('./src/main.js?v=boot5');
-    } catch (e) {
-      app.innerHTML =
-        `<pre style="padding:12px;background:#1f1d29;color:#fff;border:1px solid #333;border-radius:8px;white-space:pre-wrap">Import error: ${e?.message || e}</pre>`;
-      console.error(e);
-    }
+  <script type="module" src="./src/main.js?v=boot6"></script>
+  <script>
+    setTimeout(() => {
+      const el = document.getElementById('app');
+      if (!el || !el.childNodes.length) {
+        el.innerHTML =
+          '<pre style="padding:12px;background:#1f1d29;color:#fff;border:1px solid #333;border-radius:8px;white-space:pre-wrap">Boot error: main.js didn\'t run.\nCheck: /src/main.js?v=boot6 is reachable.</pre>';
+      }
+    }, 2000);
   </script>
 </body>
 </html>
