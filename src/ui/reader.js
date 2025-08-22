@@ -1,64 +1,87 @@
-// src/ui/reader.js
-// Читалка: аккуратная шапка, чипы справа, номера стихов слева, хороший ритм текста.
+/* ====== READER v2 ====== */
+.reader {
+  padding: 16px 18px calc(88px + env(safe-area-inset-bottom));
+}
 
-export default function renderReader(
-  root,
-  { book = "mrk", ch = 1, tr = "syn" } = {}
-) {
-  root.innerHTML = `
-    <div class="reader-top">
-      <button class="reader-back" aria-label="Назад">←</button>
+.reader-top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 12px 10px;
+  margin: -16px -12px 8px;
+  background:
+    linear-gradient(180deg, rgba(17,16,22,.92), rgba(17,16,22,.82) 60%, rgba(17,16,22,0) 100%);
+  backdrop-filter: blur(8px);
+}
 
-      <div class="reader-headings">
-        <h1 class="reader-h">Глава ${ch}</h1>
-        <div class="reader-meta">${book} · ${tr}</div>
-      </div>
+.reader-back {
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: #2b2836;
+  color: var(--ink, #fff);
+}
 
-      <div class="reader-actions">
-        <button class="chip chip--ghost" aria-label="Язык">${tr.toUpperCase()}</button>
-        <button class="chip chip--ghost" aria-label="Добавить заметку">+</button>
-        <button class="chip chip--ghost" aria-label="Ещё">…</button>
-      </div>
-    </div>
+.reader-title {
+  font-size: 42px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: .2px;
+}
 
-    <div class="verses">
-      ${Array.from({ length: 12 }).map((_, i) => {
-        const n = i + 1;
-        return `
-          <div class="verse">
-            <div class="v-num">${n}</div>
-            <div class="v-text">
-              <span class="placeholder">
-                Текст стиха-заглушки ${n}. Здесь будет реальный текст перевода.
-              </span>
-            </div>
-          </div>
-        `;
-      }).join("")}
-    </div>
+.reader-sub {
+  margin-top: 6px;
+  font-size: 18px;
+  color: rgba(255,255,255,.64);
+}
 
-    <div class="chapter-pager">
-      <button class="pager-btn" data-act="prev" aria-label="Предыдущая глава">‹</button>
-      <button class="pager-btn" data-act="next" aria-label="Следующая глава">›</button>
-    </div>
-  `;
+.reader-chips {
+  display: flex;
+  gap: 8px;
+}
 
-  // Навигация назад
-  root.querySelector(".reader-back")?.addEventListener("click", () => {
-    if (window.navigate) window.navigate("/bible");
-    else history.back();
-  });
+.chip {
+  height: 36px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: #25232e;
+  color: #fff;
+  font-weight: 600;
+}
 
-  // Переключение глав (пока заглушка)
-  root.querySelectorAll(".pager-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const dir = btn.dataset.act === "next" ? 1 : -1;
-      const nextCh = Math.max(1, Number(ch) + dir);
-      if (window.navigate) {
-        window.navigate(`/reader?book=${book}&ch=${nextCh}&tr=${tr}`);
-      } else {
-        renderReader(root, { book, ch: nextCh, tr });
-      }
-    });
-  });
+/* Список стихов */
+.verses {
+  display: grid;
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.verse {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 12px;
+  align-items: start;
+}
+
+.v-num {
+  color: #E3FF5E;           /* акцентный жёлтый */
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1;
+  padding-top: 6px;
+}
+
+.v-text {
+  color: #fff;
+  font-size: 19px;
+  line-height: 1.55;
 }
