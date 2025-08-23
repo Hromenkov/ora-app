@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bible Lite — test</title>
+  <style>
+    body{margin:0;background:#0f1012;color:#fff;font:16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial}
+    .wrap{max-width:960px;margin:40px auto;padding:0 16px}
+    pre{background:#15161a;border:1px solid #2a2c33;border-radius:12px;padding:16px;overflow:auto}
+    .ok{display:inline-block;padding:6px 10px;border-radius:999px;background:#1e2a1e;border:1px solid #284b28;color:#9fe29f;font-weight:600}
+    a{color:#8ab4ff}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Bible Lite / test</h1>
+    <p class="ok">index.html загружен ✅</p>
+    <p>JSON ниже грузится из <code>./data/web/MRK/1.json</code>.</p>
+    <pre id="out">Загружаю...</pre>
+  </div>
+
+  <script>
+    fetch('./data/web/MRK/1.json?cachebust=' + Date.now())
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(j => { out.textContent = JSON.stringify(j, null, 2); })
+      .catch(e => { out.textContent = 'Не нашёл JSON (' + e + ')'; });
+  </script>
+</body>
+</html>
